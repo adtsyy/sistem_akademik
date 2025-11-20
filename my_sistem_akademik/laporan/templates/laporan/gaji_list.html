@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Gaji Guru</title>
+    <title>Daftar Gaji</title>
     <style>
         body {
             margin: 0;
@@ -88,16 +88,46 @@
         tr:nth-child(even) {
             background: rgba(255,255,255,0.05);
         }
+
+        input.search-box {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            margin-right: 5px;
+        }
+
+        button.search-button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            background-color: #4caf50;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.search-button:hover {
+            background-color: #45a049;
+        }
+
     </style>
 </head>
 <body>
 
-<header>Daftar Gaji Guru</header>
+<header>Daftar Gaji</header>
 
 <div class="wrapper">
     <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
     <div class="top-actions">
+        <!-- Form Pencarian -->
+        <form method="get" style="display:inline-block; margin-right:10px;">
+            <input type="text" name="id_pegawai" class="search-box" placeholder="Cari ID Pegawai"
+                   value="{{ request.GET.id_pegawai }}">
+            <button type="submit" class="search-button">🔍 Cari</button>
+        </form>
+
         <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
     </div>
 
@@ -105,7 +135,7 @@
         <thead>
             <tr>
                 <th>ID Pegawai</th>
-                <th>Nama Guru</th>
+                <th>Nama Pegawai</th>
                 <th>Jabatan</th>
                 <th>Gaji Pokok</th>
                 <th>Tunjangan</th>
