@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
+from django.views.generic import DetailView
 
 # ================= HOME =====================
 def home(request):
@@ -31,6 +32,11 @@ class RaporDeleteView(DeleteView):
     template_name = 'laporan/rapor_confirm_delete.html'
     success_url = reverse_lazy('rapor_list')
 
+class RaporDetailView(DetailView):
+    model = Rapor
+    template_name = 'laporan/rapor_detail.html'
+    context_object_name = 'rapor'
+    
 # ================= SPP =====================
 class SPPListView(ListView):
     model = SPP

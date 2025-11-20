@@ -39,4 +39,3 @@ class Gaji(models.Model):
 
     def __str__(self):
         return f"Gaji {self.nama}"
-
