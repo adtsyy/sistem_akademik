@@ -1,5 +1,5 @@
 from django import forms
-from .models import Rapor, SPP, GajiGuru
+from .models import Rapor, SPP, Gaji
 
 class RaporForm(forms.ModelForm):
     class Meta:
@@ -9,9 +9,12 @@ class RaporForm(forms.ModelForm):
 class SPPForm(forms.ModelForm):
     class Meta:
         model = SPP
-        fields = '__all__'
+        fields = ['id_siswa', 'nama', 'bulan', 'jumlah', 'status']
+        widgets = {
+            'status': forms.Select(choices=[('Lunas','Lunas'), ('Belum Lunas','Belum Lunas')])
+        }
 
-class GajiGuruForm(forms.ModelForm):
+class GajiForm(forms.ModelForm):
     class Meta:
-        model = GajiGuru
+        model = Gaji
         fields = '__all__'
