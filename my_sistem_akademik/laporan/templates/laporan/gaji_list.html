@@ -2,48 +2,169 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Gaji Guru</title>
+    <title>Daftar Gaji</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f0f4f8; color: #333; }
-        h2 { text-align: center; margin-top: 20px; }
-        .container { width: 90%; margin: auto; margin-top: 30px; }
-        table { width: 100%; border-collapse: collapse; background: #fff; }
-        th, td { padding: 12px; border: 1px solid #ccc; text-align: center; }
-        th { background: #3f72af; color: white; }
-        tr:nth-child(even) { background: #e8f0fe; }
-        a.button { display: inline-block; padding: 6px 12px; margin: 2px; background: #3f72af; color: white; text-decoration: none; border-radius: 4px; }
-        a.button:hover { background: #1d4e8c; }
-        .top { margin-bottom: 15px; text-align: right; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #071522, #0a1f33);
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.back:hover {
+            color: #a6d4ff;
+        }
+
+        .top-actions {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #3f72af;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-left: 5px;
+        }
+
+        a.button:hover {
+            background: #1d4e8c;
+        }
+
+        a.delete-button {
+            background: #ff4d4d;
+        }
+
+        a.delete-button:hover {
+            background: #cc0000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(17,45,78,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(31,65,105,0.9);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        input.search-box {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            margin-right: 5px;
+        }
+
+        button.search-button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            background-color: #4caf50;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.search-button:hover {
+            background-color: #45a049;
+        }
+
     </style>
 </head>
 <body>
-    <h2>Daftar Gaji Guru</h2>
-    <div class="container">
-        <div class="top">
-            <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
-            <a href="{% url 'laporan_home' %}" class="button">🏠 Kembali</a>
-        </div>
-        <table>
+
+<header>Daftar Gaji</header>
+
+<div class="wrapper">
+    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
+
+    <div class="top-actions">
+        <!-- Form Pencarian -->
+        <form method="get" style="display:inline-block; margin-right:10px;">
+            <input type="text" name="id_pegawai" class="search-box" placeholder="Cari ID Pegawai"
+                   value="{{ request.GET.id_pegawai }}">
+            <button type="submit" class="search-button">🔍 Cari</button>
+        </form>
+
+        <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
+    </div>
+
+    <table>
+        <thead>
             <tr>
-                <th>Nama Guru</th>
+                <th>ID Pegawai</th>
+                <th>Nama Pegawai</th>
                 <th>Jabatan</th>
                 <th>Gaji Pokok</th>
+                <th>Tunjangan</th>
+                <th>Total Gaji</th>
                 <th>Aksi</th>
             </tr>
+        </thead>
+        <tbody>
             {% for g in gaji %}
             <tr>
-                <td>{{ g.nama_guru }}</td>
+                <td>{{ g.id_pegawai }}</td>
+                <td>{{ g.nama }}</td>
                 <td>{{ g.jabatan }}</td>
                 <td>{{ g.gaji_pokok }}</td>
+                <td>{{ g.tunjangan }}</td>
+                <td>{{ g.total_gaji }}</td>
                 <td>
-                    <a href="{% url 'gaji_edit' g.id %}" class="button">✏️ Edit</a>
-                    <a href="{% url 'gaji_hapus' g.id %}" class="button" style="background:#ff4d4d;">🗑 Hapus</a>
+                    <a href="{% url 'gaji_edit' g.pk %}" class="button">✏️ Edit</a>
+                    <a href="{% url 'gaji_hapus' g.pk %}" class="button delete-button">🗑 Hapus</a>
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="4">Belum ada data Gaji.</td></tr>
+            <tr>
+                <td colspan="7" style="text-align:center;">Belum ada data Gaji</td>
+            </tr>
             {% endfor %}
-        </table>
-    </div>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

@@ -55,7 +55,7 @@
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus SPP <br>{{ object.nama }} - {{ object.bulan }}?</h2>
+    <h2>Apakah Anda yakin ingin menghapus SPP? <br>{{ object.nama }} - {{ object.bulan }}?</h2>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>

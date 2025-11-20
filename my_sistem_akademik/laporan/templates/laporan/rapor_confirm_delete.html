@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hapus Gaji</title>
+    <title>Hapus Rapor</title>
     <style>
         body {
             font-family: "Segoe UI", sans-serif;
@@ -28,20 +28,17 @@
         .confirm:hover { background: #d63333; }
         .cancel { background: #3f72af; }
         .cancel:hover { background: #1d4e8c; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus Gaji? <br>{{ object.nama }}?</h2>
+    <h2>Apakah Anda yakin ingin menghapus Rapor? <br>{{ object.nama_siswa }} - {{ object.mapel }}?</h2>
     <form method="post" style="margin-top:20px;">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>
-        <a href="{% url 'gaji_list' %}" class="button cancel">⏪ Batal</a>
+        <a href="{% url 'rapor_list' %}" class="button cancel">⏪ Batal</a>
     </form>
 </div>
 

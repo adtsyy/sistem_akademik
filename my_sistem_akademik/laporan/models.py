@@ -1,6 +1,6 @@
 from django.db import models
 
-# RAPOR
+# ================= RAPOR =====================
 class Rapor(models.Model):
     id_siswa = models.CharField(max_length=20)
     nama = models.CharField(max_length=100)
@@ -11,20 +11,27 @@ class Rapor(models.Model):
     keterangan = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"Rapor {self.nama}"
+        return f"Rapor {self.nama} ({self.kelas})"
 
-# SPP
+
+# ================= SPP =====================
 class SPP(models.Model):
+    STATUS_CHOICES = [
+        ('Lunas', 'Lunas'),
+        ('Belum Lunas', 'Belum Lunas'),
+    ]
+
     id_siswa = models.CharField(max_length=20)
     nama = models.CharField(max_length=100)
     bulan = models.CharField(max_length=20)
     jumlah = models.IntegerField()
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Belum Lunas')
 
     def __str__(self):
         return f"SPP {self.nama} - {self.bulan}"
 
-# GAJI GURU
+
+# ================= GAJI =====================
 class Gaji(models.Model):
     id_pegawai = models.CharField(max_length=20)
     nama = models.CharField(max_length=100)
@@ -38,5 +45,4 @@ class Gaji(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Gaji {self.nama}"
-
+        return f"Gaji {self.nama} ({self.jabatan})"

@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
+from django.views.generic import DetailView
 
 # ================= HOME =====================
 def home(request):
@@ -14,6 +15,13 @@ class RaporListView(ListView):
     template_name = 'laporan/rapor_list.html'
     context_object_name = 'rapor'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        id_siswa = self.request.GET.get('id_siswa')
+        if id_siswa:
+            queryset = queryset.filter(id_siswa__icontains=id_siswa)
+        return queryset
+    
 class RaporCreateView(CreateView):
     model = Rapor
     form_class = RaporForm
@@ -31,11 +39,23 @@ class RaporDeleteView(DeleteView):
     template_name = 'laporan/rapor_confirm_delete.html'
     success_url = reverse_lazy('rapor_list')
 
+class RaporDetailView(DetailView):
+    model = Rapor
+    template_name = 'laporan/rapor_detail.html'
+    context_object_name = 'rapor'
+
 # ================= SPP =====================
 class SPPListView(ListView):
     model = SPP
     template_name = 'laporan/spp_list.html'
     context_object_name = 'spp'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        id_siswa = self.request.GET.get('id_siswa')
+        if id_siswa:
+            queryset = queryset.filter(id_siswa__icontains=id_siswa)
+        return queryset
 
 class SPPCreateView(CreateView):
     model = SPP
@@ -76,6 +96,13 @@ class GajiListView(ListView):
     model = Gaji
     template_name = 'laporan/gaji_list.html'
     context_object_name = 'gaji'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        id_pegawai = self.request.GET.get('id_pegawai')
+        if id_pegawai:
+            queryset = queryset.filter(id_pegawai__icontains=id_pegawai)
+        return queryset
 
 class GajiCreateView(CreateView):
     model = Gaji

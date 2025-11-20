@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Rapor {{ rapor.nama }}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #071522, #0a1f33);
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.back:hover {
+            color: #a6d4ff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(17,45,78,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            background: rgba(31,65,105,0.9);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>Detail Rapor {{ rapor.nama }}</header>
+
+<div class="wrapper">
+    <a href="{% url 'rapor_list' %}" class="back">⟵ Kembali ke Daftar Rapor</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mata Pelajaran</th>
+                <th>Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mapel, nilai in rapor.nilai_mapel.items %}
+            <tr>
+                <td>{{ mapel }}</td>
+                <td>{{ nilai }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">Belum ada nilai</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p style="margin-top:15px; text-align:center;">
+        Rata-rata: {{ rapor.rata_rata }} | Predikat: {{ rapor.predikat }}
+    </p>
+</div>
+
+</body>
+</html>
