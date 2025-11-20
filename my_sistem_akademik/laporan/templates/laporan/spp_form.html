@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} SPP</title>
+
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.4);
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .card {
+            width: 40%;
+            background: rgba(17,45,78,0.85);
+            padding: 25px;
+            border-radius: 18px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+        }
+
+        input, select {
+            width: 100%; 
+            padding: 10px; 
+            margin-bottom: 20px; 
+            border-radius: 8px; 
+            border: none; 
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #3f72af;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            background: #3f72af;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: 0.3s;
+        }
+
+        .button:hover { 
+            background: #1d4e8c; 
+        }
+
+        a.back { 
+            display: block; 
+            margin-top: 20px; 
+            color: #6fb7ff; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
+
+        a.back:hover { 
+            color: #a6d4ff; 
+        }
+
+        /* Choices.js custom styling */
+        .choices__inner {
+            background-color: rgba(255,255,255,0.1) !important;
+            color: #fff !important;
+        }
+
+        .choices__list--dropdown .choices__item {
+            background-color: #0f2a45 !important;
+            color: #fff !important;
+        }
+
+        .choices__list--dropdown .choices__item--selectable:hover {
+            background-color: #3f72af !important;
+        }
+    </style>
+</head>
+<body>
+
+<header>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} SPP</header>
+
+<div class="wrapper">
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="id_id_siswa">ID Siswa</label>
+            {{ form.id_siswa }}
+
+            <label for="id_nama">Nama Siswa</label>
+            {{ form.nama }}
+
+            <label for="id_bulan">Bulan</label>
+            <select name="bulan" id="id_bulan">
+                {% for b in bulan_list %}
+                    <option value="{{ b }}" {% if form.instance.bulan == b %}selected{% endif %}>{{ b }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="id_status">Status Pembayaran</label>
+            <select name="status" id="id_status">
+                <option value="Lunas" {% if form.instance.status == "Lunas" %}selected{% endif %}>Lunas</option>
+                <option value="Belum Lunas" {% if form.instance.status == "Belum Lunas" %}selected{% endif %}>Belum Lunas</option>
+            </select>
+
+            <label for="id_jumlah">Jumlah</label>
+            {{ form.jumlah }}
+
+            <button type="submit" class="button">💾 Simpan</button>
+            <a href="{% url 'spp_list' %}" class="button">⏪ Batal</a>
+        </form>
+    </div>
+</div>
+
+<a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
+
+<!-- Choices.js JS -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    new Choices('#id_bulan', { searchEnabled: false, itemSelectText: '' });
+    new Choices('#id_status', { searchEnabled: false, itemSelectText: '' });
+</script>
+
+</body>
+</html>

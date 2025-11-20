@@ -2,113 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Laporan SPP</title>
-
+    <title>Daftar SPP</title>
     <style>
         body {
             margin: 0;
             font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            background: linear-gradient(135deg, #071522, #0a1f33);
             color: #e6e6e6;
         }
 
         header {
             background: #0f2a45;
-            padding: 25px;
+            padding: 25px 0;
             text-align: center;
             font-size: 28px;
             font-weight: 600;
-            color: #ffffff;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.4);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 35px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        .card {
-            width: 92%;
-            background: rgba(17,45,78,0.85);
-            padding: 25px;
-            border-radius: 18px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-            animation: fadeIn 0.6s ease;
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.back:hover {
+            color: #a6d4ff;
+        }
+
+        .top-actions {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #3f72af;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-left: 5px;
+        }
+
+        a.button:hover {
+            background: #1d4e8c;
+        }
+
+        a.delete-button {
+            background: #ff4d4d;
+        }
+
+        a.delete-button:hover {
+            background: #cc0000;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            color: white;
+            background: rgba(17,45,78,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
         }
 
         th {
-            background: #3f72af;
-            padding: 14px;
+            background: rgba(31,65,105,0.9);
         }
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            text-align: center;
-        }
-
-        tr:nth-child(even) { background: rgba(255,255,255,0.04); }
-
-        tr:hover {
-            background: rgba(63,114,175,0.3);
-            transition: 0.25s;
-        }
-
-        .back {
-            display: block;
-            margin-left: 5%;
-            margin-top: 20px;
-            color: #6fb7ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .back:hover { color: #a6d4ff; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
         }
 
     </style>
 </head>
-
 <body>
 
-<header>💰 Laporan Pembayaran SPP</header>
+<header>Daftar SPP</header>
 
 <div class="wrapper">
-    <div class="card">
+    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
-        <table>
+    <div class="top-actions">
+        <a href="{% url 'spp_tambah' %}" class="button">➕ Tambah SPP</a>
+    </div>
+
+    <table>
+        <thead>
             <tr>
-                <th>Nama Siswa</th>
+                <th>ID Siswa</th>
+                <th>Nama</th>
                 <th>Bulan</th>
-                <th>Status Pembayaran</th>
+                <th>Jumlah</th>
+                <th>Status</th>
+                <th>Aksi</th>
             </tr>
-
+        </thead>
+        <tbody>
             {% for s in spp %}
             <tr>
-                <td>{{ s.nama_siswa }}</td>
+                <td>{{ s.id_siswa }}</td>
+                <td>{{ s.nama }}</td>
                 <td>{{ s.bulan }}</td>
+                <td>{{ s.jumlah }}</td>
                 <td>{{ s.status }}</td>
+                <td>
+                    <a href="{% url 'spp_edit' s.pk %}" class="button">✏️ Edit</a>
+                    <a href="{% url 'spp_hapus' s.pk %}" class="button delete-button">🗑 Hapus</a>
+                </td>
             </tr>
             {% empty %}
-            <tr><td colspan="3">Belum ada data SPP.</td></tr>
+            <tr>
+                <td colspan="6" style="text-align:center;">Belum ada data SPP</td>
+            </tr>
             {% endfor %}
-        </table>
-
-    </div>
+        </tbody>
+    </table>
 </div>
-
-<a href="/laporan/" class="back">⟵ Kembali ke Laporan</a>
 
 </body>
 </html>

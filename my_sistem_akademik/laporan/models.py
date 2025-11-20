@@ -25,13 +25,13 @@ class SPP(models.Model):
         return f"SPP {self.nama} - {self.bulan}"
 
 # GAJI GURU
-class GajiGuru(models.Model):
-    id_guru = models.CharField(max_length=20)
+class Gaji(models.Model):
+    id_pegawai = models.CharField(max_length=20)
     nama = models.CharField(max_length=100)
+    jabatan = models.CharField(max_length=50)
     gaji_pokok = models.IntegerField()
     tunjangan = models.IntegerField(default=0)
-    jabatan_tambahan = models.CharField(max_length=100, null=True, blank=True)
-    total_gaji = models.IntegerField()
+    total_gaji = models.IntegerField(blank=True)
 
     def save(self, *args, **kwargs):
         self.total_gaji = self.gaji_pokok + self.tunjangan
@@ -39,3 +39,4 @@ class GajiGuru(models.Model):
 
     def __str__(self):
         return f"Gaji {self.nama}"
+

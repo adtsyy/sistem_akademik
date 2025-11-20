@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Gaji</title>
+    <style>
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(to bottom right, #071522, #0a1f33); color: #e6e6e6; }
+        header { background: #0f2a45; padding: 25px; text-align: center; font-size: 28px; font-weight: 600; color: #ffffff; box-shadow: 0 5px 18px rgba(0,0,0,0.4); }
+        .wrapper { display: flex; justify-content: center; margin-top: 35px; }
+        .card { width: 40%; background: rgba(17,45,78,0.85); padding: 25px; border-radius: 18px; backdrop-filter: blur(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: none; }
+        .button { display: inline-block; padding: 10px 20px; color: #fff; background: #3f72af; border-radius: 8px; text-decoration: none; font-weight: bold; margin-right: 10px; }
+        .button:hover { background: #1d4e8c; }
+        a.back { display: block; margin-top: 20px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
+        a.back:hover { color: #a6d4ff; }
+    </style>
+</head>
+<body>
+
+<header>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Gaji</header>
+
+<div class="wrapper">
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="id_id_pegawai">ID Pegawai</label>
+            {{ form.id_pegawai }}
+
+            <label for="id_nama">Nama</label>
+            {{ form.nama }}
+
+            <label for="id_jabatan">Jabatan</label>
+            {{ form.jabatan }}
+
+            <label for="id_gaji_pokok">Gaji Pokok</label>
+            {{ form.gaji_pokok }}
+
+            <label for="id_tunjangan">Tunjangan</label>
+            {{ form.tunjangan }}
+
+            <button type="submit" class="button">💾 Simpan</button>
+            <a href="{% url 'gaji_list' %}" class="button">⏪ Batal</a>
+        </form>
+    </div>
+</div>
+
+<a href="/laporan/" class="back">⟵ Kembali ke Laporan</a>
+
+</body>
+</html>

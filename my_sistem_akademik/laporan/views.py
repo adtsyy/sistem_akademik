@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Rapor, SPP, GajiGuru
-from .forms import RaporForm, SPPForm, GajiGuruForm
+from .models import Rapor, SPP, Gaji
+from .forms import RaporForm, SPPForm, GajiForm
 
 # ================= HOME =====================
 def home(request):
@@ -31,7 +31,6 @@ class RaporDeleteView(DeleteView):
     template_name = 'laporan/rapor_confirm_delete.html'
     success_url = reverse_lazy('rapor_list')
 
-
 # ================= SPP =====================
 class SPPListView(ListView):
     model = SPP
@@ -44,11 +43,27 @@ class SPPCreateView(CreateView):
     template_name = 'laporan/spp_form.html'
     success_url = reverse_lazy('spp_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bulan_list'] = [
+            "Januari","Februari","Maret","April","Mei","Juni",
+            "Juli","Agustus","September","Oktober","November","Desember"
+        ]
+        return context
+
 class SPPUpdateView(UpdateView):
     model = SPP
     form_class = SPPForm
     template_name = 'laporan/spp_form.html'
     success_url = reverse_lazy('spp_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bulan_list'] = [
+            "Januari","Februari","Maret","April","Mei","Juni",
+            "Juli","Agustus","September","Oktober","November","Desember"
+        ]
+        return context
 
 class SPPDeleteView(DeleteView):
     model = SPP
@@ -56,25 +71,25 @@ class SPPDeleteView(DeleteView):
     success_url = reverse_lazy('spp_list')
 
 
-# ================= GAJI GURU =====================
+# ================= GAJI =====================
 class GajiListView(ListView):
-    model = GajiGuru
+    model = Gaji
     template_name = 'laporan/gaji_list.html'
     context_object_name = 'gaji'
 
 class GajiCreateView(CreateView):
-    model = GajiGuru
-    form_class = GajiGuruForm
+    model = Gaji
+    form_class = GajiForm
     template_name = 'laporan/gaji_form.html'
     success_url = reverse_lazy('gaji_list')
 
 class GajiUpdateView(UpdateView):
-    model = GajiGuru
-    form_class = GajiGuruForm
+    model = Gaji
+    form_class = GajiForm
     template_name = 'laporan/gaji_form.html'
     success_url = reverse_lazy('gaji_list')
 
 class GajiDeleteView(DeleteView):
-    model = GajiGuru
+    model = Gaji
     template_name = 'laporan/gaji_confirm_delete.html'
     success_url = reverse_lazy('gaji_list')
