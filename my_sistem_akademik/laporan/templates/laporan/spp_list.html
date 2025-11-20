@@ -1,0 +1,21 @@
+<h2>Data SPP Siswa</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Bulan</th>
+        <th>Jumlah</th>
+        <th>Status</th>
+    </tr>
+
+    {% for s in spp %}
+    <tr>
+        <td>{{ s.id_siswa }}</td>
+        <td>{{ s.nama }}</td>
+        <td>{{ s.bulan }}</td>
+        <td>{{ s.jumlah }}</td>
+        <td>{{ s.status }}</td>
+    </tr>
+    {% endfor %}
+</table>

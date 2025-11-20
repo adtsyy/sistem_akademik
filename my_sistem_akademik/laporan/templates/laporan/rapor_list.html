@@ -1,0 +1,25 @@
+<h2>Daftar Rapor Siswa</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Nilai</th>
+        <th>Rata-rata</th>
+        <th>Predikat</th>
+        <th>Keterangan</th>
+    </tr>
+
+    {% for r in rapor %}
+    <tr>
+        <td>{{ r.id_siswa }}</td>
+        <td>{{ r.nama }}</td>
+        <td>{{ r.kelas }}</td>
+        <td>{{ r.nilai_mapel }}</td>
+        <td>{{ r.rata_rata }}</td>
+        <td>{{ r.predikat }}</td>
+        <td>{{ r.keterangan }}</td>
+    </tr>
+    {% endfor %}
+</table>

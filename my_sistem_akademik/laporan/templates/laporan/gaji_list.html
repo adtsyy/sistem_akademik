@@ -1,0 +1,21 @@
+<h2>Data Gaji Guru</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID Guru</th>
+        <th>Nama</th>
+        <th>Gaji Pokok</th>
+        <th>Tunjangan</th>
+        <th>Total Gaji</th>
+    </tr>
+
+    {% for g in gaji %}
+    <tr>
+        <td>{{ g.id_guru }}</td>
+        <td>{{ g.nama }}</td>
+        <td>{{ g.gaji_pokok }}</td>
+        <td>{{ g.tunjangan }}</td>
+        <td>{{ g.total_gaji }}</td>
+    </tr>
+    {% endfor %}
+</table>
