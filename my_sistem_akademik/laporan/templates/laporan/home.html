@@ -1,6 +1,91 @@
-<h2>Menu Laporan</h2>
-<ul>
-    <li><a href="/laporan/rapor/">Lihat Rapor Siswa</a></li>
-    <li><a href="/laporan/spp/">Lihat Data SPP</a></li>
-    <li><a href="/laporan/gaji/">Lihat Gaji Guru</a></li>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Halaman Laporan</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to bottom right, #071522, #0a1f33);
+        color: #f1f1f1;
+    }
+
+    header {
+        padding: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        background: #112d4e;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        width: 260px;
+        padding: 25px;
+        border-radius: 16px;
+        background: #112d4e;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        transition: 0.3s ease;
+        display: block;
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        background: #1b3d63;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+
+    .card h3 {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+
+    .card p {
+        font-size: 14px;
+        color: #d7dce4;
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>Laporan Sistem Akademik</header>
+
+<div class="container">
+
+    <a href="{% url 'rapor_list' %}" class="card">
+        <h3>📘 Laporan Rapor</h3>
+        <p>Daftar nilai rapor siswa.</p>
+    </a>
+
+    <a href="{% url 'spp_list' %}" class="card">
+        <h3>💰 Laporan SPP</h3>
+        <p>Status pembayaran SPP siswa.</p>
+    </a>
+
+    <a href="{% url 'gaji_list' %}" class="card">
+        <h3>👨‍🏫 Laporan Gaji Guru</h3>
+        <p>Informasi pembayaran gaji guru.</p>
+    </a>
+
+</div>
+
+</body>
+</html>
