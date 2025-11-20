@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru - Sistem Akademik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Open Sans', sans-serif;
+            background: #0d1b2a;
+            color: #f1faee;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: #1b263b;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #1b263b;
+            border: 1px solid #415a77;
+            border-radius: 12px;
+            padding: 25px;
+            width: 260px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            background: #1e3a5f;
+        }
+
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin: 12px 0 8px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #ccd6dd;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Dashboard Guru</h1>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'absen_siswa' %}" class="card">
+            <div class="card-icon">📝</div>
+            <h2>Absen Mahasiswa</h2>
+            <p>Input dan lihat absensi siswa</p>
+        </a>
+        
+
+        <a href="#" class="card">
+            <div class="card-icon">📊</div>
+            <h2>Jadwal</h2>
+            <p>Melihat Jadwal Pelajaran</p>
+        </a>
+
+        <a href="{% url 'input_nilai' %}" class="card">
+            <div class="card-icon">📊</div>
+            <h2>Input Nilai</h2>
+            <p>Isi nilai siswa per mata pelajaran</p>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absen Siswa - {{ nama_guru }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0d1b2a;
+            color: #f1faee;
+            padding: 20px;
+        }
+        .header {
+            background: #1b263b;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .kelas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .kelas-card {
+            background: #1b263b;
+            border: 1px solid #415a77;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+        }
+        .kelas-card:hover {
+            transform: translateY(-5px);
+            background: #1e3a5f;
+        }
+        .kelas-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #4cc9f0;
+        }
+        .kelas-card p {
+            font-size: 14px;
+            color: #ccd6dd;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 15px 0;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'guru_dashboard' %}" class="back-link">← Kembali ke Dashboard</a>
+    
+    <div class="header">
+        <h2>Absen Siswa – {{ nama_guru }}</h2>
+        <p>Pilih kelas untuk menginput absensi</p>
+    </div>
+
+    {% if kelas_list %}
+        <div class="kelas-grid">
+            {% for kelas in kelas_list %}
+                <div class="kelas-card">
+                    <h3>{{ kelas }}</h3>
+                    <p>Klik untuk input absensi</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="header" style="background: #e63946;">
+            <h3>Anda belum memiliki jadwal mengajar.</h3>
+            <p>Hubungi admin untuk menambahkan jadwal.</p>
+        </div>
+    {% endif %}
+</body>
+</html>

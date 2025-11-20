@@ -8,4 +8,7 @@ urlpatterns = [
     path('', home, name='home'),  # halaman utama
     path('laporan/', include('laporan.urls')),
     path('login/', views.login_view, name='login'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('guru/', include('guru.urls')),
 ]
