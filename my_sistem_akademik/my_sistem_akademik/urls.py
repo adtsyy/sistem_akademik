@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import redirect
+from laporan.views import home  # <-- pastikan nama sesuai dengan views.py
 
 urlpatterns = [
-    path('', lambda request: redirect('/laporan/')),
     path('admin/', admin.site.urls),
+    path('', home, name='home'),  # halaman utama
     path('laporan/', include('laporan.urls')),
 ]
