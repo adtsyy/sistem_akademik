@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tambah Jadwal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI";
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            color: white;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px;
+            text-align: center;
+            font-size: 28px;
+            color: #fff;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 35px;
+        }
+
+        .card {
+            width: 40%;
+            padding: 25px;
+            background: rgba(17,45,78,0.85);
+            border-radius: 18px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        select option {
+            background-color: #0f2a45;     /* Warna biru gelap */
+            color: white;                  /* Warna tulisan */
+        }
+        .button {
+            padding: 10px 20px;
+            background: #3f72af;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #1d4e8c;
+        }
+    </style>
+</head>
+<body>
+
+<header>Tambah Jadwal</header>
+
+<div class="wrapper">
+    <div class="card">
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="button">💾 Simpan</button>
+            <a href="{% url 'list_jadwal' %}" class="button">⏪ Batal</a>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

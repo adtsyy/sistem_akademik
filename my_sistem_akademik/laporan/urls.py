@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+
+
 urlpatterns = [
     # /laporan/ -> halaman home
     path('', views.home, name='laporan_home'),  # <-- ini

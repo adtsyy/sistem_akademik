@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Jadwal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #071522, #0a1f33);
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Tombol Kembali */
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.back:hover {
+            color: #a6d4ff;
+        }
+
+        .top-actions {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #3f72af;
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+            margin-left: 5px;
+        }
+
+        a.button:hover {
+            background: #1d4e8c;
+        }
+
+        a.delete-button {
+            background: #ff4d4d;
+        }
+        a.delete-button:hover {
+            background: #cc0000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(17,45,78,0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(31,65,105,0.9);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+
+<header>Data Jadwal</header>
+
+<div class="wrapper">
+
+    <!-- Tombol Kembali -->
+    <a href="{% url 'index' %}" class="back">⟵ Kembali ke Dashboard</a>
+
+    <!-- Tombol Tambah -->
+    <div class="top-actions">
+        <a href="{% url 'tambah_jadwal' %}" class="button">➕ Tambah Jadwal</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Hari</th>
+                <th>Jam</th>
+                <th>Mata Pelajaran</th>
+                <th>Pegawai</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for j in jadwal_list %}
+            <tr>
+                <td>{{ j.hari }}</td>
+                <td>{{ j.jam_mulai }} - {{ j.jam_selesai }}</td>
+                <td>{{ j.mata_pelajaran }}</td>
+                <td>{{ j.pegawai.nama }}</td>
+                <td>
+                    <a href="{% url 'edit_jadwal' j.id %}" class="button">✏️ Edit</a>
+                    <a href="{% url 'hapus_jadwal' j.id %}" class="button delete-button">🗑 Hapus</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5" style="text-align:center;">Belum ada data jadwal</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
