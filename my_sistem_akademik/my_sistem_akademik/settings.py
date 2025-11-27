@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'admin_app',
     'guru',
     'laporan',
-    'siswa',
+    'siswa_app',
 ]
 
 
