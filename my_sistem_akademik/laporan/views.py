@@ -103,11 +103,16 @@ def spp_edit(request, id):
         'siswa_list': siswa_list
     })
 
-# Hapus SPP
+# HAPUS
 def spp_hapus(request, id):
     spp = get_object_or_404(SPP, id=id)
-    spp.delete()
-    return redirect('spp_list')
+
+    if request.method == "POST":
+        spp.delete()
+        return redirect('spp_list')
+
+    # Kirim spp ke template untuk konfirmasi
+    return render(request, 'laporan/spp_confirm_delete.html', {'object': spp})
 
 # Tambah gaji
 def gaji_tambah(request):

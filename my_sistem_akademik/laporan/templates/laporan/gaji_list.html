@@ -52,6 +52,19 @@
         /* --- Style tombol hapus --- */
         a.delete-button { background: #ff4d4d; }
         a.delete-button:hover { background: #cc0000; }
+        .button-delete {
+            background-color: #d9534f;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .button-delete:hover {
+            background-color: #c9302c;
+        }
+
 
         /* --- Style tabel data --- */
         table {
@@ -120,7 +133,7 @@
             <!-- Tombol Edit & Hapus -->
             <td>
                 <a href="{% url 'gaji_edit' g.pk %}" class="button">✏ Edit</a>
-                <a href="{% url 'gaji_hapus' g.pk %}" class="button">🗑 Hapus</a>
+                <a href="{% url 'gaji_hapus' g.pk %}" class="button-delete">🗑 Hapus</a>
             </td>
         </tr>
 
