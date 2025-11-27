@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     # /laporan/ -> halaman home
-    path('', views.home, name='laporan_home'),  # <-- ini
+    path('', views.home, name='laporan_home'),
 
     # Rapor
     path('rapor/', views.RaporListView.as_view(), name='rapor_list'),
@@ -12,10 +12,10 @@ urlpatterns = [
     path('rapor/hapus/<int:pk>/', views.RaporDeleteView.as_view(), name='rapor_hapus'),
 
     # SPP
-    path('spp/', views.SPPListView.as_view(), name='spp_list'),
-    path('spp/tambah/', views.SPPCreateView.as_view(), name='spp_tambah'),
-    path('spp/edit/<int:pk>/', views.SPPUpdateView.as_view(), name='spp_edit'),
-    path('spp/hapus/<int:pk>/', views.SPPDeleteView.as_view(), name='spp_hapus'),
+    path('spp/', views.spp_list, name='spp_list'),
+    path('spp/tambah/', views.spp_tambah, name='spp_tambah'),
+    path('spp/edit/<int:id>/', views.spp_edit, name='spp_edit'),
+    path('spp/hapus/<int:id>/', views.spp_hapus, name='spp_hapus'),
 
     # Gaji
     path("gaji/", views.gaji_list, name="gaji_list"),

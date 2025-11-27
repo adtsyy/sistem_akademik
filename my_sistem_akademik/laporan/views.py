@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
+from siswa.models import Siswa
+
 
 # ================= HOME =====================
 def home(request):
@@ -44,51 +46,68 @@ class RaporDetailView(DetailView):
     context_object_name = 'rapor'
 
 # ================= SPP =====================
-class SPPListView(ListView):
-    model = SPP
-    template_name = 'laporan/spp_list.html'
-    context_object_name = 'spp'
+# List SPP
+def spp_list(request):
+    spp = SPP.objects.select_related('siswa').all()
+    return render(request, 'laporan/spp_list.html', {'spp': spp})
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        id_siswa = self.request.GET.get('id_siswa')
-        if id_siswa:
-            queryset = queryset.filter(id_siswa__icontains=id_siswa)
-        return queryset
+# Tambah SPP
+def spp_tambah(request):
+    siswa_list = Siswa.objects.all()
 
-class SPPCreateView(CreateView):
-    model = SPP
-    form_class = SPPForm
-    template_name = 'laporan/spp_form.html'
-    success_url = reverse_lazy('spp_list')
+    if request.method == 'POST':
+        data = request.POST.copy()
+        data['siswa'] = request.POST.get('siswa')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['bulan_list'] = [
-            "Januari","Februari","Maret","April","Mei","Juni",
-            "Juli","Agustus","September","Oktober","November","Desember"
-        ]
-        return context
+        form = SPPForm(data)
+        if form.is_valid():
+            form.save()
+            return redirect('spp_list')
 
-class SPPUpdateView(UpdateView):
-    model = SPP
-    form_class = SPPForm
-    template_name = 'laporan/spp_form.html'
-    success_url = reverse_lazy('spp_list')
+        # 🔥 Jika form tidak valid, render lagi form + siswa_list
+        return render(request, 'laporan/spp_form.html', {
+            'form': form,
+            'siswa_list': siswa_list
+        })
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['bulan_list'] = [
-            "Januari","Februari","Maret","April","Mei","Juni",
-            "Juli","Agustus","September","Oktober","November","Desember"
-        ]
-        return context
+    else:
+        form = SPPForm()
 
-class SPPDeleteView(DeleteView):
-    model = SPP
-    template_name = 'laporan/spp_confirm_delete.html'
-    success_url = reverse_lazy('spp_list')
+    return render(request, 'laporan/spp_form.html', {
+        'form': form,
+        'siswa_list': siswa_list
+    })
 
+
+# Edit SPP
+def spp_edit(request, id):
+    spp = get_object_or_404(SPP, id=id)
+
+    if request.method == 'POST':
+        form = SPPForm(request.POST, instance=spp)
+        if form.is_valid():
+
+            spp = form.save(commit=False)
+
+            siswa_id = request.POST.get("siswa")
+            spp.siswa_id = siswa_id
+
+            spp.save()
+            return redirect('spp_list')
+    else:
+        form = SPPForm(instance=spp)
+
+    siswa_list = Siswa.objects.all()
+    return render(request, 'laporan/spp_form.html', {
+        'form': form,
+        'siswa_list': siswa_list
+    })
+
+# Hapus SPP
+def spp_hapus(request, id):
+    spp = get_object_or_404(SPP, id=id)
+    spp.delete()
+    return redirect('spp_list')
 
 # ================= GAJI =====================
 

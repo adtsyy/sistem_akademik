@@ -4,8 +4,8 @@ from django.db import models
 from django.db import models
 
 class Siswa(models.Model):
+    nis = models.CharField(max_length=10, primary_key=True)  # jadikan primary key
     nama = models.CharField(max_length=100)
-    nis = models.CharField(max_length=20, unique=True)
     kelas = models.CharField(max_length=20, blank=True)
     alamat = models.TextField(blank=True)
     tanggal_lahir = models.DateField(null=True, blank=True)
