@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = "/accounts/login/"
 
 # Application definition
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'guru',
     'laporan',
     'siswa',
+    'accounts',
 ]
 
 

@@ -145,11 +145,14 @@
             <p>Gunakan akun Anda untuk masuk ke sistem</p>
         </div>
 
+
         <!-- Pesan Error atau Sukses -->
         {% if messages %}
             {% for message in messages %}
-            <p class="message {{ message.tags }}">{{ message }}</p>
-                <div class="message {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% endif %}">
+                <div class="message 
+                    {% if message.tags == 'error' %}error
+                    {% elif message.tags == 'success' %}success
+                    {% endif %}">
                     {{ message }}
                 </div>
             {% endfor %}
