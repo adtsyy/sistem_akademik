@@ -15,4 +15,5 @@ urlpatterns = [
     path('admin_app/', include('admin_app.urls')),  # dashboard/admin_app
     path('guru/', include('guru.urls')),           # dashboard/guru
     path('laporan/', include('laporan.urls')),     # halaman laporan
+    path('siswa/', include('siswa.urls'))
 ]
