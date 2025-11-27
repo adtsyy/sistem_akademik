@@ -1,6 +1,8 @@
 from django.db import models
 
 class Pegawai(models.Model):
+    id_pegawai = models.CharField(max_length=10, unique=True, editable=False)
+
     JABATAN_CHOICES = [
         ("guru", "Guru"),
         ("staff", "Staff"),
@@ -11,7 +13,17 @@ class Pegawai(models.Model):
     jabatan = models.CharField(max_length=20, choices=JABATAN_CHOICES)
     gaji_pokok = models.IntegerField(default=0)
 
-    def _str_(self):
+    def save(self, *args, **kwargs):
+        if not self.id_pegawai:  # generate ID jika belum ada
+            last_id = Pegawai.objects.order_by('-id_pegawai').first()
+            if last_id:
+                number = int(last_id.id_pegawai[1:]) + 1
+            else:
+                number = 1
+            self.id_pegawai = f"P{number:03d}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
         return self.nama
 
 
@@ -30,5 +42,5 @@ class Jadwal(models.Model):
     mata_pelajaran = models.CharField(max_length=100)
     pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.mata_pelajaran} - {self.hari}"

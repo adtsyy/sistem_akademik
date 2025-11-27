@@ -20,7 +20,10 @@ class SPPForm(forms.ModelForm):
 class GajiForm(forms.ModelForm):
     class Meta:
         model = Gaji
-        fields = '__all__'
+        fields = ['pegawai', 'gaji_pokok', 'tunjangan_jabatan', 'keterangan_tunjangan']
+        widgets = {
+            'gaji_pokok': forms.NumberInput(attrs={'placeholder': 'Masukkan gaji pokok'}),
+        }
 
 # ================= SEARCH FORMS =====================
 class RaporSearchForm(forms.Form):

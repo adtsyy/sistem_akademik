@@ -1,4 +1,5 @@
 from django.db import models
+from admin_app.models import Pegawai
 
 # ================= RAPOR =====================
 class Rapor(models.Model):
@@ -33,16 +34,23 @@ class SPP(models.Model):
 
 # ================= GAJI =====================
 class Gaji(models.Model):
-    id_pegawai = models.CharField(max_length=20)
-    nama = models.CharField(max_length=100)
-    jabatan = models.CharField(max_length=50)
-    gaji_pokok = models.IntegerField()
-    tunjangan = models.IntegerField(default=0)
-    total_gaji = models.IntegerField(blank=True)
+    pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
+    nama_pegawai = models.CharField(max_length=255, blank=True)  # baru
+    gaji_pokok = models.PositiveIntegerField(default=0)
+    tunjangan_jabatan = models.PositiveIntegerField(default=0)
+    keterangan_tunjangan = models.CharField(max_length=255, blank=True, null=True)
 
+    @property
+    def total_gaji(self):
+        return self.gaji_pokok + self.tunjangan_jabatan
+    
     def save(self, *args, **kwargs):
-        self.total_gaji = self.gaji_pokok + self.tunjangan
+        # jika gaji_pokok belum diisi, ambil dari pegawai
+        if not self.gaji_pokok and self.pegawai:
+            self.gaji_pokok = self.pegawai.gaji_pokok
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Gaji {self.nama} ({self.jabatan})"
+        if self.pegawai:
+            return f"Gaji {self.pegawai.nama}"
+        return "Gaji (Pegawai belum diisi)"

@@ -98,27 +98,25 @@
 
 <div class="wrapper">
 
-    <!-- Tombol Kembali -->
     <a href="{% url 'index' %}" class="back">⟵ Kembali ke Dashboard</a>
 
-    <!-- Tombol Tambah -->
     <div class="top-actions">
         <a href="{% url 'tambah_pegawai' %}" class="button">➕ Tambah Pegawai</a>
     </div>
 
     <table>
         <tr>
+            <th>ID Pegawai</th>
             <th>Nama</th>
             <th>Jabatan</th>
-            <th>Gaji Pokok</th>
             <th>Aksi</th>
         </tr>
 
         {% for p in pegawai_list %}
         <tr>
+            <td>{{ p.id_pegawai }}</td>
             <td>{{ p.nama }}</td>
             <td>{{ p.jabatan }}</td>
-            <td>{{ p.gaji_pokok }}</td>
             <td>
                 <a href="{% url 'edit_pegawai' p.id %}" class="button">✏ Edit</a>
                 <a href="{% url 'hapus_pegawai' p.id %}" class="button delete-button">🗑 Hapus</a>

@@ -18,8 +18,8 @@ urlpatterns = [
     path('spp/hapus/<int:pk>/', views.SPPDeleteView.as_view(), name='spp_hapus'),
 
     # Gaji
-    path('gaji/', views.GajiListView.as_view(), name='gaji_list'),
-    path('gaji/tambah/', views.GajiCreateView.as_view(), name='gaji_tambah'),
-    path('gaji/edit/<int:pk>/', views.GajiUpdateView.as_view(), name='gaji_edit'),
-    path('gaji/hapus/<int:pk>/', views.GajiDeleteView.as_view(), name='gaji_hapus'),
+    path("gaji/", views.gaji_list, name="gaji_list"),
+    path("gaji/tambah/", views.gaji_tambah, name="gaji_tambah"),
+    path("gaji/edit/<int:pk>/", views.gaji_edit, name="gaji_edit"),
+    path('gaji/hapus/<int:pk>/', views.gaji_hapus, name='gaji_hapus'),
 ]

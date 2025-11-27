@@ -2,17 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Data Pegawai</title>
-
-    <!-- Choices.js CSS (opsional, jika form menggunakan select yang diperindah) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <title>Edit Pegawai</title>
 
     <style>
         body {
             margin: 0;
-            font-family: "Segoe UI", sans-serif;
+            font-family: "Segoe UI";
             background: linear-gradient(to bottom right, #071522, #0a1f33);
-            color: #e6e6e6;
+            color: white;
         }
 
         header {
@@ -20,9 +17,6 @@
             padding: 25px;
             text-align: center;
             font-size: 28px;
-            font-weight: 600;
-            color: #fff;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.4);
         }
 
         .wrapper {
@@ -32,112 +26,78 @@
         }
 
         .card {
-            width: 40%;
             background: rgba(17,45,78,0.85);
+            width: 40%;
             padding: 25px;
             border-radius: 18px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
 
-        label { 
-            display: block; 
-            margin-bottom: 8px; 
-            font-weight: bold; 
+        label {
+            font-weight: bold;
         }
 
-        input, select, textarea {
-            width: 100%; 
-            padding: 10px; 
-            margin-bottom: 20px; 
-            border-radius: 8px; 
-            border: none; 
-            background-color: rgba(255,255,255,0.1);
-            color: #fff;
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
         }
+
         select option {
-            background-color: #0f2a45;     /* Warna biru gelap */
-            color: white;                  /* Warna tulisan */
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            box-shadow: 0 0 5px #3f72af;
+            background-color: #0f2a45;
+            color: white;
         }
 
         .button {
-            display: inline-block;
+            background: #3f72af;
             padding: 10px 20px;
             color: #fff;
-            background: #3f72af;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
             margin-right: 10px;
-            transition: 0.3s;
-            cursor: pointer;
         }
 
-        .button:hover { 
-            background: #1d4e8c; 
-        }
-
-        a.back { 
-            display: block; 
-            margin-top: 20px; 
-            color: #6fb7ff; 
-            text-decoration: none; 
-            font-weight: bold; 
-            text-align: center;
-        }
-
-        a.back:hover { 
-            color: #a6d4ff; 
-        }
-
-        /* Choices.js custom styling */
-        .choices__inner {
-            background-color: rgba(255,255,255,0.1) !important;
-            color: #fff !important;
-            border: none !important;
-        }
-
-        .choices_list--dropdown .choices_item {
-            background-color: #0f2a45 !important;
-            color: #fff !important;
-        }
-
-        .choices_list--dropdown .choices_item--selectable:hover {
-            background-color: #3f72af !important;
+        .button:hover {
+            background: #1d4e8c;
         }
     </style>
 </head>
+
 <body>
 
-<header>Edit Data Pegawai</header>
+<header>Edit Pegawai</header>
 
 <div class="wrapper">
     <div class="card">
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <!-- Nama -->
+            <label for="id_nama">Nama Pegawai</label>
+            <input type="text" id="id_nama" name="nama"
+                   value="{{ form.nama.value }}"
+                   required>
+
+            <!-- Jabatan -->
+            <label for="id_jabatan">Jabatan</label>
+            <select id="id_jabatan" name="jabatan">
+                {% for value, label in form.fields.jabatan.choices %}
+                    <option value="{{ value }}"
+                        {% if form.jabatan.value == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+
             <button type="submit" class="button">💾 Simpan Perubahan</button>
             <a href="{% url 'list_pegawai' %}" class="button">⏪ Batal</a>
         </form>
     </div>
 </div>
-
-<a href="{% url 'list_pegawai' %}" class="back">⟵ Kembali ke Daftar Pegawai</a>
-
-<!-- Jika ada field select yang ingin diperindah dengan Choices.js -->
-<!-- Contoh (opsional, sesuaikan ID field sesuai form Anda): -->
-<!--
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script>
-    // Ganti '#id_jabatan' dengan id field select di form Anda
-    new Choices('#id_jabatan', { searchEnabled: false, itemSelectText: '' });
-</script>
--->
 
 </body>
 </html>

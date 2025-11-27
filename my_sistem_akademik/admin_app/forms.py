@@ -4,7 +4,7 @@ from .models import Pegawai, Jadwal
 class PegawaiForm(forms.ModelForm):
     class Meta:
         model = Pegawai
-        fields = ["nama", "jabatan", "gaji_pokok"]
+        fields = ["nama", "jabatan"]
 
 class JadwalForm(forms.ModelForm):
     class Meta:

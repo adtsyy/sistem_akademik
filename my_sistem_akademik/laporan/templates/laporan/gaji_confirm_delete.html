@@ -37,7 +37,9 @@
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus Gaji? <br>{{ object.nama }}?</h2>
+    <h2>Apakah Anda yakin ingin menghapus Gaji? <br>
+        {{ object.nama_pegawai|default:object.pegawai.nama }}?
+    </h2>
     <form method="post" style="margin-top:20px;">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>
