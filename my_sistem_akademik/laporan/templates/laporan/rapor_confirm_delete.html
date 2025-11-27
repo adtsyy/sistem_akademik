@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Hapus Rapor</title>
+
     <style>
         body {
-            font-family: "Segoe UI", sans-serif;
             margin: 0;
+            font-family: "Segoe UI", sans-serif;
             background: linear-gradient(to bottom right, #071522, #0a1f33);
             color: #e6e6e6;
             display: flex;
@@ -14,20 +15,53 @@
             align-items: center;
             height: 100vh;
         }
+
         .card {
-            padding: 30px;
             background: rgba(17,45,78,0.85);
+            padding: 35px;
             border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
             text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.45);
             animation: fadeIn 0.6s ease;
+            max-width: 450px;
         }
-        h2 { margin-bottom: 25px; }
-        .button { display: inline-block; padding: 10px 20px; color: #fff; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 10px; }
-        .confirm { background: #ff4d4d; }
-        .confirm:hover { background: #d63333; }
-        .cancel { background: #3f72af; }
-        .cancel:hover { background: #1d4e8c; }
+
+        h2 {
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            margin: 10px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .confirm {
+            background: #ff4d4d;
+        }
+
+        .confirm:hover {
+            background: #d63333;
+            transform: translateY(-3px);
+        }
+
+        .cancel {
+            background: #3f72af;
+        }
+
+        .cancel:hover {
+            background: #1d4e8c;
+            transform: translateY(-3px);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -37,10 +71,12 @@
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus Rapor? <br>
-        {{ object.nama_siswa|default:object.siswa.nama }} - {{ object.mapel }}?
+    <h2>
+        Apakah Anda yakin ingin menghapus Rapor?<br><br>
+        <strong>{{ object.nama }} - {{ object.kelas }}</strong>
     </h2>
-    <form method="post" style="margin-top:20px;">
+
+    <form method="post">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>
         <a href="{% url 'rapor_list' %}" class="button cancel">⏪ Batal</a>

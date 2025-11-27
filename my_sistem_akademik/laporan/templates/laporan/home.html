@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Halaman Laporan</title>
-
 <style>
+
+    /* --- Style dasar halaman --- */
     body {
         margin: 0;
         padding: 0;
@@ -13,6 +14,7 @@
         color: #f1f1f1;
     }
 
+    /* --- Header utama halaman laporan --- */
     header {
         padding: 25px;
         text-align: center;
@@ -23,19 +25,21 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     }
 
+    /* --- Container yang menampung semua card laporan --- */
     .container {
-        max-width: 100%;          /* biar baris muat semua */
+        max-width: 100%;          /* memastikan semua card muat dalam 1 baris */
         margin: 40px auto;
         display: flex;
         justify-content: center;
-        gap: 25px;                 /* jarak antar card */
-        flex-wrap: nowrap;         /* <<< PENTING: tidak turun ke bawah */
-        overflow-x: auto;          /* biar scroll kalau layar kecil */
+        gap: 25px;                /* jarak antar card */
+        flex-wrap: nowrap;        /* mencegah turun ke baris kedua */
+        overflow-x: auto;         /* scroll horizontal jika layar kecil */
         padding: 0 20px;
     }
 
+    /* --- Style untuk setiap card menu laporan --- */
     .card {
-        width: 280px;              /* tetap besar tapi muat 3 card */
+        width: 280px;             /* ukuran card */
         padding: 28px;
         border-radius: 18px;
         background: #112d4e;
@@ -45,25 +49,29 @@
         display: block;
         text-decoration: none;
         color: #ffffff;
-        flex-shrink: 0;            /* <<< card tidak mengecil */
+        flex-shrink: 0;           /* card tidak mengecil meski scroll */
     }
 
+    /* --- Efek hover card --- */
     .card:hover {
         transform: translateY(-8px);
         background: #1b3d63;
         box-shadow: 0 18px 40px rgba(0,0,0,0.6);
     }
 
+    /* --- Judul card --- */
     .card h3 {
         font-size: 24px;
         margin-bottom: 10px;
     }
 
+    /* --- Deskripsi card --- */
     .card p {
         font-size: 15px;
         color: #d7dce4;
     }
 
+    /* --- Tombol kembali ke dashboard --- */
     a.back {
         display: inline-block;
         margin: 20px 40px;
@@ -72,28 +80,35 @@
         font-weight: bold;
         font-size: 16px;
     }
+
 </style>
 
 </head>
 
 <body>
 
+<!--             HEADER UTAMA           -->
 <header>Laporan Sistem Akademik</header>
 
+<!-- Tombol kembali ke dashboard -->
 <a href="{% url 'index' %}" class="back">⟵ Kembali ke Dashboard</a>
 
+<!--          CARD MENU LAPORAN UTAMA        -->
 <div class="container">
 
+    <!-- Card menuju laporan rapor -->
     <a href="{% url 'rapor_list' %}" class="card">
         <h3>📘 Laporan Rapor</h3>
         <p>Daftar nilai rapor siswa</p>
     </a>
 
+    <!-- Card menuju laporan SPP -->
     <a href="{% url 'spp_list' %}" class="card">
         <h3>💰 Laporan SPP</h3>
         <p>Status pembayaran SPP siswa</p>
     </a>
 
+    <!-- Card menuju laporan gaji -->
     <a href="{% url 'gaji_list' %}" class="card">
         <h3>👨‍🏫 Laporan Gaji Guru</h3>
         <p>Informasi gaji guru</p>
