@@ -14,7 +14,7 @@ class Pegawai(models.Model):
     gaji_pokok = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        if not self.id_pegawai:  # kalau belum ada ID → generate
+        if not self.id_pegawai:  # generate ID jika belum ada
             last_id = Pegawai.objects.order_by('-id_pegawai').first()
             if last_id:
                 number = int(last_id.id_pegawai[1:]) + 1
@@ -42,5 +42,5 @@ class Jadwal(models.Model):
     mata_pelajaran = models.CharField(max_length=100)
     pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.mata_pelajaran} - {self.hari}"

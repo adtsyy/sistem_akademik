@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
-from django.views.generic import DetailView
 
 # ================= HOME =====================
 def home(request):
@@ -92,31 +91,48 @@ class SPPDeleteView(DeleteView):
 
 
 # ================= GAJI =====================
-class GajiListView(ListView):
-    model = Gaji
-    template_name = 'laporan/gaji_list.html'
-    context_object_name = 'gaji'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        id_pegawai = self.request.GET.get('id_pegawai')
-        if id_pegawai:
-            queryset = queryset.filter(id_pegawai__icontains=id_pegawai)
-        return queryset
+# ===============================
+# Tambah gaji
+# ===============================
+def gaji_tambah(request):
+    if request.method == "POST":
+        form = GajiForm(request.POST)
+        if form.is_valid():
+            gaji = form.save(commit=False)
+            gaji.nama_pegawai = gaji.pegawai.nama  # simpan nama pegawai
+            gaji.save()
+            return redirect("gaji_list")
+    else:
+        form = GajiForm()
+    return render(request, "laporan/gaji_form.html", {"form": form})
+# ===============================
+# Edit gaji
+# ===============================
+def gaji_edit(request, pk):
+    gaji = get_object_or_404(Gaji, pk=pk)
+    if request.method == "POST":
+        form = GajiForm(request.POST, instance=gaji)
+        if form.is_valid():
+            form.save()  # simpan perubahan, termasuk gaji_pokok
+            return redirect("gaji_list")
+    else:
+        form = GajiForm(instance=gaji)  # form sudah terisi dengan data database
+    return render(request, "laporan/gaji_form.html", {"form": form})
 
-class GajiCreateView(CreateView):
-    model = Gaji
-    form_class = GajiForm
-    template_name = 'laporan/gaji_form.html'
-    success_url = reverse_lazy('gaji_list')
+# ===============================
+# List gaji
+# ===============================
+def gaji_list(request):
+    gaji = Gaji.objects.all()
+    return render(request, "laporan/gaji_list.html", {"gaji": gaji})
 
-class GajiUpdateView(UpdateView):
-    model = Gaji
-    form_class = GajiForm
-    template_name = 'laporan/gaji_form.html'
-    success_url = reverse_lazy('gaji_list')
-
-class GajiDeleteView(DeleteView):
-    model = Gaji
-    template_name = 'laporan/gaji_confirm_delete.html'
-    success_url = reverse_lazy('gaji_list')
+# ===============================
+# Hapus gaji
+# ===============================
+def gaji_hapus(request, pk):
+    gaji = get_object_or_404(Gaji, pk=pk)
+    if request.method == "POST":
+        gaji.delete()
+        return redirect("gaji_list")
+    return render(request, "laporan/gaji_confirm_delete.html", {"object": gaji})

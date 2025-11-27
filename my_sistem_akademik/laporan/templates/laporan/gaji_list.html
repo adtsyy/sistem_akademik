@@ -10,7 +10,6 @@
             background: linear-gradient(135deg, #071522, #0a1f33);
             color: #e6e6e6;
         }
-
         header {
             background: #0f2a45;
             padding: 25px 0;
@@ -20,13 +19,11 @@
             color: #fff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-
         .wrapper {
             max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
         }
-
         a.back {
             display: inline-block;
             margin-bottom: 15px;
@@ -34,83 +31,31 @@
             text-decoration: none;
             font-weight: bold;
         }
-        a.back:hover {
-            color: #a6d4ff;
-        }
-
-        .top-actions {
-            margin-bottom: 15px;
-            text-align: right;
-        }
-
         a.button {
-            display: inline-block;
             padding: 8px 15px;
             background: #3f72af;
-            color: #fff;
+            color: white;
             border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            transition: 0.3s;
-            margin-left: 5px;
         }
-
-        a.button:hover {
-            background: #1d4e8c;
-        }
-
-        a.delete-button {
-            background: #ff4d4d;
-        }
-
-        a.delete-button:hover {
-            background: #cc0000;
-        }
-
+        a.delete-button { background: #ff4d4d; }
+        a.delete-button:hover { background: #cc0000; }
         table {
-            width: 100%;
-            border-collapse: collapse;
+            width: 100%; border-collapse: collapse;
             background: rgba(17,45,78,0.9);
-            border-radius: 12px;
-            overflow: hidden;
+            border-radius: 12px; overflow: hidden;
             box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
-
         th, td {
-            padding: 12px 15px;
-            text-align: left;
+            padding: 12px 15px; text-align: left;
         }
-
         th {
             background: rgba(31,65,105,0.9);
         }
-
         tr:nth-child(even) {
             background: rgba(255,255,255,0.05);
         }
-
-        input.search-box {
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: none;
-            margin-right: 5px;
-        }
-
-        button.search-button {
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: none;
-            background-color: #4caf50;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button.search-button:hover {
-            background-color: #45a049;
-        }
-
     </style>
 </head>
 <body>
@@ -118,51 +63,40 @@
 <header>Daftar Gaji</header>
 
 <div class="wrapper">
-    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
-    <div class="top-actions">
-        <!-- Form Pencarian -->
-        <form method="get" style="display:inline-block; margin-right:10px;">
-            <input type="text" name="id_pegawai" class="search-box" placeholder="Cari ID Pegawai"
-                   value="{{ request.GET.id_pegawai }}">
-            <button type="submit" class="search-button">🔍 Cari</button>
-        </form>
+    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali</a>
 
+    <div style="text-align:right; margin-bottom:20px;">
         <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
     </div>
 
     <table>
-        <thead>
-            <tr>
-                <th>ID Pegawai</th>
-                <th>Nama Pegawai</th>
-                <th>Jabatan</th>
-                <th>Gaji Pokok</th>
-                <th>Tunjangan</th>
-                <th>Total Gaji</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for g in gaji %}
-            <tr>
-                <td>{{ g.id_pegawai }}</td>
-                <td>{{ g.nama }}</td>
-                <td>{{ g.jabatan }}</td>
-                <td>{{ g.gaji_pokok }}</td>
-                <td>{{ g.tunjangan }}</td>
-                <td>{{ g.total_gaji }}</td>
-                <td>
-                    <a href="{% url 'gaji_edit' g.pk %}" class="button">✏️ Edit</a>
-                    <a href="{% url 'gaji_hapus' g.pk %}" class="button delete-button">🗑 Hapus</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" style="text-align:center;">Belum ada data Gaji</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tr>
+            <th>ID Pegawai</th>
+            <th>Nama</th>
+            <th>Jabatan</th>
+            <th>Gaji Pokok</th>
+            <th>Tunjangan</th>
+            <th>Total Gaji</th>
+            <th>Aksi</th>
+        </tr>
+
+        {% for g in gaji %}
+        <tr>
+            <td>{{ g.pegawai.id_pegawai }}</td>
+            <td>{{ g.pegawai.nama }}</td>
+            <td>{{ g.pegawai.jabatan }}</td>
+            <td>{{ g.gaji_pokok }}</td>
+            <td>{{ g.tunjangan_jabatan }}</td>
+            <td>{{ g.total_gaji }}</td>
+            <td>
+                <a href="{% url 'gaji_edit' g.pk %}" class="button">✏ Edit</a>
+                <a href="{% url 'gaji_hapus' g.pk %}" class="button">Hapus</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7" style="text-align:center;">Belum ada data gaji</td></tr>
+        {% endfor %}
     </table>
 </div>
 
