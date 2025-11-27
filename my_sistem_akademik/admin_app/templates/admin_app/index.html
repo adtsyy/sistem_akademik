@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            color: #f1f1f1;
+        }
+
+        header {
+            padding: 25px;
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            background: #112d4e;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 260px;
+            padding: 25px;
+            border-radius: 16px;
+            background: #112d4e;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: 0.3s ease;
+            display: block;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: #1b3d63;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #d7dce4;
+        }
+
+        .card i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>Dashboard Admin Sistem Akademik</header>
+
+    <div class="container">
+
+        <a href="{% url 'list_pegawai' %}" class="card">
+            <i>👤</i> <!-- Bisa diganti dengan ikon sebenarnya jika menggunakan library seperti Font Awesome -->
+            <h3>👥 Kelola Pegawai</h3>
+            <p>Tambah, edit, atau lihat daftar pegawai.</p>
+        </a>
+
+        <a href="{% url 'list_jadwal' %}" class="card">
+            <i>📅</i>
+            <h3>📋 Kelola Jadwal</h3>
+            <p>Atur jadwal mata pelajaran.</p>
+        </a>
+
+        <a href="{% url 'laporan_home' %}" class="card">
+            <i>📊</i>
+            <h3>📊 Kelola Laporan</h3>
+            <p>Lihat dan kelola laporan data akademik.</p>
+        </a>
+
+        <!-- Tambahkan kartu lain sesuai kebutuhan -->
+        <!--
+        <a href="{% url 'tambah_pegawai' %}" class="card">
+            <i>➕</i>
+            <h3>Tambah Pegawai</h3>
+            <p>Input data pegawai baru.</p>
+        </a>
+        -->
+
+    </div>
+
+</body>
+</html>
