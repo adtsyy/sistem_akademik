@@ -2,49 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Rapor</title>
+    <title>{% if form.instance.pk %}Edit Rapor{% else %}Tambah Rapor{% endif %}</title>
     <style>
-        body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(to bottom right, #071522, #0a1f33); color: #e6e6e6; }
-        header { background: #0f2a45; padding: 25px; text-align: center; font-size: 28px; font-weight: 600; color: #ffffff; box-shadow: 0 5px 18px rgba(0,0,0,0.4); }
-        .wrapper { display: flex; justify-content: center; margin-top: 35px; }
-        .card { width: 40%; background: rgba(17,45,78,0.85); padding: 25px; border-radius: 18px; backdrop-filter: blur(5px); box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
-        label { display: block; margin-bottom: 8px; font-weight: bold; }
-        input, select { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: none; background-color: rgba(255,255,255,0.1); color: #fff; }
-        input:focus, select:focus { outline: none; box-shadow: 0 0 5px #3f72af; }
-        .button { display: inline-block; padding: 10px 20px; color: #fff; background: #3f72af; border-radius: 8px; text-decoration: none; font-weight: bold; margin-right: 10px; }
-        .button:hover { background: #1d4e8c; }
-        a.back { display: block; margin-top: 20px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
-        a.back:hover { color: #a6d4ff; }
+        body { margin:0; font-family:"Segoe UI", sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:#e6e6e6; }
+        header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; color:#fff; box-shadow:0 5px 18px rgba(0,0,0,0.4); }
+        .wrapper { display:flex; justify-content:center; margin-top:35px; }
+        .card { width:45%; background:rgba(17,45,78,0.85); padding:25px; border-radius:18px; box-shadow:0 8px 25px rgba(0,0,0,0.45); }
+        label { display:block; margin-bottom:8px; font-weight:bold; }
+        select, input { width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:18px; background:rgba(255,255,255,0.1); color:#fff; }
+        .button { display:inline-block; padding:10px 20px; background:#3f72af; color:#fff; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; }
+        .button:hover { background:#1d4e8c; }
+        select option {
+            background-color: #0f2a45;     /* Warna biru gelap */
+            color: white;                  /* Warna tulisan */
+        }
     </style>
 </head>
 <body>
 
-<header>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Rapor</header>
+<header>{% if form.instance.pk %}Edit Rapor{% else %}Tambah Rapor{% endif %}</header>
 
 <div class="wrapper">
     <div class="card">
         <form method="post">
             {% csrf_token %}
 
-            <label for="id_id_siswa">ID Siswa</label>
-            {{ form.id_siswa }}
+            <label>Siswa</label>
+            {{ form.siswa }}
 
-            <label for="id_nama_siswa">Nama Siswa</label>
-            {{ form.nama_siswa }}
+            <label>Mata Pelajaran 1</label>
+            {{ form.mapel1 }}
 
-            <label for="id_mapel">Mata Pelajaran</label>
-            {{ form.mapel }}
+            <label>Mata Pelajaran 2</label>
+            {{ form.mapel2 }}
 
-            <label for="id_nilai">Nilai</label>
-            {{ form.nilai }}
+            <label>Mata Pelajaran 3</label>
+            {{ form.mapel3 }}
+
+            <!-- Jika ada lebih banyak mapel, tambahkan disini -->
 
             <button type="submit" class="button">💾 Simpan</button>
             <a href="{% url 'rapor_list' %}" class="button">⏪ Batal</a>
         </form>
     </div>
 </div>
-
-<a href="{% url 'rapor_list' %}" class="back">⟵ Kembali ke Daftar Rapor</a>
 
 </body>
 </html>

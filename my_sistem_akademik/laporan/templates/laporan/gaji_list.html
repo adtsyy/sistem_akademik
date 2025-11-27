@@ -64,7 +64,7 @@
 
 <div class="wrapper">
 
-    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali</a>
+    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
     <div style="text-align:right; margin-bottom:20px;">
         <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
@@ -91,7 +91,7 @@
             <td>{{ g.total_gaji }}</td>
             <td>
                 <a href="{% url 'gaji_edit' g.pk %}" class="button">✏ Edit</a>
-                <a href="{% url 'gaji_hapus' g.pk %}" class="button">Hapus</a>
+                <a href="{% url 'gaji_hapus' g.pk %}" class="button">🗑 Hapus</a>
             </td>
         </tr>
         {% empty %}
