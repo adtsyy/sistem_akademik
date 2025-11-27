@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Daftar SPP</title>
+
     <style>
         body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg, #071522, #0a1f33); color: #e6e6e6; }
         header { background: #0f2a45; padding: 25px 0; text-align: center; font-size: 28px; font-weight: 600; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
         .wrapper { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
         a.back { display: inline-block; margin-bottom: 15px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
         a.button { padding: 8px 15px; background: #3f72af; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; }
         a.delete-button { background: #ff4d4d; }
         a.delete-button:hover { background: #cc0000; }
+
         table { width: 100%; border-collapse: collapse; background: rgba(17,45,78,0.9); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
         th, td { padding: 12px 15px; text-align: left; }
         th { background: rgba(31,65,105,0.9); }
@@ -46,13 +49,17 @@
             <td>{{ s.bulan }}</td>
             <td>{{ s.jumlah }}</td>
             <td>{{ s.status }}</td>
+
             <td>
                 <a href="{% url 'spp_edit' s.id %}" class="button">✏ Edit</a>
                 <a href="{% url 'spp_hapus' s.id %}" class="button delete-button">🗑 Hapus</a>
             </td>
         </tr>
+
         {% empty %}
-        <tr><td colspan="6" style="text-align:center;">Belum ada data SPP</td></tr>
+        <tr>
+            <td colspan="6" style="text-align:center;">Belum ada data SPP</td>
+        </tr>
         {% endfor %}
     </table>
 </div>

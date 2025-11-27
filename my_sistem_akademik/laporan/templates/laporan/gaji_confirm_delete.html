@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Hapus Gaji</title>
+
     <style>
+        /* --- Style body utama --- */
         body {
             font-family: "Segoe UI", sans-serif;
             margin: 0;
@@ -14,6 +16,8 @@
             align-items: center;
             height: 100vh;
         }
+
+        /* --- Konfirmasi hapus --- */
         .card {
             padding: 30px;
             background: rgba(17,45,78,0.85);
@@ -22,29 +26,56 @@
             text-align: center;
             animation: fadeIn 0.6s ease;
         }
+
         h2 { margin-bottom: 25px; }
-        .button { display: inline-block; padding: 10px 20px; color: #fff; border-radius: 8px; text-decoration: none; font-weight: bold; margin: 10px; }
+
+        .button { 
+            display: inline-block; 
+            padding: 10px 20px; 
+            color: #fff; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            margin: 10px; 
+        }
+
+        /* --- Tombol hapus (merah) --- */
         .confirm { background: #ff4d4d; }
         .confirm:hover { background: #d63333; }
+
+        /* --- Tombol batal (biru) --- */
         .cancel { background: #3f72af; }
         .cancel:hover { background: #1d4e8c; }
+
+        /* --- Animasi fade-in --- */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
+
 <body>
 
+<!--     KONTEN HALAMAN HAPUS       -->
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus Gaji? <br>
+
+    <h2>
+        Apakah Anda yakin ingin menghapus Gaji? <br>
         {{ object.nama_pegawai|default:object.pegawai.nama }}?
     </h2>
+
+    <!--     FORM UNTUK KONFIRMASI       -->
     <form method="post" style="margin-top:20px;">
         {% csrf_token %}
+
+        <!-- Tombol hapus -->
         <button type="submit" class="button confirm">🗑 Hapus</button>
+
+        <!-- Tombol batal kembali ke list -->
         <a href="{% url 'gaji_list' %}" class="button cancel">⏪ Batal</a>
     </form>
+
 </div>
 
 </body>

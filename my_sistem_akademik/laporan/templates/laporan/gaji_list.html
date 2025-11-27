@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Daftar Gaji</title>
     <style>
+        /* --- Style dasar  --- */
         body {
             margin: 0;
             font-family: "Segoe UI", sans-serif;
             background: linear-gradient(135deg, #071522, #0a1f33);
             color: #e6e6e6;
         }
+
+        /* --- Header utama halaman --- */
         header {
             background: #0f2a45;
             padding: 25px 0;
@@ -19,11 +22,15 @@
             color: #fff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
+
+        /* --- Wrapper konten tengah --- */
         .wrapper {
             max-width: 900px;
             margin: 40px auto;
             padding: 0 20px;
         }
+
+        /* --- Tombol kembali --- */
         a.back {
             display: inline-block;
             margin-bottom: 15px;
@@ -31,6 +38,8 @@
             text-decoration: none;
             font-weight: bold;
         }
+
+        /* --- Style tombol --- */
         a.button {
             padding: 8px 15px;
             background: #3f72af;
@@ -39,37 +48,54 @@
             text-decoration: none;
             font-weight: bold;
         }
+
+        /* --- Style tombol hapus --- */
         a.delete-button { background: #ff4d4d; }
         a.delete-button:hover { background: #cc0000; }
+
+        /* --- Style tabel data --- */
         table {
-            width: 100%; border-collapse: collapse;
+            width: 100%;
+            border-collapse: collapse;
             background: rgba(17,45,78,0.9);
-            border-radius: 12px; overflow: hidden;
+            border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
+
+        /* --- Style header tabel & isi tabel --- */
         th, td {
-            padding: 12px 15px; text-align: left;
+            padding: 12px 15px;
+            text-align: left;
         }
+
         th {
             background: rgba(31,65,105,0.9);
         }
+
+        /* --- Warna sel baris genap --- */
         tr:nth-child(even) {
             background: rgba(255,255,255,0.05);
         }
     </style>
 </head>
+
 <body>
 
+<!--            HEADER UTAMA            -->
 <header>Daftar Gaji</header>
 
 <div class="wrapper">
 
+    <!-- Tombol kembali ke halaman laporan -->
     <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
+    <!-- Tombol tambah gaji (halaman create) -->
     <div style="text-align:right; margin-bottom:20px;">
         <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
     </div>
 
+    <!--                TABEL GAJI               -->
     <table>
         <tr>
             <th>ID Pegawai</th>
@@ -81,6 +107,7 @@
             <th>Aksi</th>
         </tr>
 
+        <!-- Loop data gaji -->
         {% for g in gaji %}
         <tr>
             <td>{{ g.pegawai.id_pegawai }}</td>
@@ -89,13 +116,19 @@
             <td>{{ g.gaji_pokok }}</td>
             <td>{{ g.tunjangan_jabatan }}</td>
             <td>{{ g.total_gaji }}</td>
+
+            <!-- Tombol Edit & Hapus -->
             <td>
                 <a href="{% url 'gaji_edit' g.pk %}" class="button">✏ Edit</a>
                 <a href="{% url 'gaji_hapus' g.pk %}" class="button">🗑 Hapus</a>
             </td>
         </tr>
+
+        <!-- Bila tabel kosong -->
         {% empty %}
-        <tr><td colspan="7" style="text-align:center;">Belum ada data gaji</td></tr>
+        <tr>
+            <td colspan="7" style="text-align:center;">Belum ada data gaji</td>
+        </tr>
         {% endfor %}
     </table>
 </div>
