@@ -4,65 +4,15 @@
     <meta charset="UTF-8">
     <title>{% if form.instance.pk %}Edit SPP{% else %}Tambah SPP{% endif %}</title>
     <style>
-        body {
-            margin:0;
-            font-family:"Segoe UI",sans-serif;
-            background:linear-gradient(to bottom right,#071522,#0a1f33);
-            color:#e6e6e6;
-        }
-        header {
-            background:#0f2a45;
-            padding:25px;
-            text-align:center;
-            font-size:28px;
-            font-weight:600;
-            color:#fff;
-            box-shadow:0 5px 18px rgba(0,0,0,0.4);
-        }
-        .wrapper {
-            display:flex;
-            justify-content:center;
-            margin-top:35px;
-        }
-        .card {
-            width:40%;
-            background:rgba(17,45,78,0.85);
-            padding:25px;
-            border-radius:18px;
-            box-shadow:0 8px 25px rgba(0,0,0,0.45);
-        }
-        label {
-            display:block;
-            margin-bottom:8px;
-            font-weight:bold;
-        }
-        select, input {
-            width:100%;
-            padding:10px;
-            border-radius:8px;
-            border:none;
-            margin-bottom:18px;
-            background:rgba(255,255,255,0.1);
-            color:#fff;
-        }
-        select:focus, input:focus {
-            outline:none;
-            box-shadow:0 0 5px #3f72af;
-        }
-        .button {
-            display:inline-block;
-            padding:10px 20px;
-            color:#fff;
-            background:#3f72af;
-            border-radius:8px;
-            text-decoration:none;
-            font-weight:bold;
-            margin-right:10px;
-        }
-        select option {
-            background-color: #0f2a45;     /* Warna biru gelap */
-            color: white;                  /* Warna tulisan */
-        }
+        body { margin:0; font-family:"Segoe UI",sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:#e6e6e6; }
+        header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; color:#fff; box-shadow:0 5px 18px rgba(0,0,0,0.4); }
+        .wrapper { display:flex; justify-content:center; margin-top:35px; }
+        .card { width:40%; background:rgba(17,45,78,0.85); padding:25px; border-radius:18px; box-shadow:0 8px 25px rgba(0,0,0,0.45); }
+        label { display:block; margin-bottom:8px; font-weight:bold; }
+        select, input { width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:18px; background:rgba(255,255,255,0.1); color:#fff; }
+        select:focus, input:focus { outline:none; box-shadow:0 0 5px #3f72af; }
+        .button { display:inline-block; padding:10px 20px; color:#fff; background:#3f72af; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; cursor:pointer; }
+        select option { background-color: #0f2a45; color: white; }
         .button:hover { background:#1d4e8c; }
     </style>
 </head>
@@ -75,21 +25,31 @@
         <form method="post">
             {% csrf_token %}
 
-            <label for="id_siswa">Siswa</label>
-            <select name="siswa" id="id_siswa">
-                {% for s in siswa_list %}
-                    <option value="{{ s.id }}" {% if form.instance.siswa.id == s.id %}selected{% endif %}>
-                        {{ s.nama }} ({{ s.id_siswa }})
-                    </option>
-                {% endfor %}
-            </select>
+            <!-- SISWA -->
+            <label for="nis_siswa">Siswa</label>
+<select name="siswa" id="nis_siswa" required>
+    <option value="" disabled {% if not form.instance.pk %}selected{% endif %}>-- Pilih Siswa --</option>
+    {% for s in siswa_list %}
+        <option value="{{ s.nis }}"
+    {% if form.instance.siswa and form.instance.siswa.nis == s.nis %}
+        selected
+    {% endif %}
+>
+    {{ s.nama }} ({{ s.nis }})
+</option>
+    {% endfor %}
+</select>
 
+
+            <!-- BULAN -->
             <label for="id_bulan">Bulan</label>
             {{ form.bulan }}
 
+            <!-- JUMLAH -->
             <label for="id_jumlah">Jumlah</label>
             {{ form.jumlah }}
 
+            <!-- STATUS -->
             <label for="id_status">Status</label>
             {{ form.status }}
 

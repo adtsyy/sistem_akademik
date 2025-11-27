@@ -1,5 +1,7 @@
 from django.db import models
 from admin_app.models import Pegawai
+from siswa.models import Siswa
+
 
 # ================= RAPOR =====================
 class Rapor(models.Model):
@@ -17,21 +19,14 @@ class Rapor(models.Model):
 
 # ================= SPP =====================
 class SPP(models.Model):
-    STATUS_CHOICES = [
-        ('Lunas', 'Lunas'),
-        ('Belum Lunas', 'Belum Lunas'),
-    ]
-
-    id_siswa = models.CharField(max_length=20)
-    nama = models.CharField(max_length=100)
+    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE)
     bulan = models.CharField(max_length=20)
     jumlah = models.IntegerField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Belum Lunas')
+    status = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"SPP {self.nama} - {self.bulan}"
-
-
+        return f"{self.siswa.nama} - {self.bulan}"
+    
 # ================= GAJI =====================
 class Gaji(models.Model):
     pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)

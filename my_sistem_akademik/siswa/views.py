@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Siswa
 from .forms import SiswaForm
 
+
 def siswa_list(request):
     data = Siswa.objects.all()
     return render(request, "siswa_app/list.html", {"siswa": data})
@@ -19,7 +20,7 @@ def siswa_tambah(request):
     })
 
 def siswa_edit(request, id):
-    siswa = get_object_or_404(Siswa, id=id)
+    siswa = Siswa.objects.get(nis=nis)
     form = SiswaForm(request.POST or None, instance=siswa)
 
     if request.method == "POST" and form.is_valid():

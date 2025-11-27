@@ -1,5 +1,6 @@
 from django import forms
 from .models import Rapor, SPP, Gaji
+from .models import Siswa
 
 # ================= RAPOR =====================
 class RaporForm(forms.ModelForm):
@@ -11,11 +12,8 @@ class RaporForm(forms.ModelForm):
 class SPPForm(forms.ModelForm):
     class Meta:
         model = SPP
-        fields = ['id_siswa', 'nama', 'bulan', 'jumlah', 'status']
-        widgets = {
-            'status': forms.Select(choices=SPP.STATUS_CHOICES)
-        }
-
+        fields = ['siswa', 'bulan', 'jumlah', 'status']
+    
 # ================= GAJI =====================
 class GajiForm(forms.ModelForm):
     class Meta:
