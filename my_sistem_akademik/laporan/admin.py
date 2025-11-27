@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Rapor, SPP, Gaji
 
-# Register your models here.
+admin.site.register(Rapor)
+admin.site.register(SPP)
+admin.site.register(Gaji)
+
