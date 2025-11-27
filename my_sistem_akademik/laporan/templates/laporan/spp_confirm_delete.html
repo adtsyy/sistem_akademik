@@ -5,34 +5,24 @@
     <title>Hapus SPP</title>
     <style>
         body {
-            margin: 0;
             font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #071522, #0a1f33);
+            margin: 0;
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
             color: #e6e6e6;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
-
         .card {
             padding: 30px;
-            background: rgba(17,45,78,0.9);
+            background: rgba(17,45,78,0.85);
             border-radius: 18px;
-            text-align: center;
             box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-            animation: fadeIn 0.5s ease;
+            text-align: center;
+            animation: fadeIn 0.6s ease;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            margin-bottom: 25px;
-        }
-
+        h2 { margin-bottom: 25px; }
         .button {
             display: inline-block;
             padding: 10px 20px;
@@ -44,18 +34,22 @@
             border: none;
             cursor: pointer;
         }
-
         .confirm { background: #ff4d4d; }
         .confirm:hover { background: #d63333; }
-
         .cancel { background: #3f72af; }
         .cancel:hover { background: #1d4e8c; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus SPP? <br>{{ object.nama }} - {{ object.bulan }}?</h2>
+    <h2>Apakah Anda yakin ingin menghapus SPP? <br>
+        {{ object.nama|default:object.siswa.nama }} - {{ object.bulan }}?
+    </h2>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>

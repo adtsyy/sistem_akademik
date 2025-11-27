@@ -28,13 +28,18 @@
         .confirm:hover { background: #d63333; }
         .cancel { background: #3f72af; }
         .cancel:hover { background: #1d4e8c; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Apakah Anda yakin ingin menghapus Rapor? <br>{{ object.nama_siswa }} - {{ object.mapel }}?</h2>
+    <h2>Apakah Anda yakin ingin menghapus Rapor? <br>
+        {{ object.nama_siswa|default:object.siswa.nama }} - {{ object.mapel }}?
+    </h2>
     <form method="post" style="margin-top:20px;">
         {% csrf_token %}
         <button type="submit" class="button confirm">🗑 Hapus</button>
