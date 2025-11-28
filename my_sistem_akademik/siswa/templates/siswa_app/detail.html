@@ -16,8 +16,8 @@
         <p><strong>Alamat:</strong> {{ siswa.alamat }}</p>
         <p><strong>Tanggal Lahir:</strong> {{ siswa.tanggal_lahir }}</p>
 
-        <a href="{% url 'siswa_edit' siswa.id %}" class="btn btn-warning">Edit</a>
-        <a href="{% url 'siswa_hapus' siswa.id %}" class="btn btn-danger">Hapus</a>
+        <a href="{% url 'siswa_edit' siswa.nis %}" class="btn btn-warning">Edit</a>
+        <a href="{% url 'siswa_hapus' siswa.nis %}" class="btn btn-danger">Hapus</a>
         <a href="{% url 'siswa_list' %}" class="btn btn-secondary">Kembali</a>
     </div>
 </div>
