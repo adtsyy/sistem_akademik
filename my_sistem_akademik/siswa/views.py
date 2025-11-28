@@ -7,6 +7,7 @@ def siswa_list(request):
     data = Siswa.objects.all()
     return render(request, "siswa_app/list.html", {"siswa": data})
 
+
 def siswa_tambah(request):
     form = SiswaForm(request.POST or None)
 
@@ -19,8 +20,9 @@ def siswa_tambah(request):
         "form": form,
     })
 
-def siswa_edit(request, id):
-    siswa = Siswa.objects.get(nis=nis)
+
+def siswa_edit(request, nis):
+    siswa = get_object_or_404(Siswa, nis=nis)
     form = SiswaForm(request.POST or None, instance=siswa)
 
     if request.method == "POST" and form.is_valid():
@@ -33,12 +35,14 @@ def siswa_edit(request, id):
         "siswa": siswa
     })
 
-def siswa_detail(request, id):
-    siswa = get_object_or_404(Siswa, id=id)
+
+def siswa_detail(request, nis):
+    siswa = get_object_or_404(Siswa, nis=nis)
     return render(request, "siswa_app/detail.html", {"siswa": siswa})
 
-def siswa_hapus(request, id):
-    siswa = get_object_or_404(Siswa, id=id)
+
+def siswa_hapus(request, nis):
+    siswa = get_object_or_404(Siswa, nis=nis)
 
     if request.method == "POST":
         siswa.delete()
