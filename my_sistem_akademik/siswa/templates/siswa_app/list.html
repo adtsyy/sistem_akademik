@@ -1,48 +1,234 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Data Siswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Siswa - Sistem Akademik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #071522, #0a1f33);
+            color: #e6e6e6;
+        }
+
+        header {
+            background: #0f2a45;
+            padding: 25px 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a.back:hover {
+            color: #a6d4ff;
+        }
+
+        .top-actions {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #3f72af;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-left: 5px;
+        }
+
+        a.button:hover {
+            background: #2d5090;
+        }
+
+        a.button.add {
+            background: #27ae60;
+        }
+
+        a.button.add:hover {
+            background: #229954;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #112d4e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        thead {
+            background: #0f2a45;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #6fb7ff;
+            font-weight: 600;
+            border-bottom: 2px solid #0d1f33;
+        }
+
+        td {
+            padding: 12px 15px;
+            color: #d7dce4;
+            border-bottom: 1px solid #0d2838;
+        }
+
+        tbody tr:hover {
+            background: #0d2838;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-detail {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-detail:hover {
+            background: #2980b9;
+        }
+
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #d68910;
+        }
+
+        .btn-hapus {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-hapus:hover {
+            background: #c0392b;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #6fb7ff;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .wrapper {
+                margin: 20px auto;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .btn-action {
+                width: 100%;
+                text-align: center;
+            }
+
+            .top-actions {
+                text-align: center;
+            }
+
+            a.button {
+                margin: 5px 2px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
+    <header>📚 Data Siswa</header>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between mb-3">
-        <h2>Data Siswa</h2>
-        <a href="{% url 'siswa_tambah' %}" class="btn btn-primary">+ Tambah Siswa</a>
+    <div class="wrapper">
+        <a href="{% url 'index' %}" class="back">← Kembali ke Dashboard</a>
+
+        <div class="top-actions">
+            <a href="{% url 'siswa_tambah' %}" class="button add">+ Tambah Siswa</a>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>NIS</th>
+                    <th>Kelas</th>
+                    <th>Tanggal Lahir</th>
+                    <th width="180px">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in siswa %}
+                <tr>
+                    <td>{{ s.nama }}</td>
+                    <td>{{ s.nis }}</td>
+                    <td>{{ s.kelas|default:"-" }}</td>
+                    <td>{{ s.tanggal_lahir|default:"-" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'siswa_detail' s.nis %}" class="btn-action btn-detail">Detail</a>
+                            <a href="{% url 'siswa_edit' s.nis %}" class="btn-action btn-edit">Edit</a>
+                            <a href="{% url 'siswa_hapus' s.nis %}" class="btn-action btn-hapus">Hapus</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-message">Belum ada data siswa</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Nama</th>
-                <th>NIS</th>
-                <th>Kelas</th>
-                <th>Tanggal Lahir</th>
-                <th width="200px">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for s in siswa %}
-            <tr>
-                <td>{{ s.nama }}</td>
-                <td>{{ s.nis }}</td>
-                <td>{{ s.kelas }}</td>
-                <td>{{ s.tanggal_lahir }}</td>
-                <td>
-                    <a href="{% url 'siswa_detail' s.nis %}" class="btn btn-info btn-sm">Detail</a>
-                    <a href="{% url 'siswa_edit' s.nis %}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{% url 'siswa_hapus' s.nis %}" class="btn btn-danger btn-sm">Hapus</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="text-center text-muted">Belum ada data siswa</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
 </body>
 </html>
