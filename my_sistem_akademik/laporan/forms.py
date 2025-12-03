@@ -22,12 +22,13 @@ class SPPForm(forms.ModelForm):
 class GajiForm(forms.ModelForm):
     class Meta:
         model = Gaji
-        fields = ['pegawai', 'gaji_pokok', 'tunjangan_jabatan', 'keterangan_tunjangan']
+        # Gaji pokok dihapus dari sini karena otomatis
+        fields = ['pegawai', 'bulan', 'tunjangan_jabatan', 'keterangan_tunjangan', 'status_transfer']
 
-        # Widget untuk custom tampilan input
-        widgets = {
-            'gaji_pokok': forms.NumberInput(attrs={'placeholder': 'Masukkan gaji pokok'}),
-        }
+    widgets = {
+        'tunjangan_jabatan': forms.NumberInput(attrs={'placeholder': 'Contoh: 500000'}),
+        'keterangan_tunjangan': forms.TextInput(attrs={'placeholder': 'Contoh: Pembina Pramuka'}),
+    }
 
 class RaporSearchForm(forms.Form):
     id_siswa = forms.CharField(

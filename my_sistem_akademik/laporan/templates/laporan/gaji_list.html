@@ -4,143 +4,94 @@
     <meta charset="UTF-8">
     <title>Daftar Gaji</title>
     <style>
-        /* --- Style dasar  --- */
-        body {
-            margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #071522, #0a1f33);
-            color: #e6e6e6;
-        }
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg, #071522, #0a1f33); color: #e6e6e6; }
+        header { background: #0f2a45; padding: 25px 0; text-align: center; font-size: 28px; font-weight: 600; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+        .wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 
-        /* --- Header utama halaman --- */
-        header {
-            background: #0f2a45;
-            padding: 25px 0;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
+        a.back { display: inline-block; margin-bottom: 15px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
+        
+        /* Tombol & Form */
+        .button { padding: 8px 15px; background: #3f72af; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; font-size: 14px; transition: 0.3s;}
+        .button:hover { background: #1d4e8c; }
+        .delete-button { background: #ff4d4d; }
+        .delete-button:hover { background: #cc0000; }
 
-        /* --- Wrapper konten tengah --- */
-        .wrapper {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(17,45,78,0.5); padding: 15px; border-radius: 10px; }
+        .search-box { display: flex; gap: 10px; }
+        .search-input { padding: 8px 12px; border-radius: 6px; border: 1px solid #3f72af; background: rgba(255,255,255,0.1); color: white; outline: none; width: 250px; }
 
-        /* --- Tombol kembali --- */
-        a.back {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: #6fb7ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        /* Tabel */
+        table { width: 100%; border-collapse: collapse; background: rgba(17,45,78,0.9); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
+        th, td { padding: 12px 15px; text-align: left; vertical-align: middle; }
+        th { background: rgba(31,65,105,0.9); }
+        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
 
-        /* --- Style tombol --- */
-        a.button {
-            padding: 8px 15px;
-            background: #3f72af;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* --- Style tombol hapus --- */
-        a.delete-button { background: #ff4d4d; }
-        a.delete-button:hover { background: #cc0000; }
-        .button-delete {
-            background-color: #d9534f;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .button-delete:hover {
-            background-color: #c9302c;
-        }
-
-
-        /* --- Style tabel data --- */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(17,45,78,0.9);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-        }
-
-        /* --- Style header tabel & isi tabel --- */
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        th {
-            background: rgba(31,65,105,0.9);
-        }
-
-        /* --- Warna sel baris genap --- */
-        tr:nth-child(even) {
-            background: rgba(255,255,255,0.05);
-        }
+        /* Badge Status */
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .status-success { background: #28a745; color: white; }
+        .status-pending { background: #ffc107; color: #333; }
+        
+        .action-buttons { display: flex; gap: 8px; }
     </style>
 </head>
-
 <body>
 
-<!--            HEADER UTAMA            -->
-<header>Daftar Gaji</header>
+<header>Daftar Penggajian</header>
 
 <div class="wrapper">
-
-    <!-- Tombol kembali ke halaman laporan -->
     <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
-    <!-- Tombol tambah gaji (halaman create) -->
-    <div style="text-align:right; margin-bottom:20px;">
-        <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
+    <div class="header-controls">
+        <form method="get" class="search-box">
+            <input type="text" name="q" class="search-input" placeholder="Cari Pegawai atau Bulan..." value="{{ keyword|default:'' }}">
+            <button type="submit" class="button">🔍 Cari</button>
+            {% if keyword %} <a href="{% url 'gaji_list' %}" class="button" style="background:#555;">Reset</a> {% endif %}
+        </form>
+        <a href="{% url 'gaji_tambah' %}" class="button">➕ Input Gaji</a>
     </div>
 
-    <!--                TABEL GAJI               -->
     <table>
         <tr>
-            <th>ID Pegawai</th>
-            <th>Nama</th>
+            <th>Bulan</th>
+            <th>Nama Pegawai</th>
             <th>Jabatan</th>
             <th>Gaji Pokok</th>
             <th>Tunjangan</th>
-            <th>Total Gaji</th>
+            <th>Total</th>
+            <th>Ket. Tunjangan</th>
+            <th>Status Transfer</th>
             <th>Aksi</th>
         </tr>
 
-        <!-- Loop data gaji -->
         {% for g in gaji %}
         <tr>
-            <td>{{ g.pegawai.id_pegawai }}</td>
+            <td><b>{{ g.bulan }}</b></td>
             <td>{{ g.pegawai.nama }}</td>
             <td>{{ g.pegawai.jabatan }}</td>
-            <td>{{ g.gaji_pokok }}</td>
-            <td>{{ g.tunjangan_jabatan }}</td>
-            <td>{{ g.total_gaji }}</td>
-
-            <!-- Tombol Edit & Hapus -->
+            <td>Rp {{ g.gaji_pokok }}</td>
+            <td>Rp {{ g.tunjangan_jabatan }}</td>
+            <td style="color: #6fb7ff; font-weight:bold;">Rp {{ g.total_gaji }}</td>
+            <td>{{ g.keterangan_tunjangan|default:"-" }}</td>
+            
             <td>
-                <a href="{% url 'gaji_edit' g.pk %}" class="button">✏ Edit</a>
-                <a href="{% url 'gaji_hapus' g.pk %}" class="button-delete">🗑 Hapus</a>
+                {% if "Sudah" in g.status_transfer %}
+                    <span class="status-badge status-success">✔ Sudah Dikirim</span>
+                {% else %}
+                    <span class="status-badge status-pending">⏳ Belum Dikirim</span>
+                {% endif %}
+            </td>
+
+            <td>
+                <div class="action-buttons">
+                    <a href="{% url 'gaji_edit' g.pk %}" class="button">✏</a>
+                    <a href="{% url 'gaji_hapus' g.pk %}" class="button delete-button">🗑</a>
+                </div>
             </td>
         </tr>
 
-        <!-- Bila tabel kosong -->
         {% empty %}
         <tr>
-            <td colspan="7" style="text-align:center;">Belum ada data gaji</td>
+            <td colspan="9" style="text-align:center; padding: 30px;">Belum ada data gaji yang diinput.</td>
         </tr>
         {% endfor %}
     </table>

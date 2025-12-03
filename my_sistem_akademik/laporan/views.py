@@ -155,14 +155,39 @@ def spp_hapus(request, id):
     # Kirim spp ke template untuk konfirmasi
     return render(request, 'laporan/spp_confirm_delete.html', {'object': spp})
 
-# Tambah gaji
+def gaji_list(request):
+    gaji = Gaji.objects.select_related('pegawai').all().order_by('-id')
+
+    # Logika Pencarian
+    keyword = request.GET.get('q')
+    if keyword:
+        gaji = gaji.filter(
+            Q(pegawai__nama__icontains=keyword) |       # Cari Nama
+            Q(pegawai__id_pegawai__icontains=keyword) | # Cari ID Pegawai
+            Q(bulan__icontains=keyword)                 # Cari Bulan
+        )
+
+    return render(request, "laporan/gaji_list.html", {"gaji": gaji, "keyword": keyword})
+
+# Tambah Gaji
 def gaji_tambah(request):
     if request.method == "POST":
         form = GajiForm(request.POST)
         if form.is_valid():
-            gaji = form.save(commit=False)
-            gaji.nama_pegawai = gaji.pegawai.nama   # simpan nama pegawai
-            gaji.save()
+            gaji_baru = form.save(commit=False)
+            
+            # CEK APAKAH SUDAH ADA GAJI BULAN INI UNTUK PEGAWAI INI?
+            cek_ganda = Gaji.objects.filter(
+                pegawai=gaji_baru.pegawai, 
+                bulan=gaji_baru.bulan
+            ).exists()
+            
+            if cek_ganda:
+                # Jika sudah ada, jangan simpan, beri pesan error (opsional) atau redirect
+                # Disini kita redirect saja biar simpel
+                return redirect("gaji_list")
+
+            gaji_baru.save()
             return redirect("gaji_list")
     else:
         form = GajiForm()
@@ -182,11 +207,6 @@ def gaji_edit(request, pk):
         form = GajiForm(instance=gaji)
 
     return render(request, "laporan/gaji_form.html", {"form": form})
-
-# List gaji
-def gaji_list(request):
-    gaji = Gaji.objects.all()
-    return render(request, "laporan/gaji_list.html", {"gaji": gaji})
 
 # Hapus gaji
 def gaji_hapus(request, pk):

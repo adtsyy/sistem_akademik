@@ -50,24 +50,55 @@ class SPP(models.Model):
         return f"{self.siswa.nama} - {self.bulan}"
 
 class Gaji(models.Model):
-    pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)     # Pegawai penerima gaji
-    nama_pegawai = models.CharField(max_length=255, blank=True)        # Nama pegawai 
-    gaji_pokok = models.PositiveIntegerField(default=0)                # Gaji pokok
-    tunjangan_jabatan = models.PositiveIntegerField(default=0)         # Tunjangan jabatan
-    keterangan_tunjangan = models.CharField(max_length=255, blank=True, null=True)   # Keterangan tambahan
+    # Pilihan Bulan (Sama seperti SPP)
+    BULAN_PILIHAN = [
+        ('Januari', 'Januari'), ('Februari', 'Februari'), ('Maret', 'Maret'),
+        ('April', 'April'), ('Mei', 'Mei'), ('Juni', 'Juni'),
+        ('Juli', 'Juli'), ('Agustus', 'Agustus'), ('September', 'September'),
+        ('Oktober', 'Oktober'), ('November', 'November'), ('Desember', 'Desember'),
+    ]
+
+    STATUS_TRANSFER = [
+        ('Belum Ditransfer', 'Belum Ditransfer'),
+        ('Sudah Ditransfer', 'Sudah Ditransfer'),
+    ]
+
+    pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
+    nama_pegawai = models.CharField(max_length=255, blank=True)
+    
+    # Field Baru: Bulan & Status Transfer
+    bulan = models.CharField(max_length=20, choices=BULAN_PILIHAN, default='Januari')
+    status_transfer = models.CharField(max_length=20, choices=STATUS_TRANSFER, default='Belum Ditransfer')
+
+    # Gaji Pokok & Tunjangan
+    gaji_pokok = models.PositiveIntegerField(default=0)
+    tunjangan_jabatan = models.PositiveIntegerField(default=0)
+    keterangan_tunjangan = models.CharField(max_length=255, blank=True, null=True)
 
     @property
     def total_gaji(self):
-        # Total gaji = gaji pokok + tunjangan
         return self.gaji_pokok + self.tunjangan_jabatan
 
     def save(self, *args, **kwargs):
-        # Jika gaji_pokok belum diisi, otomatis ambil dari data Pegawai
-        if not self.gaji_pokok and self.pegawai:
-            self.gaji_pokok = self.pegawai.gaji_pokok
+        # 1. Simpan Nama Pegawai (Backup)
+        if self.pegawai:
+            self.nama_pegawai = self.pegawai.nama
+            
+            # 2. LOGIKA OTOMATIS GAJI POKOK BERDASARKAN JABATAN
+            # Pastikan field jabatan ada di model Pegawai kamu, sesuaikan string-nya
+            jabatan = self.pegawai.jabatan.lower() # ubah ke huruf kecil biar aman
+
+            if "guru" in jabatan:
+                self.gaji_pokok = 3000000
+            elif "admin" in jabatan:
+                self.gaji_pokok = 2500000
+            elif "staff" in jabatan:
+                self.gaji_pokok = 2000000
+            else:
+                # Default jika jabatan lain
+                self.gaji_pokok = 2000000 
+
         super().save(*args, **kwargs)
 
     def __str__(self):
-        if self.pegawai:
-            return f"Gaji {self.pegawai.nama}"
-        return "Gaji (Pegawai belum diisi)"
+        return f"Gaji {self.nama_pegawai} - {self.bulan}"
