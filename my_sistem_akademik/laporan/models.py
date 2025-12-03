@@ -15,33 +15,36 @@ class Rapor(models.Model):
         return f"Rapor {self.nama} ({self.kelas})"
 
 class SPP(models.Model):
-
     # Pilihan dropdown bulan
     BULAN_PILIHAN = [
-        ('Januari', 'Januari'),
-        ('Februari', 'Februari'),
-        ('Maret', 'Maret'),
-        ('April', 'April'),
-        ('Mei', 'Mei'),
-        ('Juni', 'Juni'),
-        ('Juli', 'Juli'),
-        ('Agustus', 'Agustus'),
-        ('September', 'September'),
-        ('Oktober', 'Oktober'),
-        ('November', 'November'),
-        ('Desember', 'Desember'),
+        ('Januari', 'Januari'), ('Februari', 'Februari'), ('Maret', 'Maret'),
+        ('April', 'April'), ('Mei', 'Mei'), ('Juni', 'Juni'),
+        ('Juli', 'Juli'), ('Agustus', 'Agustus'), ('September', 'September'),
+        ('Oktober', 'Oktober'), ('November', 'November'), ('Desember', 'Desember'),
     ]
 
-    # Pilihan status pembayaran
-    STATUS_PILIHAN = [
-        ('Lunas', 'Lunas'),
-        ('Belum Lunas', 'Belum Lunas'),
-    ]
+    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE)
+    bulan = models.CharField(max_length=20, choices=BULAN_PILIHAN)
+    
+    # 1. Tambah kolom Tagihan (Standar bayar berapa?)
+    tagihan = models.IntegerField(default=500000, verbose_name="Biaya SPP") 
+    
+    # 2. Jumlah adalah uang yang dibayarkan siswa
+    jumlah = models.IntegerField(verbose_name="Uang Dibayar") 
+    
+    # 3. Status tidak perlu choices, karena diisi sistem
+    status = models.CharField(max_length=50, blank=True) 
 
-    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE)        # Relasi ke tabel siswa
-    bulan = models.CharField(max_length=20, choices=BULAN_PILIHAN)    # Bulan pembayaran
-    jumlah = models.IntegerField()                                     # Nominal SPP
-    status = models.CharField(max_length=20, choices=STATUS_PILIHAN)   # Status pembayaran
+    def save(self, *args, **kwargs):
+        # Logika Otomatis: Cek pembayaran vs tagihan
+        if self.jumlah >= self.tagihan:
+            self.status = 'Lunas'
+        else:
+            kurang = self.tagihan - self.jumlah
+            # Format Rupiah manual agar rapi di database (opsional) atau angka saja
+            self.status = f'Belum Lunas (Kurang {kurang:,})'
+            
+        super(SPP, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.siswa.nama} - {self.bulan}"

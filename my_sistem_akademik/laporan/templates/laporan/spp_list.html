@@ -37,7 +37,7 @@
             <th>ID Siswa</th>
             <th>Nama</th>
             <th>Bulan</th>
-            <th>Jumlah</th>
+            <th>Tagihan</th> <th>Dibayar</th>
             <th>Status</th>
             <th>Aksi</th>
         </tr>
@@ -47,8 +47,19 @@
             <td>{{ s.siswa.nis }}</td>
             <td>{{ s.siswa.nama }}</td>
             <td>{{ s.bulan }}</td>
-            <td>{{ s.jumlah }}</td>
-            <td>{{ s.status }}</td>
+            <td>Rp {{ s.tagihan }}</td> <td>Rp {{ s.jumlah }}</td>
+            
+            <td>
+                {% if "Belum" in s.status %}
+                    <span style="background:#ff4d4d; color:white; padding:5px 10px; border-radius:5px; font-size:14px;">
+                        {{ s.status }}
+                    </span>
+                {% else %}
+                    <span style="background:#28a745; color:white; padding:5px 10px; border-radius:5px; font-size:14px;">
+                        {{ s.status }}
+                    </span>
+                {% endif %}
+            </td>
 
             <td>
                 <a href="{% url 'spp_edit' s.id %}" class="button">✏ Edit</a>
@@ -58,7 +69,7 @@
 
         {% empty %}
         <tr>
-            <td colspan="6" style="text-align:center;">Belum ada data SPP</td>
+            <td colspan="7" style="text-align:center;">Belum ada data SPP</td>
         </tr>
         {% endfor %}
     </table>

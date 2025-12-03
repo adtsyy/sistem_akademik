@@ -33,11 +33,7 @@
             <select name="siswa" id="nis_siswa" required>
                 <option value="" disabled {% if not form.instance.pk %}selected{% endif %}>-- Pilih Siswa --</option>
                 {% for s in siswa_list %}
-                    <option value="{{ s.nis }}"
-                        {% if form.instance.siswa and form.instance.siswa.nis == s.nis %}
-                            selected
-                        {% endif %}
-                    >
+                    <option value="{{ s.nis }}" {% if form.instance.siswa and form.instance.siswa.nis == s.nis %}selected{% endif %}>
                         {{ s.nama }} ({{ s.nis }})
                     </option>
                 {% endfor %}
@@ -46,11 +42,11 @@
             <label for="id_bulan">Bulan</label>
             {{ form.bulan }}
 
-            <label for="id_jumlah">Jumlah</label>
-            {{ form.jumlah }}
+            <label for="id_tagihan">Biaya SPP (Tagihan)</label>
+            {{ form.tagihan }}
 
-            <label for="id_status">Status</label>
-            {{ form.status }}
+            <label for="id_jumlah">Uang Dibayar</label>
+            {{ form.jumlah }}
 
             <button type="submit" class="button">💾 Simpan</button>
             <a href="{% url 'spp_list' %}" class="button">⏪ Batal</a>
