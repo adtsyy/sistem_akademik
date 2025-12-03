@@ -7,17 +7,31 @@
     <style>
         body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg, #071522, #0a1f33); color: #e6e6e6; }
         header { background: #0f2a45; padding: 25px 0; text-align: center; font-size: 28px; font-weight: 600; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .wrapper { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
 
         a.back { display: inline-block; margin-bottom: 15px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
-        a.button { padding: 8px 15px; background: #3f72af; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; }
+        a.button { padding: 8px 15px; background: #3f72af; color: white; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 14px; }
+        a.button:hover { background: #1d4e8c; }
         a.delete-button { background: #ff4d4d; }
         a.delete-button:hover { background: #cc0000; }
 
         table { width: 100%; border-collapse: collapse; background: rgba(17,45,78,0.9); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
-        th, td { padding: 12px 15px; text-align: left; }
+        th, td { padding: 12px 15px; text-align: left; vertical-align: middle; }
         th { background: rgba(31,65,105,0.9); }
         tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+
+        /* --- PERBAIKAN DI SINI (CSS BARU) --- */
+        .action-buttons {
+            display: flex;       /* Menata tombol ke samping */
+            gap: 8px;            /* Jarak antar tombol */
+            align-items: center; /* Rata tengah vertikal */
+        }
+        
+        /* Agar kolom Aksi tidak sempit & tombol tidak turun ke bawah */
+        td:last-child {
+            white-space: nowrap;
+            width: 1%; /* Trik agar kolom menyesuaikan isi */
+        }
     </style>
 </head>
 <body>
@@ -34,10 +48,11 @@
 
     <table>
         <tr>
-            <th>ID Siswa</th>
+            <th>NIS</th>
             <th>Nama</th>
             <th>Bulan</th>
-            <th>Tagihan</th> <th>Dibayar</th>
+            <th>Tagihan</th>
+            <th>Dibayar</th>
             <th>Status</th>
             <th>Aksi</th>
         </tr>
@@ -47,23 +62,26 @@
             <td>{{ s.siswa.nis }}</td>
             <td>{{ s.siswa.nama }}</td>
             <td>{{ s.bulan }}</td>
-            <td>Rp {{ s.tagihan }}</td> <td>Rp {{ s.jumlah }}</td>
+            <td>Rp {{ s.tagihan }}</td> 
+            <td>Rp {{ s.jumlah }}</td>
             
             <td>
                 {% if "Belum" in s.status %}
-                    <span style="background:#ff4d4d; color:white; padding:5px 10px; border-radius:5px; font-size:14px;">
+                    <span style="background:#ff4d4d; color:white; padding:5px 10px; border-radius:5px; font-size:14px; display:inline-block;">
                         {{ s.status }}
                     </span>
                 {% else %}
-                    <span style="background:#28a745; color:white; padding:5px 10px; border-radius:5px; font-size:14px;">
+                    <span style="background:#28a745; color:white; padding:5px 10px; border-radius:5px; font-size:14px; display:inline-block;">
                         {{ s.status }}
                     </span>
                 {% endif %}
             </td>
 
             <td>
-                <a href="{% url 'spp_edit' s.id %}" class="button">✏ Edit</a>
-                <a href="{% url 'spp_hapus' s.id %}" class="button delete-button">🗑 Hapus</a>
+                <div class="action-buttons">
+                    <a href="{% url 'spp_edit' s.id %}" class="button">✏ Edit</a>
+                    <a href="{% url 'spp_hapus' s.id %}" class="button delete-button">🗑 Hapus</a>
+                </div>
             </td>
         </tr>
 

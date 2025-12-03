@@ -55,24 +55,53 @@ def spp_list(request):
 
 # Tambah SPP
 def spp_tambah(request):
-    siswa_list = Siswa.objects.all()   # Data untuk dropdown siswa
+    siswa_list = Siswa.objects.all()
 
     if request.method == 'POST':
         data = request.POST.copy()
-        data['siswa'] = request.POST.get('siswa')  # pastikan siswa tersimpan
+        
+        # Pastikan data siswa terambil dengan benar dari dropdown
+        # Jika nama field di HTML adalah 'siswa', ambil ID-nya
+        siswa_id = request.POST.get('siswa') 
+        data['siswa'] = siswa_id
 
         form = SPPForm(data)
+        
         if form.is_valid():
-            form.save()
+            # 1. Jangan simpan ke database dulu (commit=False)
+            spp_baru = form.save(commit=False)
+            
+            # 2. CEK: Apakah Siswa ini di Bulan ini sudah ada datanya?
+            spp_lama = SPP.objects.filter(
+                siswa=spp_baru.siswa, 
+                bulan=spp_baru.bulan
+            ).first()
+            
+            if spp_lama:
+                # SKENARIO CICILAN:
+                # Tambahkan uang yang baru diinput ke jumlah yang sudah ada
+                spp_lama.jumlah += spp_baru.jumlah 
+                
+                # Update tagihan juga jika admin merubahnya di inputan terakhir (opsional)
+                spp_lama.tagihan = spp_baru.tagihan 
+                
+                # Simpan data lama yang sudah diupdate
+                # (Otomatis memicu hitungan status di models.py)
+                spp_lama.save() 
+            else:
+                # SKENARIO DATA BARU:
+                # Belum ada data, simpan sebagai data baru
+                spp_baru.save()
+            
             return redirect('spp_list')
 
-        # Jika form error, tetap tampilkan siswa_list
+        # Jika form error
         return render(request, 'laporan/spp_form.html', {
             'form': form,
             'siswa_list': siswa_list
         })
 
-    # GET → tampilkan form kosong
+    # GET Request
     form = SPPForm()
     return render(request, 'laporan/spp_form.html', {
         'form': form,
