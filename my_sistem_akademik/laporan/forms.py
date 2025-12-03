@@ -10,17 +10,25 @@ class RaporForm(forms.ModelForm):
 class SPPForm(forms.ModelForm):
     class Meta:
         model = SPP
-        fields = ['siswa', 'bulan', 'jumlah', 'status']   # Field yang ditampilkan di form
+        # Hapus 'status' dari sini, tambah 'tagihan'
+        fields = ['siswa', 'bulan', 'tagihan', 'jumlah'] 
+        
+    # Opsional: Tambahkan widget agar form terlihat lebih rapi
+    widgets = {
+        'tagihan': forms.NumberInput(attrs={'placeholder': 'Biaya SPP seharusnya'}),
+        'jumlah': forms.NumberInput(attrs={'placeholder': 'Uang yang dibayarkan'}),
+    }
 
 class GajiForm(forms.ModelForm):
     class Meta:
         model = Gaji
-        fields = ['pegawai', 'gaji_pokok', 'tunjangan_jabatan', 'keterangan_tunjangan']
+        # Gaji pokok dihapus dari sini karena otomatis
+        fields = ['pegawai', 'bulan', 'tunjangan_jabatan', 'keterangan_tunjangan', 'status_transfer']
 
-        # Widget untuk custom tampilan input
-        widgets = {
-            'gaji_pokok': forms.NumberInput(attrs={'placeholder': 'Masukkan gaji pokok'}),
-        }
+    widgets = {
+        'tunjangan_jabatan': forms.NumberInput(attrs={'placeholder': 'Contoh: 500000'}),
+        'keterangan_tunjangan': forms.TextInput(attrs={'placeholder': 'Contoh: Pembina Pramuka'}),
+    }
 
 class RaporSearchForm(forms.Form):
     id_siswa = forms.CharField(

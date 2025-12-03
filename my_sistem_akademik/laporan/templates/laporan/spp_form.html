@@ -4,17 +4,94 @@
     <meta charset="UTF-8">
     <title>{% if form.instance.pk %}Edit SPP{% else %}Tambah SPP{% endif %}</title>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
-        body { margin:0; font-family:"Segoe UI",sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:#e6e6e6; }
-        header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; color:#fff; box-shadow:0 5px 18px rgba(0,0,0,0.4); }
+        /* --- COPY STYLE DARI FORM GAJI AGAR SERAGAM --- */
+        body { margin:0; font-family:"Segoe UI", sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:white; font-size: 15px; }
+        header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; }
         .wrapper { display:flex; justify-content:center; margin-top:35px; }
-        .card { width:40%; background:rgba(17,45,78,0.85); padding:25px; border-radius:18px; box-shadow:0 8px 25px rgba(0,0,0,0.45); }
-        label { display:block; margin-bottom:8px; font-weight:bold; }
-        select, input { width:100%; padding:10px; border-radius:8px; border:none; margin-bottom:18px; background:rgba(255,255,255,0.1); color:#fff; }
-        select:focus, input:focus { outline:none; box-shadow:0 0 5px #3f72af; }
-        .button { display:inline-block; padding:10px 20px; color:#fff; background:#3f72af; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; cursor:pointer; }
-        select option { background-color: #0f2a45; color: white; }
+        .card { background:rgba(17,45,78,0.85); width:45%; padding:30px; border-radius:18px; box-shadow:0 8px 25px rgba(0,0,0,0.45); }
+        
+        label { display:block; margin-bottom:10px; font-weight:bold; margin-top: 20px; font-size: 16px; }
+        
+        /* INPUT & SELECT STANDAR */
+        input, textarea, select { 
+            width:100%; 
+            padding: 12px 15px; 
+            border:none; 
+            border-radius:8px; 
+            background:rgba(255,255,255,0.1); 
+            color:white; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+        }
+        select option { background: #0f2a45; color: white; padding: 10px; }
+        
+        /* TOMBOL */
+        .button { display:inline-block; padding:12px 24px; background:#3f72af; color:white; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; border: none; cursor: pointer; margin-top: 25px; font-size: 15px;}
         .button:hover { background:#1d4e8c; }
+
+        /* INFO BOX */
+        .info-box { background: rgba(63, 114, 175, 0.2); padding: 15px; border-radius: 8px; font-size: 14px; color: #a3caff; margin-bottom: 20px; line-height: 1.5; }
+
+        /* ========================================= */
+        /* CSS SELECT2 (SEARCH DROPDOWN) - DARK THEME */
+        /* ========================================= */
+
+        /* Kotak Utama */
+        .select2-container .select2-selection--single {
+            height: auto !important;
+            padding: 8px 5px !important;
+            background-color: rgba(255,255,255,0.1) !important; 
+            border: none !important;
+            border-radius: 8px !important;
+            display: flex; align-items: center;
+        }
+
+        /* Teks Pilihan */
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: white !important; padding-left: 10px; font-size: 15px !important; line-height: normal;
+        }
+        
+        /* Panah Dropdown */
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 100%; top: 0; right: 10px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: white transparent transparent transparent; border-width: 6px 5px 0 5px;
+        }
+
+        /* Dropdown Saat Dibuka */
+        .select2-dropdown {
+            background-color: #0f2a45 !important; 
+            border: 2px solid #3f72af !important; 
+            border-radius: 8px !important;
+            color: white !important; z-index: 9999; margin-top: 5px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Item Pilihan */
+        .select2-results__option {
+            background-color: #0f2a45; color: #e6e6e6;
+            padding: 12px 15px !important; font-size: 15px !important;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Item Hover */
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            background-color: #3f72af !important; color: white !important; font-weight: bold;
+        }
+
+        /* Input Pencarian */
+        .select2-search--dropdown { padding: 10px; }
+        .select2-search__field {
+            background-color: #071522 !important; color: white !important;
+            border: 1px solid #3f72af !important; border-radius: 6px !important;
+            padding: 10px 12px !important; font-size: 15px !important;
+        }
     </style>
 </head>
 <body>
@@ -26,38 +103,54 @@
 <div class="wrapper">
     <div class="card">
 
+        <div class="info-box">
+            ℹ️ <b>Info:</b> Jika siswa mencicil, cukup input nama dan nominal yang dibayarkan. Sistem akan otomatis menjumlahkan dengan pembayaran sebelumnya.
+        </div>
+
         <form method="post">
             {% csrf_token %}
 
-            <label for="nis_siswa">Siswa</label>
+            <label for="nis_siswa">Siswa (Ketik Nama/NIS)</label>
             <select name="siswa" id="nis_siswa" required>
-                <option value="" disabled {% if not form.instance.pk %}selected{% endif %}>-- Pilih Siswa --</option>
+                <option value="" disabled {% if not form.instance.pk %}selected{% endif %}>-- Cari Siswa --</option>
                 {% for s in siswa_list %}
-                    <option value="{{ s.nis }}"
-                        {% if form.instance.siswa and form.instance.siswa.nis == s.nis %}
-                            selected
-                        {% endif %}
-                    >
-                        {{ s.nama }} ({{ s.nis }})
+                    <option value="{{ s.nis }}" 
+                        {% if form.instance.siswa and form.instance.siswa.nis == s.nis %}selected{% endif %}>
+                        {{ s.nama }} ({{ s.nis }}) - {{ s.kelas }}
                     </option>
                 {% endfor %}
             </select>
 
-            <label for="id_bulan">Bulan</label>
+            <label for="id_bulan">Bulan Pembayaran</label>
             {{ form.bulan }}
 
-            <label for="id_jumlah">Jumlah</label>
+            <label for="id_tagihan">Biaya SPP (Tagihan)</label>
+            {{ form.tagihan }}
+
+            <label for="id_jumlah">Uang Dibayar</label>
             {{ form.jumlah }}
 
-            <label for="id_status">Status</label>
-            {{ form.status }}
-
             <button type="submit" class="button">💾 Simpan</button>
-            <a href="{% url 'spp_list' %}" class="button">⏪ Batal</a>
+            <a href="{% url 'spp_list' %}" class="button" style="background: #555;">⏪ Batal</a>
         </form>
 
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        // Terapkan Select2 pada dropdown dengan ID 'nis_siswa'
+        $('#nis_siswa').select2({
+            placeholder: "Ketik Nama Siswa atau NIS...",
+            allowClear: true,
+            language: {
+                noResults: function() {
+                    return "Siswa tidak ditemukan";
+                }
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

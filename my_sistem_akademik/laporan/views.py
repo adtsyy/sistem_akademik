@@ -4,6 +4,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
 from siswa.models import Siswa
+from django.db.models import Q
 
 def home(request):
     return render(request, 'laporan/home.html')
@@ -50,29 +51,69 @@ class RaporDetailView(DetailView):
 
 # List SPP
 def spp_list(request):
+    # Ambil semua data dulu
     spp = SPP.objects.select_related('siswa').all()
-    return render(request, 'laporan/spp_list.html', {'spp': spp})
+
+    # Cek apakah ada pencarian?
+    keyword = request.GET.get('q')
+
+    if keyword:
+        spp = spp.filter(
+            Q(siswa__nama__icontains=keyword) |  # Cari berdasarkan Nama
+            Q(siswa__nis__icontains=keyword)     # ATAU Cari berdasarkan NIS
+        )
+
+    return render(request, 'laporan/spp_list.html', {'spp': spp, 'keyword': keyword})
 
 # Tambah SPP
 def spp_tambah(request):
-    siswa_list = Siswa.objects.all()   # Data untuk dropdown siswa
+    siswa_list = Siswa.objects.all()
 
     if request.method == 'POST':
         data = request.POST.copy()
-        data['siswa'] = request.POST.get('siswa')  # pastikan siswa tersimpan
+        
+        # Pastikan data siswa terambil dengan benar dari dropdown
+        # Jika nama field di HTML adalah 'siswa', ambil ID-nya
+        siswa_id = request.POST.get('siswa') 
+        data['siswa'] = siswa_id
 
         form = SPPForm(data)
+        
         if form.is_valid():
-            form.save()
+            # 1. Jangan simpan ke database dulu (commit=False)
+            spp_baru = form.save(commit=False)
+            
+            # 2. CEK: Apakah Siswa ini di Bulan ini sudah ada datanya?
+            spp_lama = SPP.objects.filter(
+                siswa=spp_baru.siswa, 
+                bulan=spp_baru.bulan
+            ).first()
+            
+            if spp_lama:
+                # SKENARIO CICILAN:
+                # Tambahkan uang yang baru diinput ke jumlah yang sudah ada
+                spp_lama.jumlah += spp_baru.jumlah 
+                
+                # Update tagihan juga jika admin merubahnya di inputan terakhir (opsional)
+                spp_lama.tagihan = spp_baru.tagihan 
+                
+                # Simpan data lama yang sudah diupdate
+                # (Otomatis memicu hitungan status di models.py)
+                spp_lama.save() 
+            else:
+                # SKENARIO DATA BARU:
+                # Belum ada data, simpan sebagai data baru
+                spp_baru.save()
+            
             return redirect('spp_list')
 
-        # Jika form error, tetap tampilkan siswa_list
+        # Jika form error
         return render(request, 'laporan/spp_form.html', {
             'form': form,
             'siswa_list': siswa_list
         })
 
-    # GET → tampilkan form kosong
+    # GET Request
     form = SPPForm()
     return render(request, 'laporan/spp_form.html', {
         'form': form,
@@ -114,14 +155,39 @@ def spp_hapus(request, id):
     # Kirim spp ke template untuk konfirmasi
     return render(request, 'laporan/spp_confirm_delete.html', {'object': spp})
 
-# Tambah gaji
+def gaji_list(request):
+    gaji = Gaji.objects.select_related('pegawai').all().order_by('-id')
+
+    # Logika Pencarian
+    keyword = request.GET.get('q')
+    if keyword:
+        gaji = gaji.filter(
+            Q(pegawai__nama__icontains=keyword) |       # Cari Nama
+            Q(pegawai__id_pegawai__icontains=keyword) | # Cari ID Pegawai
+            Q(bulan__icontains=keyword)                 # Cari Bulan
+        )
+
+    return render(request, "laporan/gaji_list.html", {"gaji": gaji, "keyword": keyword})
+
+# Tambah Gaji
 def gaji_tambah(request):
     if request.method == "POST":
         form = GajiForm(request.POST)
         if form.is_valid():
-            gaji = form.save(commit=False)
-            gaji.nama_pegawai = gaji.pegawai.nama   # simpan nama pegawai
-            gaji.save()
+            gaji_baru = form.save(commit=False)
+            
+            # CEK APAKAH SUDAH ADA GAJI BULAN INI UNTUK PEGAWAI INI?
+            cek_ganda = Gaji.objects.filter(
+                pegawai=gaji_baru.pegawai, 
+                bulan=gaji_baru.bulan
+            ).exists()
+            
+            if cek_ganda:
+                # Jika sudah ada, jangan simpan, beri pesan error (opsional) atau redirect
+                # Disini kita redirect saja biar simpel
+                return redirect("gaji_list")
+
+            gaji_baru.save()
             return redirect("gaji_list")
     else:
         form = GajiForm()
@@ -141,11 +207,6 @@ def gaji_edit(request, pk):
         form = GajiForm(instance=gaji)
 
     return render(request, "laporan/gaji_form.html", {"form": form})
-
-# List gaji
-def gaji_list(request):
-    gaji = Gaji.objects.all()
-    return render(request, "laporan/gaji_list.html", {"gaji": gaji})
 
 # Hapus gaji
 def gaji_hapus(request, pk):
