@@ -4,6 +4,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
 from siswa.models import Siswa
+from django.db.models import Q
 
 def home(request):
     return render(request, 'laporan/home.html')
@@ -50,8 +51,19 @@ class RaporDetailView(DetailView):
 
 # List SPP
 def spp_list(request):
+    # Ambil semua data dulu
     spp = SPP.objects.select_related('siswa').all()
-    return render(request, 'laporan/spp_list.html', {'spp': spp})
+
+    # Cek apakah ada pencarian?
+    keyword = request.GET.get('q')
+
+    if keyword:
+        spp = spp.filter(
+            Q(siswa__nama__icontains=keyword) |  # Cari berdasarkan Nama
+            Q(siswa__nis__icontains=keyword)     # ATAU Cari berdasarkan NIS
+        )
+
+    return render(request, 'laporan/spp_list.html', {'spp': spp, 'keyword': keyword})
 
 # Tambah SPP
 def spp_tambah(request):
