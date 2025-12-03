@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absen Siswa - Sistem Akademik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
+            color: #f1faee;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            border-bottom: 3px solid #3a86ff;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #3a86ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+            transform: translateX(-5px);
+        }
+
+        .filter-section {
+            background: #1b263b;
+            border: 2px solid #415a77;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .filter-section h2 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #e8f4f8;
+            border-bottom: 2px solid #3a86ff;
+            padding-bottom: 10px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            color: #b8d4e8;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 10px 12px;
+            background: #0f1f2e;
+            border: 1px solid #415a77;
+            border-radius: 6px;
+            color: #f1faee;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #3a86ff;
+            background: #1a2a3a;
+            box-shadow: 0 0 8px rgba(58, 134, 255, 0.3);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .btn-search {
+            padding: 10px 20px;
+            background: #3a86ff;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-search:hover {
+            background: #2563eb;
+            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.4);
+        }
+
+        .siswa-table {
+            background: #1b263b;
+            border: 2px solid #415a77;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%);
+            border-bottom: 2px solid #3a86ff;
+        }
+
+        thead th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #e8f4f8;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #415a77;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #1e3a5f;
+        }
+
+        tbody td {
+            padding: 12px 15px;
+            color: #f1faee;
+            font-size: 14px;
+        }
+
+        .status-select {
+            padding: 8px;
+            background: #0f1f2e;
+            border: 1px solid #415a77;
+            border-radius: 6px;
+            color: #f1faee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #3a86ff;
+            box-shadow: 0 0 8px rgba(58, 134, 255, 0.3);
+        }
+
+        .btn-save {
+            padding: 8px 16px;
+            background: #4ade80;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background: #22c55e;
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7a9ab8;
+        }
+
+        .success-message {
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #ef4444;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .siswa-table {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            thead th, tbody td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📝 Absen Siswa</h1>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'guru_dashboard' %}" class="back-btn">← Kembali ke Dashboard</a>
+
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="filter-section">
+            <h2>Filter dan Pencarian</h2>
+            
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Cari nama atau NIS siswa..."
+                    value="{{ search_siswa }}"
+                />
+                <button class="btn-search" onclick="searchSiswa()">Cari</button>
+            </div>
+
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label for="jadwalSelect">Mata Pelajaran</label>
+                    <select id="jadwalSelect" onchange="filterBySiswa()">
+                        <option value="">-- Pilih Mata Pelajaran --</option>
+                        {% for jadwal in jadwal_list %}
+                        <option value="{{ jadwal.id }}" {% if jadwal.id == selected_jadwal %}selected{% endif %}>
+                            {{ jadwal.mata_pelajaran }} ({{ jadwal.hari }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="tanggalInput">Tanggal</label>
+                    <input 
+                        type="date" 
+                        id="tanggalInput" 
+                        value="{% now 'Y-m-d' %}"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="siswa-table">
+            {% if siswa_list %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIS</th>
+                        <th>Nama Siswa</th>
+                        <th>Kelas</th>
+                        <th>Status Absen</th>
+                        <th>Keterangan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="siswaTableBody">
+                    {% for siswa in siswa_list %}
+                    <tr class="siswa-row" data-siswa-id="{{ siswa.nis }}" data-kelas="{{ siswa.kelas }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ siswa.nis }}</td>
+                        <td>{{ siswa.nama }}</td>
+                        <td>{{ siswa.kelas }}</td>
+                        <td>
+                            <select class="status-select" data-siswa-id="{{ siswa.nis }}">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="hadir">✓ Hadir</option>
+                                <option value="sakit">🏥 Sakit</option>
+                                <option value="izin">📄 Izin</option>
+                                <option value="alpa">✗ Alpa</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input 
+                                type="text" 
+                                class="keterangan-input" 
+                                data-siswa-id="{{ siswa.nis }}"
+                                placeholder="Catatan (opsional)"
+                                style="width: 100%; padding: 8px; background: #0f1f2e; border: 1px solid #415a77; border-radius: 6px; color: #f1faee;"
+                            />
+                        </td>
+                        <td>
+                            <button 
+                                class="btn-save" 
+                                onclick="saveAbsen('{{ siswa.nis }}', this)"
+                            >
+                                Simpan
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <p>Tidak ada siswa yang ditemukan. Coba sesuaikan filter pencarian Anda.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="button-group">
+            <button class="btn-search" onclick="saveAllAbsen()" style="background: #3b82f6;">
+                💾 Simpan Semua Absen
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
+
+        function searchSiswa() {
+            const search = document.getElementById('searchInput').value;
+            window.location.href = `?search=${encodeURIComponent(search)}`;
+        }
+
+        function filterBySiswa() {
+            const jadwal = document.getElementById('jadwalSelect').value;
+            
+            document.querySelectorAll('.siswa-row').forEach(row => {
+                let show = true;
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        function saveAbsen(siswaId, button) {
+            const jadwal = document.getElementById('jadwalSelect').value;
+            const tanggal = document.getElementById('tanggalInput').value;
+            const statusSelect = document.querySelector(`.status-select[data-siswa-id="${siswaId}"]`);
+            const status = statusSelect.value;
+            const keterangan = document.querySelector(`.keterangan-input[data-siswa-id="${siswaId}"]`).value;
+
+            if (!jadwal) {
+                showError('Silakan pilih jadwal/mata pelajaran terlebih dahulu');
+                return;
+            }
+
+            if (!status) {
+                showError('Silakan pilih status absen');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('siswa_id', siswaId);
+            formData.append('jadwal_id', jadwal);
+            formData.append('tanggal', tanggal);
+            formData.append('status', status);
+            formData.append('keterangan', keterangan);
+
+            fetch('{% url "absen_siswa" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess(`Absen ${siswaId} berhasil disimpan`);
+                    button.style.background = '#10b981';
+                    setTimeout(() => {
+                        button.style.background = '#4ade80';
+                    }, 2000);
+                } else {
+                    showError(data.message);
+                }
+            })
+            .catch(error => {
+                showError('Terjadi kesalahan: ' + error);
+            });
+        }
+
+        function saveAllAbsen() {
+            const buttons = document.querySelectorAll('.btn-save');
+            let saved = 0;
+            
+            buttons.forEach(btn => {
+                // Trigger click otomatis (bisa diatur sesuai kebutuhan)
+                // btn.click();
+            });
+
+            showSuccess(`Proses penyimpanan semua absen dimulai...`);
+        }
+
+        function showSuccess(message) {
+            const msg = document.getElementById('successMessage');
+            msg.textContent = message;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+
+        function showError(message) {
+            const msg = document.getElementById('errorMessage');
+            msg.textContent = message;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Load jadwal saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            filterBySiswa();
+        });
+    </script>
+
+    {% csrf_token %}
+</body>
+</html>

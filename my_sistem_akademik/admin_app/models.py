@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Kelas(models.Model):
     nama_kelas = models.CharField(max_length=50)
@@ -15,8 +16,9 @@ class Pegawai(models.Model):
         ("staff", "Staff"),
         ("admin", "Admin"),
     ]
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nama = models.CharField(max_length=200)
+    nip = models.CharField(max_length=50, blank=True, null=True)
     jabatan = models.CharField(max_length=20, choices=JABATAN_CHOICES)
     gaji_pokok = models.IntegerField(default=0)
 
