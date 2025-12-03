@@ -1,5 +1,12 @@
 from django.db import models
 
+class Kelas(models.Model):
+    nama_kelas = models.CharField(max_length=50)
+    # Tambahkan field lain jika perlu, misal wali_kelas
+
+    def __str__(self):
+        return self.nama_kelas
+
 class Pegawai(models.Model):
     id_pegawai = models.CharField(max_length=10, unique=True, editable=False)
 

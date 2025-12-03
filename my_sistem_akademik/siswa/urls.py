@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.siswa_list, name='siswa_list'),
+    path('dashboard/', views.siswa_dashboard, name='dashboard_siswa'), # <--- Penting
+    path('list/', views.siswa_list, name='siswa_list'),
     path('tambah/', views.siswa_tambah, name='siswa_tambah'),
     path('siswa/<str:nis>/', views.siswa_detail, name='siswa_detail'),
     path('siswa/<str:nis>/edit/', views.siswa_edit, name='siswa_edit'),

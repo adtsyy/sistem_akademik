@@ -40,9 +40,9 @@ INSTALLED_APPS = [
 
     # Aplikasi kamu
     'admin_app',
+    'siswa',
     'guru',
     'laporan',
-    'siswa',
 ]
 
 
