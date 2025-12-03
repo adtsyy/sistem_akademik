@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Guru - Sistem Akademik</title>
+    <title>Dashboard Guru</title>
+
     <style>
+        /* --- Reset & Dasar --- */
         * {
             margin: 0;
             padding: 0;
@@ -12,92 +14,179 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Open Sans', sans-serif;
-            background: #0d1b2a;
-            color: #f1faee;
-            line-height: 1.6;
+            font-family: "Segoe UI", sans-serif;
+            /* WARNA DISAMAKAN DENGAN ADMIN (Dark Blue Gradient) */
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            color: #f1f1f1;
+            min-height: 100vh;
         }
 
-        .header {
-            background: #1b263b;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .header h1 {
-            font-size: 26px;
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
+        /* --- Header / Navbar (WARNA SAMA: #112d4e) --- */
+        header {
+            background: #112d4e;
+            padding: 15px 40px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
+            justify-content: space-between; /* Judul Kiri, User Kanan */
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .card {
-            background: #1b263b;
-            border: 1px solid #415a77;
-            border-radius: 12px;
-            padding: 25px;
-            width: 260px;
-            text-align: center;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-            transition: transform 0.3s ease;
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* --- Bagian User & Logout --- */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 14px;
+            color: #d7dce4;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        /* --- Tombol Logout (WARNA MERAH SAMA) --- */
+        .btn-logout {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
             text-decoration: none;
-            color: inherit;
+            font-size: 14px;
+        }
+
+        .btn-logout:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
+
+        /* --- Container --- */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            /* Mengatur agar sejajar ke samping (responsive) */
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+
+        /* --- Card (WARNA SAMA: #112d4e) --- */
+        .card {
+            width: 100%;
+            /* Agar ukuran seragam dengan admin */
+            max-width: 300px; 
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: #112d4e;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: 0.3s ease;
+            text-decoration: none;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 220px;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            background: #1e3a5f;
-        }
-
-        .card-icon {
-            font-size: 36px;
-            margin-bottom: 15px;
+            transform: translateY(-8px);
+            background: #1b3d63;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
 
         .card h2 {
-            font-size: 18px;
-            margin: 12px 0 8px;
+            font-size: 20px;
+            margin-bottom: 8px;
+            margin-top: 10px;
         }
 
         .card p {
-            font-size: 14px;
-            color: #ccd6dd;
+            font-size: 13px;
+            color: #d7dce4;
+        }
+
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .user-section {
+                flex-direction: column;
+            }
+            .user-info {
+                text-align: center;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Dashboard Guru</h1>
-    </div>
+
+    <header>
+        <div class="header-title">Dashboard Guru</div>
+
+        <div class="user-section">
+            <div class="user-info">
+                <div>Selamat datang,</div>
+                <strong>{{ user.username }}</strong>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+        </div>
+    </header>
 
     <div class="container">
+        
         <a href="{% url 'absen_siswa' %}" class="card">
             <div class="card-icon">📝</div>
-            <h2>Absen Mahasiswa</h2>
-            <p>Input dan lihat absensi siswa</p>
+            <h2>Absen Siswa</h2>
+            <p>Input & Lihat Absensi</p>
         </a>
         
-
         <a href="#" class="card">
-            <div class="card-icon">📊</div>
+            <div class="card-icon">📅</div>
             <h2>Jadwal</h2>
-            <p>Melihat Jadwal Pelajaran</p>
+            <p>Jadwal Mengajar</p>
         </a>
 
         <a href="{% url 'input_nilai' %}" class="card">
             <div class="card-icon">📊</div>
             <h2>Input Nilai</h2>
-            <p>Isi nilai siswa per mata pelajaran</p>
+            <p>Entry Nilai Siswa</p>
         </a>
+
     </div>
+
 </body>
 </html>
