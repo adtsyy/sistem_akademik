@@ -36,7 +36,7 @@
 </head>
 <body>
 
-<header>Daftar Penggajian</header>
+<header>Daftar Gaji</header>
 
 <div class="wrapper">
     <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
@@ -47,7 +47,7 @@
             <button type="submit" class="button">🔍 Cari</button>
             {% if keyword %} <a href="{% url 'gaji_list' %}" class="button" style="background:#555;">Reset</a> {% endif %}
         </form>
-        <a href="{% url 'gaji_tambah' %}" class="button">➕ Input Gaji</a>
+        <a href="{% url 'gaji_tambah' %}" class="button">➕ Tambah Gaji</a>
     </div>
 
     <table>
