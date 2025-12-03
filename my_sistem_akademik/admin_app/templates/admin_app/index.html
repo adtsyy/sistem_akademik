@@ -26,21 +26,21 @@
         .container {
             max-width: 1000px;
             margin: 40px auto;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
-            flex-wrap: wrap;
+            justify-items: center; /* Supaya card simetris di tengah */
         }
 
         .card {
-            width: 260px;
+            width: 100%;
+            max-width: 260px;
             padding: 25px;
             border-radius: 16px;
             background: #112d4e;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             transition: 0.3s ease;
-            display: block;
             text-decoration: none;
             color: #ffffff;
         }
@@ -66,6 +66,13 @@
             margin-bottom: 15px;
             display: block;
         }
+
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+                gap: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -76,7 +83,7 @@
     <div class="container">
 
         <a href="{% url 'list_pegawai' %}" class="card">
-            <i>👤</i> <!-- Bisa diganti dengan ikon sebenarnya jika menggunakan library seperti Font Awesome -->
+            <i>👤</i>
             <h3>👥 Kelola Pegawai</h3>
             <p>Tambah, edit, atau lihat daftar pegawai.</p>
         </a>
@@ -92,15 +99,12 @@
             <h3>📊 Kelola Laporan</h3>
             <p>Lihat dan kelola laporan data akademik.</p>
         </a>
-
-        <!-- Tambahkan kartu lain sesuai kebutuhan -->
-        <!--
-        <a href="{% url 'tambah_pegawai' %}" class="card">
-            <i>➕</i>
-            <h3>Tambah Pegawai</h3>
-            <p>Input data pegawai baru.</p>
+        
+        <a href="{% url 'siswa_list' %}" class="card">
+            <i>🎓</i>
+            <h3>🎓 Kelola Siswa</h3>
+            <p>Tambah, edit, atau lihat daftar siswa.</p>
         </a>
-        -->
 
     </div>
 
