@@ -1,17 +1,14 @@
 from django.db import models
 
+from django.db import models
+
 class Siswa(models.Model):
     nis = models.CharField(max_length=10, primary_key=True)
-    nisn = models.CharField(max_length=10, unique=True, null=True, blank=True)
     nama = models.CharField(max_length=100)
-    
-    # Field redundan (opsional, bisa dihapus jika sudah pakai kelas_obj)
-    kelas = models.CharField(max_length=20, blank=True) 
-    
-    # INI YANG MEMPERBAIKI ERROR SEBELUMNYA (Pakai kutip string)
-    kelas_obj = models.ForeignKey('admin_app.Kelas', on_delete=models.SET_NULL, null=True, blank=True, related_name='siswa')
-    
-    jurusan = models.CharField(max_length=50, blank=True)
+
+    # Kelas disimpan sebagai TEXT (bukan relasi)
+    kelas = models.CharField(max_length=20, blank=True)
+
     tempat_lahir = models.CharField(max_length=100, blank=True)
     tanggal_lahir = models.DateField(null=True, blank=True)
     alamat = models.TextField(blank=True)
@@ -19,12 +16,20 @@ class Siswa(models.Model):
     nama_orang_tua = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # PERBAIKAN: Gunakan double underscore (__str__)
+    # Relasi ke User Django
+    user = models.OneToOneField(
+        'auth.User', 
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return f"{self.nama} ({self.nis})"
 
     class Meta:
         verbose_name_plural = "Siswa"
+
 
 
 class SPP(models.Model):

@@ -76,22 +76,7 @@
         <form method="POST">
             {% csrf_token %}
 
-            <!-- Nama -->
-            <label for="id_nama">Nama Pegawai</label>
-            <input type="text" id="id_nama" name="nama"
-                   value="{{ form.nama.value }}"
-                   required>
-
-            <!-- Jabatan -->
-            <label for="id_jabatan">Jabatan</label>
-            <select id="id_jabatan" name="jabatan">
-                {% for value, label in form.fields.jabatan.choices %}
-                    <option value="{{ value }}"
-                        {% if form.jabatan.value == value %}selected{% endif %}>
-                        {{ label }}
-                    </option>
-                {% endfor %}
-            </select>
+            {{ form.as_p }}
 
             <button type="submit" class="button">💾 Simpan Perubahan</button>
             <a href="{% url 'list_pegawai' %}" class="button">⏪ Batal</a>
