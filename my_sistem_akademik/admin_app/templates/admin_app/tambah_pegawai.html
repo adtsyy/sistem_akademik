@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Tambah Pegawai</title>
+    <title>Tambah Jadwal</title>
 
     <style>
         body {
             margin: 0;
-            font-family: "Segoe UI", sans-serif;
+            font-family: "Segoe UI";
             background: linear-gradient(to bottom right, #071522, #0a1f33);
-            color: #e6e6e6;
+            color: white;
         }
 
         header {
@@ -17,9 +16,7 @@
             padding: 25px;
             text-align: center;
             font-size: 28px;
-            font-weight: 600;
             color: #fff;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.4);
         }
 
         .wrapper {
@@ -30,10 +27,9 @@
 
         .card {
             width: 40%;
-            background: rgba(17,45,78,0.85);
             padding: 25px;
+            background: rgba(17,45,78,0.85);
             border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
 
         input, select {
@@ -53,15 +49,15 @@
         .button {
             padding: 10px 20px;
             background: #3f72af;
-            color: #fff;
+            color: white;
+            text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            text-decoration: none;
         }
+
         .button:hover {
             background: #1d4e8c;
         }
-
     </style>
 </head>
 <body>
@@ -76,7 +72,7 @@
             {{ form.as_p }}
 
             <button type="submit" class="button">💾 Simpan</button>
-            <a href="{% url 'list_pegawai' %}" class="button">⏪ Batal</a>
+            <a href="{% url 'list_jadwal' %}" class="button">⏪ Batal</a>
         </form>
 
     </div>

@@ -15,6 +15,8 @@ def redirect_to_login(request):
             return redirect('guru_dashboard')
         elif 'admin' in username:
             return redirect('index')
+        elif 'siswa' in username:
+            return redirect('siswa_dashboard')
         else:
             return redirect('login')
     return redirect('login')
