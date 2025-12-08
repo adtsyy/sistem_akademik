@@ -9,4 +9,14 @@ class PegawaiForm(forms.ModelForm):
 class JadwalForm(forms.ModelForm):
     class Meta:
         model = Jadwal
-        fields = ["hari", "jam_mulai", "jam_selesai", "mata_pelajaran", "pegawai"]
+        # Tambahkan "kelas" di sini agar muncul di form HTML
+        fields = ["hari", "jam_mulai", "jam_selesai", "mata_pelajaran", "kelas", "pegawai"]
+        
+        # Opsional: Tambahkan widgets agar input jam lebih rapi (tipe time)
+        widgets = {
+            'jam_mulai': forms.TimeInput(attrs={'type': 'time'}),
+            'jam_selesai': forms.TimeInput(attrs={'type': 'time'}),
+            'kelas': forms.TextInput(attrs={
+                'placeholder': 'Contoh: XII IPA 1', 
+                'style': 'color: white; background: rgba(255,255,255,0.1); border: none;'}),
+        }

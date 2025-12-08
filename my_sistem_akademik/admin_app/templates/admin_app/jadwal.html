@@ -97,10 +97,8 @@
 
 <div class="wrapper">
 
-    <!-- Tombol Kembali -->
     <a href="{% url 'index' %}" class="back">⟵ Kembali ke Dashboard</a>
 
-    <!-- Tombol Tambah -->
     <div class="top-actions">
         <a href="{% url 'tambah_jadwal' %}" class="button">➕ Tambah Jadwal</a>
     </div>
@@ -111,7 +109,7 @@
                 <th>Hari</th>
                 <th>Jam</th>
                 <th>Mata Pelajaran</th>
-                <th>Pegawai</th>
+                <th>Kelas</th> <th>Pegawai</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -122,7 +120,7 @@
                 <td>{{ j.hari }}</td>
                 <td>{{ j.jam_mulai }} - {{ j.jam_selesai }}</td>
                 <td>{{ j.mata_pelajaran }}</td>
-                <td>{{ j.pegawai.nama }}</td>
+                <td>{{ j.kelas }}</td> <td>{{ j.pegawai.nama }}</td>
                 <td>
                     <a href="{% url 'edit_jadwal' j.id %}" class="button">✏ Edit</a>
                     <a href="{% url 'hapus_jadwal' j.id %}" class="button delete-button">🗑 Hapus</a>
@@ -130,7 +128,7 @@
             </tr>
         {% empty %}
             <tr>
-                <td colspan="5" style="text-align:center;">Belum ada data jadwal</td>
+                <td colspan="6" style="text-align:center;">Belum ada data jadwal</td>
             </tr>
         {% endfor %}
         </tbody>
