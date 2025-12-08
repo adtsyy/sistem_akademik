@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 class Kelas(models.Model):
     nama_kelas = models.CharField(max_length=50)
-    # Tambahkan field lain jika perlu, misal wali_kelas
 
     def __str__(self):
         return self.nama_kelas
@@ -23,7 +22,7 @@ class Pegawai(models.Model):
     gaji_pokok = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        if not self.id_pegawai:  # generate ID jika belum ada
+        if not self.id_pegawai:  
             last_id = Pegawai.objects.order_by('-id_pegawai').first()
             if last_id:
                 number = int(last_id.id_pegawai[1:]) + 1
@@ -49,6 +48,11 @@ class Jadwal(models.Model):
     jam_mulai = models.TimeField()
     jam_selesai = models.TimeField()
     mata_pelajaran = models.CharField(max_length=100)
+    
+    # --- TAMBAHAN KELAS DI SINI ---
+    # Menggunakan ForeignKey agar terhubung ke tabel Kelas
+    kelas = models.CharField(max_length=50)
+    
     pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
 
     def __str__(self):
