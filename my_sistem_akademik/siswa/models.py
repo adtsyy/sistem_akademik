@@ -1,6 +1,6 @@
 from django.db import models
+from admin_app.models import Jadwal as AdminJadwal
 
-from django.db import models
 
 class Siswa(models.Model):
     nis = models.CharField(max_length=10, primary_key=True)
@@ -18,18 +18,27 @@ class Siswa(models.Model):
 
     # Relasi ke User Django
     user = models.OneToOneField(
-        'auth.User', 
+        'auth.User',
         on_delete=models.CASCADE,
         null=True,
         blank=True
     )
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.nama} ({self.nis})"
 
     class Meta:
         verbose_name_plural = "Siswa"
 
+    # ================================
+    # ✔ Tambahan: Ambil jadwal otomatis
+    # ================================
+    @property
+    def jadwal(self):
+        """Mengambil jadwal berdasarkan kelas siswa."""
+        if not self.kelas:
+            return AdminJadwal.objects.none()
+        return AdminJadwal.objects.filter(kelas=self.kelas).order_by('hari', 'jam_mulai')
 
 
 class SPP(models.Model):
@@ -46,8 +55,7 @@ class SPP(models.Model):
     tanggal_bayar = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # PERBAIKAN: Gunakan double underscore (__str__)
-    def __str__(self):
+    def _str_(self):
         return f"SPP {self.siswa.nama} - {self.bulan}/{self.tahun}"
 
     class Meta:

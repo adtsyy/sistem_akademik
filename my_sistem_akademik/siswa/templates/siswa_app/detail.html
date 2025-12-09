@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Siswa - Sistem Akademik</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: "Segoe UI", sans-serif;
@@ -25,11 +21,6 @@
             background: #112d4e;
             color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 28px;
         }
 
         .container {
@@ -59,10 +50,6 @@
             border-bottom: 1px solid #1b3d63;
         }
 
-        .detail-item:last-of-type {
-            border-bottom: none;
-        }
-
         .detail-label {
             color: #a8d5ff;
             font-weight: 600;
@@ -79,7 +66,6 @@
             display: flex;
             gap: 12px;
             margin-top: 30px;
-            flex-wrap: wrap;
         }
 
         .btn {
@@ -87,109 +73,101 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 14px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
             transition: all 0.3s ease;
-        }
-
-        .btn-edit {
-            background: #f39c12;
-            color: white;
             flex: 1;
+            text-align: center;
         }
 
-        .btn-edit:hover {
-            background: #d68910;
-            transform: translateY(-2px);
-        }
+        .btn-edit { background: #f39c12; color: white; }
+        .btn-edit:hover { background: #d68910; transform: translateY(-2px); }
 
-        .btn-hapus {
-            background: #e74c3c;
-            color: white;
-            flex: 1;
-        }
+        .btn-hapus { background: #e74c3c; color: white; }
+        .btn-hapus:hover { background: #c0392b; transform: translateY(-2px); }
 
-        .btn-hapus:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
-        }
-
-        .btn-kembali {
-            background: #666;
-            color: white;
-            flex: 1;
-        }
-
-        .btn-kembali:hover {
-            background: #555;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                margin: 20px auto;
-            }
-
-            .detail-card {
-                padding: 20px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
+        .btn-kembali { background: #666; color: white; }
+        .btn-kembali:hover { background: #555; transform: translateY(-2px); }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>👤 Detail Siswa</h1>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="detail-card">
-            <h2>Informasi Siswa</h2>
+<header>
+    <h1>👤 Detail Siswa</h1>
+</header>
 
-            <div class="detail-item">
-                <div class="detail-label">📝 Nama Lengkap</div>
-                <div class="detail-value">{{ siswa.nama }}</div>
-            </div>
+<div class="container">
+    <div class="detail-card">
+        <h2>Informasi Siswa</h2>
 
-            <div class="detail-item">
-                <div class="detail-label">🆔 NIS (Nomor Induk Siswa)</div>
-                <div class="detail-value">{{ siswa.nis }}</div>
-            </div>
+        <!-- Nama -->
+        <div class="detail-item">
+            <div class="detail-label">📝 Nama Lengkap</div>
+            <div class="detail-value">{{ siswa.nama }}</div>
+        </div>
 
-            <div class="detail-item">
-                <div class="detail-label">🏫 Kelas</div>
-                <div class="detail-value">{{ siswa.kelas }}</div>
-            </div>
+        <!-- Username Login -->
+        <div class="detail-item">
+            <div class="detail-label">🔐 Username Login</div>
+            <div class="detail-value">{{ siswa.user.username|default:"Belum dibuat" }}</div>
+        </div>
 
-            <div class="detail-item">
-                <div class="detail-label">🏠 Alamat</div>
-                <div class="detail-value">{{ siswa.alamat|default:"Tidak ada data" }}</div>
-            </div>
+        <!-- NIS -->
+        <div class="detail-item">
+            <div class="detail-label">🆔 NIS</div>
+            <div class="detail-value">{{ siswa.nis }}</div>
+        </div>
 
-            <div class="detail-item">
-                <div class="detail-label">📅 Tanggal Lahir</div>
-                <div class="detail-value">{{ siswa.tanggal_lahir|date:"d F Y"|default:"Tidak ada data" }}</div>
-            </div>
+        <!-- Kelas -->
+        <div class="detail-item">
+            <div class="detail-label">🏫 Kelas</div>
+            <div class="detail-value">{{ siswa.kelas }}</div>
+        </div>
 
-            <div class="action-buttons">
-                <a href="{% url 'siswa_edit' siswa.nis %}" class="btn btn-edit">✏ Edit</a>
-                <a href="{% url 'siswa_hapus' siswa.nis %}" class="btn btn-hapus">🗑 Hapus</a>
-                <a href="{% url 'siswa_list' %}" class="btn btn-kembali">← Kembali</a>
-            </div>
+        <!-- Jurusan -->
+        <div class="detail-item">
+            <div class="detail-label">📘 Jurusan</div>
+            <div class="detail-value">{{ siswa.jurusan|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Tempat lahir -->
+        <div class="detail-item">
+            <div class="detail-label">📍 Tempat Lahir</div>
+            <div class="detail-value">{{ siswa.tempat_lahir|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Tanggal lahir -->
+        <div class="detail-item">
+            <div class="detail-label">📅 Tanggal Lahir</div>
+            <div class="detail-value">{{ siswa.tanggal_lahir|date:"d F Y"|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Alamat -->
+        <div class="detail-item">
+            <div class="detail-label">🏠 Alamat</div>
+            <div class="detail-value">{{ siswa.alamat|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Telepon -->
+        <div class="detail-item">
+            <div class="detail-label">📞 Nomor Telepon</div>
+            <div class="detail-value">{{ siswa.telepon|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Orang tua -->
+        <div class="detail-item">
+            <div class="detail-label">👨‍👩‍👦 Nama Orang Tua</div>
+            <div class="detail-value">{{ siswa.nama_orang_tua|default:"Tidak ada data" }}</div>
+        </div>
+
+        <!-- Tombol -->
+        <div class="action-buttons">
+            <a href="{% url 'siswa_edit' siswa.nis %}" class="btn btn-edit">✏ Edit</a>
+            <a href="{% url 'siswa_hapus' siswa.nis %}" class="btn btn-hapus">🗑 Hapus</a>
+            <a href="{% url 'siswa_list' %}" class="btn btn-kembali">← Kembali</a>
         </div>
     </div>
+</div>
 
 </body>
 </html>
