@@ -538,7 +538,7 @@
 
                 />
 
-                <button class="btn-search" onclick="searchSiswa()">Cari</button>
+                <button class="btn-search" type="button" onclick="applyFilters()">Cari</button>
 
             </div>
 
@@ -572,23 +572,14 @@
 
                 <div class="filter-group">
 
-                    <label for="kelasSelect">Kelas</label>
+                    <label for="kelasInput">Kelas (input manual)</label>
 
-                    <select id="kelasSelect" onchange="filterSiswa()">
-
-                        <option value="">-- Semua Kelas --</option>
-
-                        {% for kelas in kelas_list %}
-
-                        <option value="{{ kelas.nama_kelas }}">
-
-                            {{ kelas.nama_kelas }}
-
-                        </option>
-
-                        {% endfor %}
-
-                    </select>
+                    <input
+                        type="text"
+                        id="kelasInput"
+                        placeholder="Contoh: X IPA 1"
+                        value="{{ selected_kelas }}"
+                    />
 
                 </div>
 
@@ -740,9 +731,15 @@
 
         <div class="button-group">
 
-            <button class="btn-search" onclick="saveAllAbsen()" style="background: #3b82f6;">
+            <button class="btn-search" type="button" onclick="markAllHadir()" style="background: #10b981;">
 
-                💾 Simpan Semua Absen (Yang Terlihat)
+                ✔ Hadir Semua
+
+            </button>
+
+            <button class="btn-search" type="button" onclick="saveAllAbsen()" style="background: #3b82f6;">
+
+                💾 Simpan Semua Absen (Yang Terisi)
 
             </button>
 
@@ -752,116 +749,142 @@
     <!-- ================================================= -->
 
     <script>
-        const csrftoken = document.querySelector('#csrfForm input[name=csrfmiddlewaretoken]').value;
+    const csrftoken = document.querySelector('#csrfForm input[name=csrfmiddlewaretoken]').value;
 
-        // 1. Fungsi Pencarian
-        function searchSiswa() {
-            const search = document.getElementById('searchInput').value;
-            window.location.href = `?search=${encodeURIComponent(search)}`;
-        }
+    // 1. Apply filter
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value;
+        const kelas = document.getElementById('kelasInput').value;
+        const jadwal = document.getElementById('jadwalSelect').value;
 
-        // 2. Filter kelas
-        function filterSiswa() {
-            const selectedKelas = document.getElementById('kelasSelect').value;
-            const rows = document.querySelectorAll('.siswa-row');
-            let hasVisibleRow = false;
+        const params = new URLSearchParams();
+        if (search) params.set('search', search);
+        if (kelas) params.set('kelas', kelas);
+        if (jadwal) params.set('jadwal', jadwal);
 
-            rows.forEach(row => {
-                const rowKelas = row.getAttribute('data-kelas');
-                if (selectedKelas === "" || rowKelas === selectedKelas) {
-                    row.style.display = "";
-                    hasVisibleRow = true;
-                } else {
-                    row.style.display = "none";
-                }
-            });
+        const query = params.toString();
+        window.location.href = query ? `?${query}` : window.location.pathname;
+    }
 
-            const noDataMsg = document.getElementById('noDataMessage');
-            if (noDataMsg) {
-                noDataMsg.style.display = hasVisibleRow ? 'none' : 'block';
+    // 2. Simpan satu siswa
+    function saveAbsen(siswaId, button) {
+        const jadwal = document.getElementById('jadwalSelect').value;
+        const tanggal = document.getElementById('tanggalInput').value;
+
+        const status = document.querySelector(`.status-select[data-siswa-id="${siswaId}"]`).value;
+        const keterangan = document.querySelector(`.keterangan-input[data-siswa-id="${siswaId}"]`).value;
+
+        if (!jadwal) return showError("Silakan pilih jadwal!");
+        if (!status) return showError("Silakan pilih status!");
+
+        const formData = new FormData();
+        formData.append('siswa_id', siswaId);
+        formData.append('jadwal_id', jadwal);
+        formData.append('tanggal', tanggal);
+        formData.append('status', status);
+        formData.append('keterangan', keterangan);
+
+        const originalText = button.innerText;
+        button.innerText = "...";
+        button.disabled = true;
+
+        fetch("{% url 'absen_siswa' %}", {
+            method: "POST",
+            body: formData,
+            headers: { "X-CSRFToken": csrftoken }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showSuccess(`Absen NIS ${siswaId} berhasil disimpan`);
+                button.style.background = "#10b981";
+            } else {
+                showError(data.message);
             }
-        }
+        })
+        .catch(() => showError("Kesalahan koneksi"))
+        .finally(() => {
+            button.innerText = originalText;
+            button.disabled = false;
+            setTimeout(() => (button.style.background = "#4ade80"), 2000);
+        });
+    }
 
-        // 3. Simpan satu siswa
-        function saveAbsen(siswaId, button) {
-            const jadwal = document.getElementById('jadwalSelect').value;
-            const tanggal = document.getElementById('tanggalInput').value;
+    // 3. Simpan semua
+    function saveAllAbsen() {
+        const jadwal = document.getElementById('jadwalSelect').value;
+        const tanggal = document.getElementById('tanggalInput').value;
 
+        if (!jadwal) return showError("Silakan pilih jadwal!");
+
+        const rows = document.querySelectorAll('.siswa-row');
+        const records = [];
+
+        rows.forEach(row => {
+            if (row.style.display === 'none') return;
+
+            const siswaId = row.getAttribute('data-siswa-id');
             const status = document.querySelector(`.status-select[data-siswa-id="${siswaId}"]`).value;
             const keterangan = document.querySelector(`.keterangan-input[data-siswa-id="${siswaId}"]`).value;
 
-            if (!jadwal) return showError("Silakan pilih jadwal!");
-            if (!status) return showError("Silakan pilih status!");
+            if (!status) return;
+            records.push({ siswa_id: siswaId, status, keterangan });
+        });
 
-            const formData = new FormData();
-            formData.append('siswa_id', siswaId);
-            formData.append('jadwal_id', jadwal);
-            formData.append('tanggal', tanggal);
-            formData.append('status', status);
-            formData.append('keterangan', keterangan);
+        if (!records.length) return showError("Tidak ada absen yang bisa disimpan.");
 
-            const originalText = button.innerText;
-            button.innerText = "...";
-            button.disabled = true;
-
-            fetch("{% url 'absen_siswa' %}", {
-                method: "POST",
-                body: formData,
-                headers: { "X-CSRFToken": csrftoken }
+        fetch("{% url 'absen_siswa' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({
+                jadwal_id: jadwal,
+                tanggal,
+                records
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    showSuccess(`Absen NIS ${siswaId} berhasil disimpan`);
-                    button.style.background = "#10b981";
-                } else {
-                    showError(data.message);
-                }
-            })
-            .catch(() => showError("Kesalahan koneksi"))
-            .finally(() => {
-                button.innerText = originalText;
-                button.disabled = false;
-                setTimeout(() => (button.style.background = "#4ade80"), 2000);
-            });
-        }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showSuccess(`Tersimpan: ${data.created} baru, ${data.updated} diperbarui`);
+            } else {
+                showError(data.message || "Gagal menyimpan absen");
+            }
+        })
+        .catch(() => showError("Kesalahan koneksi"));
+    }
 
-        // 4. Simpan semua
-        function saveAllAbsen() {
-            const rows = document.querySelectorAll('.siswa-row');
-            let count = 0;
+    // Hadir semua
+    function markAllHadir() {
+        document.querySelectorAll('.status-select').forEach(sel => {
+            sel.value = 'hadir';
+        });
+        showSuccess("Semua status diset menjadi Hadir. Jangan lupa simpan.");
+    }
 
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    const siswaId = row.getAttribute('data-siswa-id');
-                    const status = document.querySelector(`.status-select[data-siswa-id="${siswaId}"]`).value;
-                    if (status) {
-                        row.querySelector('.btn-save').click();
-                        count++;
-                    }
-                }
-            });
+    function showSuccess(msg) {
+        const m = document.getElementById("successMessage");
+        m.textContent = msg;
+        m.style.display = "block";
+        setTimeout(() => m.style.display = "none", 3000);
+    }
 
-            if (count > 0) showSuccess(`Memproses ${count} siswa...`);
-            else showError("Tidak ada absen yang bisa disimpan.");
-        }
+    function showError(msg) {
+        const m = document.getElementById("errorMessage");
+        m.textContent = msg;
+        m.style.display = "block";
+        setTimeout(() => m.style.display = "none", 3000);
+    }
 
-        function showSuccess(msg) {
-            const m = document.getElementById("successMessage");
-            m.textContent = msg;
-            m.style.display = "block";
-            setTimeout(() => m.style.display = "none", 3000);
-        }
-
-        function showError(msg) {
-            const m = document.getElementById("errorMessage");
-            m.textContent = msg;
-            m.style.display = "block";
-            setTimeout(() => m.style.display = "none", 3000);
-        }
-
-        document.addEventListener("DOMContentLoaded", filterSiswa);
-    </script>
+    document.getElementById('searchInput').addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') applyFilters();
+    });
+    document.getElementById('kelasInput').addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') applyFilters();
+    });
+</script>
 
 </body>
 </html>

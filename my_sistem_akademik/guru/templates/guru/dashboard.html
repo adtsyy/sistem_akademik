@@ -1,186 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Guru</title>
 
     <style>
-        /* --- Reset & Dasar --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      /* --- Reset & Dasar --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(to bottom right, #071522, #0a1f33);
-            color: #f1f1f1;
-            min-height: 100vh;
-        }
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to bottom right, #071522, #0a1f33);
+        color: #f1f1f1;
+        min-height: 100vh;
+      }
 
-        /* --- Header (Tetap #112d4e) --- */
-        header {
-            background: #112d4e;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+      /* --- Header (Tetap #112d4e) --- */
+      header {
+        background: #112d4e;
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-        .header-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-        }
+      .header-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+      }
 
-        .user-section {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+      .user-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
 
-        .user-info {
-            text-align: right;
-            font-size: 14px;
-            color: #d7dce4;
-        }
+      .user-info {
+        text-align: right;
+        font-size: 14px;
+        color: #d7dce4;
+      }
 
-        .user-info strong {
-            display: block;
-            font-size: 16px;
-            color: #fff;
-        }
+      .user-info strong {
+        display: block;
+        font-size: 16px;
+        color: #fff;
+      }
 
-        .btn-logout {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
+      .btn-logout {
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s ease;
+        text-decoration: none;
+        font-size: 14px;
+      }
 
-        .btn-logout:hover {
-            background: #b71c1c;
-            transform: translateY(-2px);
-        }
+      .btn-logout:hover {
+        background: #b71c1c;
+        transform: translateY(-2px);
+      }
 
-        /* --- Container Card --- */
+      /* --- Container Card --- */
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        justify-items: center;
+      }
+
+      .card {
+        width: 100%;
+        padding: 25px 15px;
+        border-radius: 16px;
+        background: #112d4e;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        transition: 0.3s ease;
+        text-decoration: none;
+        color: #ffffff;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        background: #1b3d63;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      }
+
+      .card i {
+        font-size: 40px;
+        margin-bottom: 15px;
+      }
+
+      .card h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .card p {
+        font-size: 13px;
+        color: #d7dce4;
+      }
+
+      /* Responsive untuk 4 kolom */
+      @media (max-width: 1200px) {
         .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            justify-items: center;
+          grid-template-columns: repeat(2, 1fr);
         }
+      }
 
-        .card {
-            width: 100%;
-            padding: 25px 15px;
-            border-radius: 16px;
-            background: #112d4e;
-            text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            transition: 0.3s ease;
-            text-decoration: none;
-            color: #ffffff;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+      @media (max-width: 900px) {
+        .container {
+          grid-template-columns: repeat(2, 1fr);
         }
+      }
 
-        .card:hover {
-            transform: translateY(-8px);
-            background: #1b3d63;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      @media (max-width: 600px) {
+        header {
+          flex-direction: column;
+          gap: 15px;
+          text-align: center;
         }
-
-        .card i {
-            font-size: 40px;
-            margin-bottom: 15px;
+        .user-section {
+          flex-direction: column;
         }
-
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
+        .container {
+          grid-template-columns: 1fr;
         }
-
-        .card p {
-            font-size: 13px;
-            color: #d7dce4;
-        }
-
-        @media (max-width: 900px) {
-            .container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            .user-section {
-                flex-direction: column;
-            }
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <header>
+      <div class="header-title">Dashboard Guru</div>
 
-<header>
-    <div class="header-title">Dashboard Guru</div>
-
-    <div class="user-section">
+      <div class="user-section">
         <div class="user-info">
-            <div>Selamat datang,</div>
-            <strong>{{ nama_guru }}</strong>
+          <div>Selamat datang,</div>
+          <strong>{{ nama_guru }}</strong>
         </div>
         <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
-    </div>
-</header>
+      </div>
+    </header>
 
-<div class="container">
-
-    <a href="{% url 'jadwal_guru' %}" class="card">
+    <div class="container">
+      <a href="{% url 'jadwal_guru' %}" class="card">
         <i>📅</i>
         <h3>Jadwal Mengajar</h3>
         <p>Lihat jadwal pelajaran anda</p>
-    </a>
+      </a>
 
-    <a href="{% url 'absen_siswa' %}" class="card">
+      <a href="{% url 'absen_index' %}" class="card">
         <i>📝</i>
         <h3>Absen Siswa</h3>
         <p>Input dan lihat absensi siswa</p>
-    </a>
+      </a>
 
-    <a href="{% url 'input_nilai' %}" class="card">
+      <a href="{% url 'input_nilai' %}" class="card">
         <i>📊</i>
         <h3>Input Nilai</h3>
         <p>Input nilai siswa per jadwal</p>
-    </a>
+      </a>
 
-</div>
+      <a href="{% url 'rekap_nilai' %}" class="card">
+        <i>💾</i>
+        <h3>Rekap Nilai</h3>
+        <p>Kelola dan edit semua nilai siswa</p>
+      </a>
 
-</body>
+      <a href="{% url 'riwayat_absensi' %}" class="card">
+        <i>📈</i>
+        <h3>Riwayat Absensi</h3>
+        <p>Lihat dashboard riwayat absensi</p>
+      </a>
+    </div>
+  </body>
 </html>
