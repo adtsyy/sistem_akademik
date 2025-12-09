@@ -3,16 +3,35 @@ from admin_app.models import Pegawai
 from siswa.models import Siswa
 
 class Rapor(models.Model):
-    id_siswa = models.CharField(max_length=20)              # ID unik siswa
-    nama = models.CharField(max_length=100)                 # Nama siswa
-    kelas = models.CharField(max_length=20)                 # Kelas siswa
-    nilai_mapel = models.JSONField()                        # Menyimpan nilai mapel 
-    rata_rata = models.FloatField()                         # Rata-rata nilai
-    predikat = models.CharField(max_length=5)               # Predikat (A, B, C)
-    keterangan = models.CharField(max_length=20)            # Keterangan tambahan
+    # GANTI id_siswa (CharField) MENJADI ForeignKey
+    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE, related_name='rapor_siswa')
+    
+    # Field 'nama' dan 'kelas' sebenarnya opsional jika sudah ada relasi siswa, 
+    # tapi kita simpan saja sebagai "snapshot" data saat rapor dibuat.
+    nama = models.CharField(max_length=100)
+    kelas = models.CharField(max_length=20)
+    
+    nilai_mapel = models.JSONField()            # Contoh isi: {"Matematika": 85, "IPA": 90}
+    rata_rata = models.FloatField()
+    predikat = models.CharField(max_length=5)
+    keterangan = models.CharField(max_length=50) # Predikat deskriptif (Sangat Baik, dll)
+    
+    created_at = models.DateTimeField(auto_now_add=True) # Untuk tahu kapan dibuat
+    @property
+    def warna_badge(self):
+        if self.predikat == 'A':
+            return '#28a745'
+        elif self.predikat == 'B':
+            return '#17a2b8'
+        elif self.predikat == 'C':
+            return '#ffc107'
+        elif self.predikat == 'D':
+            return '#dc3545'
+        else:
+            return '#6c757d'
 
     def __str__(self):
-        return f"Rapor {self.nama} ({self.kelas})"
+        return f"Rapor {self.siswa.nama} ({self.kelas})"
 
 class SPP(models.Model):
     # Pilihan dropdown bulan

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Cari Siswa</title>
+    <style>
+        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0a1f33; color: #e6e6e6; }
+        .container { max-width: 600px; margin: 60px auto; text-align: center; }
+        .card { background: #112d4e; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        input { padding: 15px; width: 70%; border-radius: 8px; border: none; background: #f1f1f1; font-size: 16px; }
+        button { padding: 15px 20px; border-radius: 8px; border: none; background: #3f72af; color: white; cursor: pointer; font-weight: bold; }
+        button:hover { background: #305f96; }
+
+        .result-item { 
+            background: rgba(255,255,255,0.05); padding: 15px; margin-top: 15px; border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center; text-align: left;
+        }
+        .btn-gen { background: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+        .btn-gen:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>🔍 Buat Rapor Otomatis</h2>
+        <p>Cari siswa untuk menghitung nilai & absensi secara otomatis.</p>
+        
+        <form method="get" style="margin-bottom: 30px;">
+            <input type="text" name="q" placeholder="Masukkan Nama atau NIS..." value="{{ search_query }}">
+            <button type="submit">Cari</button>
+        </form>
+
+        {% if siswa_list %}
+            <div style="text-align: left; margin-bottom: 10px; font-weight: bold;">Hasil Pencarian:</div>
+            {% for s in siswa_list %}
+            <div class="result-item">
+                <div>
+                    <div style="font-size: 18px; font-weight: bold;">{{ s.nama }}</div>
+                    <div style="color: #aaa; font-size: 14px;">NIS: {{ s.nis }} | Kelas: {{ s.kelas }}</div>
+                </div>
+                <a href="{% url 'rapor_generate' s.pk %}" class="btn-gen" onclick="return confirm('Proses rapor untuk {{ s.nama }}?')">⚙️ PROSES</a>
+            {% endfor %}
+        {% elif search_query %}
+            <p style="color: #ff6b6b;">Siswa tidak ditemukan.</p>
+        {% endif %}
+        
+        <br>
+        <a href="{% url 'rapor_list' %}" style="color: #6fb7ff; text-decoration: none;">&larr; Kembali ke Daftar</a>
+    </div>
+</div>
+
+</body>
+</html>

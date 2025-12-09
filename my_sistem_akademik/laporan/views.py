@@ -1,49 +1,150 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Rapor, SPP, Gaji
 from .forms import RaporForm, SPPForm, GajiForm
 from siswa.models import Siswa
 from django.db.models import Q
+from django.db.models import Avg, Sum, Count
+from .models import Rapor
+from guru.models import Nilai, Absen 
 
 def home(request):
     return render(request, 'laporan/home.html')
 
-# List data rapor
+# ==========================================
+# BAGIAN RAPOR OTOMATIS
+# ==========================================
+
+# 1. LIST RAPOR (Tampilan Awal)
 class RaporListView(ListView):
     model = Rapor
     template_name = 'laporan/rapor_list.html'
     context_object_name = 'rapor'
+    ordering = ['-created_at']
 
-    # Fitur pencarian berdasarkan ID siswa
     def get_queryset(self):
         queryset = super().get_queryset()
-        id_siswa = self.request.GET.get('id_siswa')
-        if id_siswa:
-            queryset = queryset.filter(id_siswa__icontains=id_siswa)
+        search = self.request.GET.get('q')
+        if search:
+            # Filter berdasarkan relasi siswa
+            queryset = queryset.filter(siswa__nama__icontains=search)
         return queryset
-    
-# Tambah rapor
-class RaporCreateView(CreateView):
-    model = Rapor
-    form_class = RaporForm
-    template_name = 'laporan/rapor_form.html'
-    success_url = reverse_lazy('rapor_list')
 
-# Edit rapor
+# 2. LANGKAH 1: CARI SISWA
+def tambah_rapor_step1(request):
+    """Halaman pencarian siswa sebelum generate rapor"""
+    search_query = request.GET.get('q', '')
+    siswa_list = []
+
+    if search_query:
+        siswa_list = Siswa.objects.filter(
+            Q(nama__icontains=search_query) | 
+            Q(nis__icontains=search_query)
+        )
+
+    return render(request, 'laporan/rapor_search.html', {
+        'siswa_list': siswa_list,
+        'search_query': search_query
+    })
+
+# 3. LANGKAH 2: GENERATE & SIMPAN (LOGIC INTI)
+def generate_rapor_siswa(request, id_siswa):
+    # Ambil data siswa
+    siswa = get_object_or_404(Siswa, pk=id_siswa)
+
+    # Cek duplikasi (Opsional: 1 Siswa 1 Rapor)
+    if Rapor.objects.filter(siswa=siswa).exists():
+        messages.warning(request, f"Rapor untuk {siswa.nama} sudah ada!")
+        return redirect('rapor_list')
+
+    # --- HITUNG NILAI ---
+    # Ambil semua nilai siswa ini
+    nilai_qs = Nilai.objects.filter(siswa=siswa).select_related('jadwal')
+    
+    data_mapel = {}
+    total_nilai = 0
+    jumlah_mapel = 0
+
+    if nilai_qs.exists():
+        # Grouping nilai per mata pelajaran
+        temp_group = {}
+        for obj in nilai_qs:
+            mapel = obj.jadwal.mata_pelajaran
+            if mapel not in temp_group:
+                temp_group[mapel] = []
+            temp_group[mapel].append(obj.nilai)
+        
+        # Hitung rata-rata per mapel
+        for mapel, list_nilai in temp_group.items():
+            avg_per_mapel = sum(list_nilai) / len(list_nilai)
+            data_mapel[mapel] = round(avg_per_mapel, 2) # Simpan ke Dict JSON
+            
+            total_nilai += avg_per_mapel
+            jumlah_mapel += 1
+        
+        rata_rata_akhir = round(total_nilai / jumlah_mapel, 2) if jumlah_mapel > 0 else 0
+    else:
+        rata_rata_akhir = 0
+
+    # --- HITUNG ABSENSI (Opsional dimasukkan ke data_mapel) ---
+    absen_sakit = Absen.objects.filter(siswa=siswa, status='sakit').count()
+    absen_izin = Absen.objects.filter(siswa=siswa, status='izin').count()
+    absen_alpa = Absen.objects.filter(siswa=siswa, status='alpa').count()
+    
+    # Masukkan info absen ke JSON juga agar tersimpan di rapor
+    data_mapel['Absensi'] = {
+        'Sakit': absen_sakit,
+        'Izin': absen_izin,
+        'Alpa': absen_alpa
+    }
+
+    # --- TENTUKAN PREDIKAT ---
+    if rata_rata_akhir >= 90:
+        predikat, ket = "A", "Sangat Baik"
+    elif rata_rata_akhir >= 80:
+        predikat, ket = "B", "Baik"
+    elif rata_rata_akhir >= 70:
+        predikat, ket = "C", "Cukup"
+    else:
+        predikat, ket = "D", "Kurang"
+
+    # --- SIMPAN KE DATABASE ---
+    Rapor.objects.create(
+        siswa=siswa,            # Relasi Foreign Key
+        nama=siswa.nama,        # Snapshot Nama
+        kelas=siswa.kelas,      # Snapshot Kelas
+        nilai_mapel=data_mapel, # Simpan hasil hitungan JSON
+        rata_rata=rata_rata_akhir,
+        predikat=predikat,
+        keterangan=ket
+    )
+
+    messages.success(request, f"Sukses! Rapor {siswa.nama} berhasil dibuat.")
+    return redirect('rapor_list')
+
 class RaporUpdateView(UpdateView):
     model = Rapor
-    form_class = RaporForm
     template_name = 'laporan/rapor_form.html'
+    # Field ini akan dirender oleh {{ form.rata_rata }}, {{ form.predikat }}, dll di template
+    fields = ['rata_rata', 'predikat', 'keterangan', 'nilai_mapel', 'siswa'] 
     success_url = reverse_lazy('rapor_list')
 
-# Hapus rapor
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Mengirim data tambahan untuk judul di atas form
+        context['siswa_nama'] = self.object.siswa.nama
+        context['siswa_kelas'] = self.object.kelas
+        return context
+    
+# HAPUS RAPOR
 class RaporDeleteView(DeleteView):
     model = Rapor
     template_name = 'laporan/rapor_confirm_delete.html'
     success_url = reverse_lazy('rapor_list')
 
-# Detail rapor
+# DETAIL RAPOR
 class RaporDetailView(DetailView):
     model = Rapor
     template_name = 'laporan/rapor_detail.html'

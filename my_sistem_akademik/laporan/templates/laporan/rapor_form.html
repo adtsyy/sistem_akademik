@@ -2,109 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% if form.instance.pk %}Edit Rapor{% else %}Tambah Rapor{% endif %}</title>
-
+    <title>Edit Rapor</title>
     <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(to bottom right, #071522, #0a1f33);
-            color: #e6e6e6;
+        body { font-family: "Segoe UI", sans-serif; background: #071522; color: #fff; display: flex; justify-content: center; padding-top: 50px; }
+        .card { width: 400px; background: #112d4e; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        h2 { text-align: center; border-bottom: 2px solid #3f72af; padding-bottom: 10px; margin-bottom: 20px; }
+        
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #dbe2ef; }
+        input, select, textarea { 
+            width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: none; 
+            background: rgba(255,255,255,0.1); color: white; box-sizing: border-box;
         }
-
-        header {
-            background: #0f2a45;
-            padding: 25px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            color: #fff;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.4);
-        }
-
-        .wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-            padding: 0 20px;
-        }
-
-        .card {
-            width: 45%;
-            background: rgba(17,45,78,0.85);
-            padding: 25px;
-            border-radius: 18px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.45);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        select,
-        input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            margin-bottom: 18px;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
-        /* Style dropdown options */
-        select option {
-            background-color: #0f2a45;
-            color: white;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #3f72af;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .button:hover {
-            background: #1d4e8c;
-        }
+        
+        .btn-save { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn-save:hover { background: #218838; }
+        .btn-cancel { display: block; text-align: center; margin-top: 15px; color: #aaa; text-decoration: none; }
+        .readonly-field { background: rgba(0,0,0,0.3); color: #888; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-<header>
-    {% if form.instance.pk %}Edit Rapor{% else %}Tambah Rapor{% endif %}
-</header>
+<div class="card">
+    <h2>✏️ Edit Rapor</h2>
+    <p style="text-align:center; font-size:14px; color:#aaa; margin-bottom:20px;">
+        {{ form.instance.nama }} ({{ form.instance.kelas }})
+    </p>
 
-<div class="wrapper">
-    <div class="card">
+    <form method="post">
+        {% csrf_token %}
 
-        <form method="post">
-            {% csrf_token %}
+        <label>Siswa (Read Only)</label>
+        <input type="text" value="{{ form.instance.nama }}" class="readonly-field" readonly>
+        <div style="display:none;">{{ form.siswa }}</div> <label>Rata-rata (Hitungan Sistem)</label>
+        {{ form.rata_rata }}
 
-            <label>Siswa</label>
-            {{ form.siswa }}
+        <label>Predikat</label>
+        {{ form.predikat }}
 
-            <label>Mata Pelajaran 1</label>
-            {{ form.mapel1 }}
+        <label>Keterangan</label>
+        {{ form.keterangan }}
 
-            <label>Mata Pelajaran 2</label>
-            {{ form.mapel2 }}
+        <div style="display:none;">{{ form.nilai_mapel }}</div>
 
-            <label>Mata Pelajaran 3</label>
-            {{ form.mapel3 }}
-
-            <button type="submit" class="button">💾 Simpan</button>
-            <a href="{% url 'rapor_list' %}" class="button">⏪ Batal</a>
-        </form>
-
-    </div>
+        <button type="submit" class="btn-save">💾 Simpan Perubahan</button>
+        <a href="{% url 'rapor_list' %}" class="btn-cancel">Batal</a>
+    </form>
 </div>
 
 </body>

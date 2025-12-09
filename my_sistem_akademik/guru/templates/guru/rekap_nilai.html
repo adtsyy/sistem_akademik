@@ -500,12 +500,16 @@
                             {% endif %}
                         </td>
                         <td>
-                            <button 
+                           <button 
                                 type="button" 
                                 class="btn-edit" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#editModal"
-                                onclick="editNilai({{ nilai.id }}, {{ nilai.nilai }}, '{{ nilai.keterangan|default:'' }}', '{{ nilai.siswa.nama }}')"
+                                data-id="{{ nilai.id }}"
+                                data-nilai="{{ nilai.nilai }}"
+                                data-keterangan="{{ nilai.keterangan|default:'' }}"
+                                data-nama="{{ nilai.siswa.nama }}"
+                                onclick="handleEdit(this)"
                             >
                                 ✏ Edit
                             </button>
