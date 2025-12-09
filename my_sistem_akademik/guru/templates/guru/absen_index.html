@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi - Daftar Jadwal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", "Open Sans", sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
+            color: #f1faee;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            border-bottom: 3px solid #3a86ff;
+        }
+        .header h1 { font-size: 28px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .back-btn {
+            display: inline-block; margin-bottom: 20px; padding: 10px 20px;
+            background: #3a86ff; color: white; text-decoration: none;
+            border-radius: 8px; transition: all 0.3s ease; font-weight: 600;
+        }
+        .back-btn:hover { background: #2563eb; transform: translateX(-5px); }
+        .jadwal-wrapper { background: #1b263b; border: 2px solid #415a77; border-radius: 12px;
+            padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%); border-bottom: 2px solid #3a86ff; }
+        th, td { padding: 15px; text-align: left; color: #f1faee; font-size: 14px; }
+        th { font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px; }
+        tbody tr { border-bottom: 1px solid #415a77; transition: all 0.3s ease; }
+        tbody tr:hover { background: #1e3a5f; }
+        .hari-badge { padding: 6px 10px; border-radius: 6px; background: rgba(59,130,246,.15); color: #93c5fd; font-weight: 700; }
+        .time-badge { padding: 6px 10px; border-radius: 6px; background: rgba(17,94,89,.15); color: #5eead4; font-weight: 700; }
+        .btn-action {
+            padding: 10px 16px; background: #3a86ff; border: none; border-radius: 8px;
+            color: white; cursor: pointer; font-weight: 700; text-decoration: none;
+            display: inline-block; transition: all 0.2s ease;
+        }
+        .btn-action:hover { background: #2563eb; box-shadow: 0 4px 12px rgba(58,134,255,.4); transform: translateY(-2px); }
+        .no-data { text-align: center; padding: 40px; color: #7a9ab8; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📝 Absensi - Daftar Jadwal</h1>
+    </div>
+
+    <div class="container">
+        <a href="{% url 'guru_dashboard' %}" class="back-btn">← Kembali ke Dashboard</a>
+
+        <div class="jadwal-wrapper">
+            <h2 style="margin-bottom: 20px">Daftar Jadwal Mengajar</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Mata Pelajaran</th>
+                        <th>Hari</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for jadwal in jadwal_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ jadwal.mata_pelajaran }}</td>
+                        <td><span class="hari-badge">{{ jadwal.hari }}</span></td>
+                        <td><span class="time-badge">{{ jadwal.jam_mulai|time:"H:i" }}</span></td>
+                        <td><span class="time-badge">{{ jadwal.jam_selesai|time:"H:i" }}</span></td>
+                        <td>
+                            <a href="{% url 'absen_detail' jadwal.id %}" class="btn-action">Absensi</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not jadwal_list %}
+            <div class="no-data">
+                <p>Tidak ada jadwal yang ditemukan untuk Anda.</p>
+                <p style="margin-top: 10px; color: #5a7a98">Hubungi admin untuk menambahkan jadwal.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

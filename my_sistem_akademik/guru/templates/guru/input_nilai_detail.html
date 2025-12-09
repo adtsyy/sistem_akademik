@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Input Nilai</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Open Sans", sans-serif;
+        background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
+        color: #f1faee;
+      }
+      .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+      .header {
+        background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
+        padding: 25px;
+        text-align: center;
+        border-bottom: 3px solid #3a86ff;
+      }
+      .form-section {
+        background: #1b263b;
+        border: 2px solid #415a77;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      label {
+        font-weight: 600;
+        color: #b8d4e8;
+      }
+      input[type="text"],
+      input[type="date"] {
+        padding: 10px 12px;
+        background: #0f1f2e;
+        border: 1px solid #415a77;
+        border-radius: 6px;
+        color: #f1faee;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .search-box {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      .btn-search {
+        padding: 10px 20px;
+        background: #3a86ff;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .btn-search:hover {
+        background: #2563eb;
+      }
+      
+      /* --- CSS BARU UNTUK TOMBOL KEMBALI --- */
+      .btn-back {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #64748b; /* Warna Abu-abu */
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 20px; /* Jarak ke bawah */
+        border: 1px solid #475569;
+        transition: background 0.3s;
+      }
+      .btn-back:hover {
+        background-color: #475569;
+      }
+      /* ------------------------------------- */
+
+      .nilai-table {
+        background: #1b263b;
+        border: 2px solid #415a77;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead {
+        background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%);
+      }
+      thead th {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #e8f4f8;
+        font-size: 13px;
+      }
+      tbody td {
+        padding: 12px 15px;
+        color: #f1faee;
+        font-size: 14px;
+        vertical-align: top;
+      }
+      .nilai-input {
+        padding: 8px;
+        background: #0f1f2e;
+        border: 1px solid #415a77;
+        border-radius: 6px;
+        color: #f1faee;
+        width: 80px;
+        text-align: center;
+      }
+      .badge-status {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      .badge-ok {
+        background: #10b981;
+        color: white;
+      }
+      .badge-error {
+        background: #ef4444;
+        color: white;
+      }
+      .badge-info {
+        background: #3b82f6;
+        color: white;
+      }
+      .btn-save {
+        padding: 10px 24px;
+        background: #4ade80;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 18px;
+      }
+      .btn-save:hover {
+        background: #22c55e;
+      }
+      .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #7a9ab8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Input Nilai Siswa</h1>
+      <h3>
+        {{ jadwal.mata_pelajaran }} - {{ jadwal.hari }} ({{ jadwal.kelas }})
+      </h3>
+    </div>
+    
+    <div class="container">
+      
+      <a href="javascript:history.back()" class="btn-back">
+        &larr; Kembali
+      </a>
+
+      <form method="get" class="form-section" style="margin-bottom: 20px">
+        <div class="search-box">
+          <input
+            type="text"
+            name="search"
+            placeholder="Cari Nama/NIS..."
+            value="{{ search_siswa|default:'' }}"
+          />
+          <button class="btn-search" type="submit">Cari</button>
+        </div>
+      </form>
+
+      <form method="post" class="form-section">
+        {% csrf_token %}
+        <input type="hidden" name="jadwal_id" value="{{ jadwal.id }}" />
+        
+        <div class="form-group">
+          <label for="keterangan_nilai">Keterangan Nilai</label>
+          <input
+            type="text"
+            id="keterangan_nilai"
+            name="keterangan_nilai"
+            placeholder="Contoh: Ulangan Harian 1"
+            value="{{ keterangan_nilai|default:'' }}"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="tanggal">Tanggal</label>
+          <input
+            type="date"
+            id="tanggal"
+            name="tanggal"
+            value="{{ tanggal|date:'Y-m-d' }}"
+          />
+        </div>
+
+        <div class="nilai-table">
+          <table>
+            <thead>
+              <tr>
+                <th width="5%">No</th>
+                <th width="15%">NIS</th>
+                <th width="40%">Nama Siswa</th>
+                <th width="40%">Input Nilai</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for siswa in siswa_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ siswa.nis }}</td>
+                <td>{{ siswa.nama }}</td>
+                <td>
+                  <input
+                    type="number"
+                    class="nilai-input"
+                    name="nilai_{{ siswa.nis }}"
+                    min="0"
+                    max="100"
+                    placeholder="Nilai"
+                    value="{% if siswa.existing_nilai %}{{ siswa.existing_nilai.nilai }}{% endif %}"
+                  />
+
+                  {% if siswa.existing_nilai %}
+                    <br>
+                    <span class="badge-status badge-info">
+                        Nilai: {{ siswa.existing_nilai.nilai }}
+                        {% if siswa.existing_nilai.tanggal %}
+                            ({{ siswa.existing_nilai.tanggal|date:'d-m-Y' }})
+                        {% endif %}
+                    </span>
+                  {% endif %}
+
+                  {% if siswa.save_status %}
+                    <br>
+                    {% if siswa.save_status == 'ok' %}
+                        <span class="badge-status badge-ok">Tersimpan</span>
+                    {% elif siswa.save_status == 'invalid' %}
+                        <span class="badge-status badge-error">Nilai tidak valid</span>
+                    {% elif siswa.save_status == 'error' %}
+                        <span class="badge-status badge-error">Format salah</span>
+                    {% elif siswa.save_status == 'no_siswa' %}
+                        <span class="badge-status badge-error">Siswa tidak ditemukan</span>
+                    {% endif %}
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4" class="no-data">Tidak ada siswa ditemukan.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <button type="submit" name="simpan_semua" class="btn-save">
+          Simpan Semua Nilai
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

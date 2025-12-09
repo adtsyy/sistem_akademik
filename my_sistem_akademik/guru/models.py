@@ -36,7 +36,7 @@ class Nilai(models.Model):
     siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE)
     pegawai = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
     jadwal = models.ForeignKey(Jadwal, on_delete=models.CASCADE)
-    nilai = models.FloatField(validators=[])
+    nilai = models.FloatField()
     tanggal = models.DateField(default=timezone.now)
     keterangan = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
