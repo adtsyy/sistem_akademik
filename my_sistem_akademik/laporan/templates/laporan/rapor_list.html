@@ -1,103 +1,138 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Daftar Rapor</title>
     <style>
-        /* Warna Badge Predikat */
-        .badge-A { background-color: #28a745 !important; color: white; } /* Hijau */
-        .badge-B { background-color: #17a2b8 !important; color: white; } /* Biru */
-        .badge-C { background-color: #ffc107 !important; color: black; } /* Kuning */
-        .badge-D { background-color: #dc3545 !important; color: white; } /* Merah */
-        .badge-default { background-color: #6c757d !important; color: white; } /* Abu-abu */
+        body { 
+            margin: 0; 
+            font-family: "Segoe UI", sans-serif; 
+            background: linear-gradient(135deg, #071522, #0a1f33); 
+            color: #e6e6e6; 
+        }
+        header { 
+            background: #0f2a45; 
+            padding: 25px 0; 
+            text-align: center; 
+            font-size: 28px; 
+            font-weight: 600; 
+            color: #fff; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
+        }
+        .wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 
-        body { margin: 0; font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg, #071522, #0a1f33); color: #e6e6e6; }
-        header { background: #0f2a45; padding: 25px 0; text-align: center; font-size: 28px; font-weight: 600; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        .wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
         a.back { display: inline-block; margin-bottom: 15px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
-        
-        .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .search-form { display: flex; gap: 10px; flex-grow: 1; max-width: 400px; }
-        .search-form input { padding: 10px; border-radius: 8px; border: none; width: 100%; }
-        .search-form button { padding: 10px 15px; border-radius: 8px; border: none; cursor: pointer; background: #3f72af; color: white; }
-        
-        a.button { padding: 10px 20px; background: #28a745; color: #fff; border-radius: 8px; text-decoration: none; font-weight: bold; margin-left: 10px; }
-        a.button:hover { background: #218838; }
-        
-        a.btn-action { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; color: white; margin-right: 5px; }
-        .btn-blue { background: #3f72af; }
-        .btn-red { background: #ff4d4d; }
-        
-        table { width: 100%; border-collapse: collapse; background: rgba(17,45,78,0.9); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.45); }
-        th, td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        th { background: rgba(31,65,105,0.9); font-weight: 600; text-transform: uppercase; font-size: 14px; }
-        tr:hover { background: rgba(255,255,255,0.05); }
-        
-        .alert { padding: 15px; background: #28a745; color: white; border-radius: 8px; margin-bottom: 20px; }
-        .badge { padding: 5px 10px; border-radius: 5px; font-weight: bold; }
 
+        /* Tombol & Form */
+        .button { 
+            padding: 8px 15px; 
+            background: #3f72af; 
+            color: white; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transition: 0.3s;
+        }
+        .button:hover { background: #1d4e8c; }
+        .delete-button { background: #ff4d4d; }
+        .delete-button:hover { background: #cc0000; }
+
+        .header-controls { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px; 
+            background: rgba(17,45,78,0.5); 
+            padding: 15px; 
+            border-radius: 10px; 
+        }
+        .search-box { display: flex; gap: 10px; }
+        .search-input { 
+            padding: 8px 12px; 
+            border-radius: 6px; 
+            border: 1px solid #3f72af; 
+            background: rgba(255,255,255,0.1); 
+            color: white; 
+            outline: none; 
+            width: 250px; 
+        }
+
+        /* Tabel */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: rgba(17,45,78,0.9); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45); 
+        }
+        th, td { padding: 12px 15px; text-align: left; vertical-align: middle; }
+        th { background: rgba(31,65,105,0.9); }
+        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+
+        /* Badge Predikat */
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .status-A { background: #28a745; color: white; } /* Hijau */
+        .status-B { background: #0d6efd; color: white; } /* Biru */
+        .status-C { background: #ffc107; color: #333; } /* Kuning */
+        .status-D { background: #dc3545; color: white; } /* Merah */
+
+        .action-buttons { display: flex; gap: 8px; }
     </style>
 </head>
 <body>
 
-<header>Daftar Rapor Siswa</header>
+<header>Daftar Rapor</header>
 
 <div class="wrapper">
-    
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+    <a href="{% url 'laporan_home' %}" class="back">⟵ Kembali ke Laporan</a>
 
-    <div class="top-actions">
-        <a href="{% url 'laporan_home' %}" class="back">⟵ Dashboard</a>
-        
-        <form method="get" class="search-form">
-            <input type="text" name="q" placeholder="Cari Nama Siswa..." value="{{ request.GET.q }}">
-            <button type="submit">🔍</button>
+    <div class="header-controls">
+        <form method="get" class="search-box">
+            <input type="text" name="q" class="search-input" placeholder="Cari Siswa atau Kelas..." value="{{ request.GET.q|default:'' }}">
+            <button type="submit" class="button">🔍 Cari</button>
+            {% if request.GET.q %} 
+                <a href="{% url 'rapor_list' %}" class="button" style="background:#555;">Reset</a> 
+            {% endif %}
         </form>
-
-        <a href="{% url 'rapor_tambah' %}" class="button">➕ Buat Rapor Baru</a>
+        <a href="{% url 'rapor_tambah' %}" class="button">➕ Tambah Rapor</a>
     </div>
 
     <table>
-        <thead>
-            <tr>
-                <th>NIS</th>
-                <th>Nama</th>
-                <th>Kelas</th>
-                <th>Rata-rata</th>
-                <th>Predikat</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for r in rapor %}
-            <tr>
-                <td>{{ r.siswa.nis }}</td>
-                <td>{{ r.siswa.nama }}</td>
-                <td>{{ r.kelas }}</td>
-                <td>{{ r.rata_rata }}</td>
-                <td>
-                    <span class="badge badge-{{ r.predikat }}">
-                        {{ r.predikat }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{% url 'rapor_detail' r.pk %}" class="btn-action btn-blue">👁 Detail</a>
-                    <a href="{% url 'rapor_edit' r.pk %}" class="btn-action btn-blue" style="background:#ffc107; color:#000;">✏ Edit</a>
-                    <a href="{% url 'rapor_hapus' r.pk %}" class="btn-action btn-red">🗑 Hapus</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" style="padding: 40px; color: #aaa;">
-                    Belum ada data rapor. Silakan klik tombol <b>Buat Rapor Baru</b>.
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <tr>
+            <th>Nama Siswa</th>
+            <th>Kelas</th>
+            <th>Rata-rata</th>
+            <th>Predikat</th>
+            <th>Keterangan</th>
+            <th>Aksi</th>
+        </tr>
+
+        {% for r in rapor %}
+        <tr>
+            <td><b>{{ r.siswa.nama }}</b><br><small>NIS: {{ r.siswa.nis }}</small></td>
+            <td>{{ r.kelas }}</td>
+            <td style="font-weight:bold;">{{ r.rata_rata }}</td>
+            <td>
+                <span class="status-badge status-{{ r.predikat }}">{{ r.predikat }}</span>
+            </td>
+            <td>{{ r.keterangan }}</td>
+            <td>
+                <div class="action-buttons">
+                    <a href="{% url 'rapor_detail' r.pk %}" class="button">👁️ Lihat</a>
+                    <a href="{% url 'rapor_edit' r.pk %}" class="button">✏️ Edit</a>
+                    <a href="{% url 'rapor_hapus' r.pk %}" class="button delete-button">🗑️ Hapus</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align:center; padding: 30px;">Belum ada data rapor yang diinput.</td>
+        </tr>
+        {% endfor %}
     </table>
 </div>
 
