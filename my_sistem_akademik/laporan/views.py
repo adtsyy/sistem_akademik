@@ -13,10 +13,6 @@ from guru.models import Nilai, Absen
 def home(request):
     return render(request, 'laporan/home.html')
 
-# ==========================================
-# BAGIAN RAPOR OTOMATIS
-# ==========================================
-
 # 1. LIST RAPOR (Tampilan Awal)
 class RaporListView(ListView):
     model = Rapor
@@ -28,7 +24,6 @@ class RaporListView(ListView):
         queryset = super().get_queryset()
         search = self.request.GET.get('q')
         if search:
-            # Filter berdasarkan relasi siswa
             queryset = queryset.filter(siswa__nama__icontains=search)
         return queryset
 
@@ -60,7 +55,6 @@ def generate_rapor_siswa(request, id_siswa):
         return redirect('rapor_list')
 
     # --- HITUNG NILAI ---
-    # Ambil semua nilai siswa ini
     nilai_qs = Nilai.objects.filter(siswa=siswa).select_related('jadwal')
     
     data_mapel = {}
@@ -88,7 +82,7 @@ def generate_rapor_siswa(request, id_siswa):
     else:
         rata_rata_akhir = 0
 
-    # --- HITUNG ABSENSI (Opsional dimasukkan ke data_mapel) ---
+    # --- HITUNG ABSENSI  ---
     absen_sakit = Absen.objects.filter(siswa=siswa, status='sakit').count()
     absen_izin = Absen.objects.filter(siswa=siswa, status='izin').count()
     absen_alpa = Absen.objects.filter(siswa=siswa, status='alpa').count()
@@ -152,10 +146,8 @@ class RaporDetailView(DetailView):
 
 # List SPP
 def spp_list(request):
-    # Ambil semua data dulu
+    # Ambil semua data 
     spp = SPP.objects.select_related('siswa').all()
-
-    # Cek apakah ada pencarian?
     keyword = request.GET.get('q')
 
     if keyword:
@@ -173,8 +165,6 @@ def spp_tambah(request):
     if request.method == 'POST':
         data = request.POST.copy()
         
-        # Pastikan data siswa terambil dengan benar dari dropdown
-        # Jika nama field di HTML adalah 'siswa', ambil ID-nya
         siswa_id = request.POST.get('siswa') 
         data['siswa'] = siswa_id
 
@@ -191,19 +181,10 @@ def spp_tambah(request):
             ).first()
             
             if spp_lama:
-                # SKENARIO CICILAN:
-                # Tambahkan uang yang baru diinput ke jumlah yang sudah ada
                 spp_lama.jumlah += spp_baru.jumlah 
-                
-                # Update tagihan juga jika admin merubahnya di inputan terakhir (opsional)
                 spp_lama.tagihan = spp_baru.tagihan 
-                
-                # Simpan data lama yang sudah diupdate
-                # (Otomatis memicu hitungan status di models.py)
                 spp_lama.save() 
             else:
-                # SKENARIO DATA BARU:
-                # Belum ada data, simpan sebagai data baru
                 spp_baru.save()
             
             return redirect('spp_list')
@@ -230,8 +211,8 @@ def spp_edit(request, id):
         if form.is_valid():
 
             spp = form.save(commit=False)
-            siswa_id = request.POST.get("siswa")    # ambil pilihan siswa
-            spp.siswa_id = siswa_id                 # set ke model
+            siswa_id = request.POST.get("siswa")    
+            spp.siswa_id = siswa_id                 
 
             spp.save()
             return redirect('spp_list')
@@ -285,7 +266,6 @@ def gaji_tambah(request):
             
             if cek_ganda:
                 # Jika sudah ada, jangan simpan, beri pesan error (opsional) atau redirect
-                # Disini kita redirect saja biar simpel
                 return redirect("gaji_list")
 
             gaji_baru.save()

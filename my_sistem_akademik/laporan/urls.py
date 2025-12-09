@@ -6,9 +6,7 @@ urlpatterns = [
     path('', views.home, name='laporan_home'),
 
     # Rapor
-   # --- RAPOR ---
     path('rapor/', views.RaporListView.as_view(), name='rapor_list'),
-    # Flow baru: Cari -> Generate
     path('rapor/tambah/', views.tambah_rapor_step1, name='rapor_tambah'), 
     path('rapor/generate/<str:id_siswa>/', views.generate_rapor_siswa, name='rapor_generate'),
     path('rapor/hapus/<int:pk>/', views.RaporDeleteView.as_view(), name='rapor_hapus'),
