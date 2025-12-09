@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-        /* --- COPY STYLE DARI FORM GAJI AGAR SERAGAM --- */
         body { margin:0; font-family:"Segoe UI", sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:white; font-size: 15px; }
         header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; }
         .wrapper { display:flex; justify-content:center; margin-top:35px; }
@@ -17,7 +16,6 @@
         
         label { display:block; margin-bottom:10px; font-weight:bold; margin-top: 20px; font-size: 16px; }
         
-        /* INPUT & SELECT STANDAR */
         input, textarea, select { 
             width:100%; 
             padding: 12px 15px; 
@@ -30,18 +28,11 @@
         }
         select option { background: #0f2a45; color: white; padding: 10px; }
         
-        /* TOMBOL */
         .button { display:inline-block; padding:12px 24px; background:#3f72af; color:white; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; border: none; cursor: pointer; margin-top: 25px; font-size: 15px;}
         .button:hover { background:#1d4e8c; }
 
-        /* INFO BOX */
         .info-box { background: rgba(63, 114, 175, 0.2); padding: 15px; border-radius: 8px; font-size: 14px; color: #a3caff; margin-bottom: 20px; line-height: 1.5; }
 
-        /* ========================================= */
-        /* CSS SELECT2 (SEARCH DROPDOWN) - DARK THEME */
-        /* ========================================= */
-
-        /* Kotak Utama */
         .select2-container .select2-selection--single {
             height: auto !important;
             padding: 8px 5px !important;
@@ -51,12 +42,10 @@
             display: flex; align-items: center;
         }
 
-        /* Teks Pilihan */
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             color: white !important; padding-left: 10px; font-size: 15px !important; line-height: normal;
         }
         
-        /* Panah Dropdown */
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 100%; top: 0; right: 10px;
         }
@@ -64,7 +53,6 @@
             border-color: white transparent transparent transparent; border-width: 6px 5px 0 5px;
         }
 
-        /* Dropdown Saat Dibuka */
         .select2-dropdown {
             background-color: #0f2a45 !important; 
             border: 2px solid #3f72af !important; 
@@ -73,19 +61,16 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Item Pilihan */
         .select2-results__option {
             background-color: #0f2a45; color: #e6e6e6;
             padding: 12px 15px !important; font-size: 15px !important;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Item Hover */
         .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
             background-color: #3f72af !important; color: white !important; font-weight: bold;
         }
 
-        /* Input Pencarian */
         .select2-search--dropdown { padding: 10px; }
         .select2-search__field {
             background-color: #071522 !important; color: white !important;
@@ -139,7 +124,6 @@
 
 <script>
     $(document).ready(function() {
-        // Terapkan Select2 pada dropdown dengan ID 'nis_siswa'
         $('#nis_siswa').select2({
             placeholder: "Ketik Nama Siswa atau NIS...",
             allowClear: true,

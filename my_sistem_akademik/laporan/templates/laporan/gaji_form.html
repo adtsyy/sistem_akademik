@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-    /* --- Style Dasar Halaman --- */
     body { margin:0; font-family:"Segoe UI", sans-serif; background:linear-gradient(to bottom right,#071522,#0a1f33); color:white; font-size: 15px; }
     header { background:#0f2a45; padding:25px; text-align:center; font-size:28px; font-weight:600; }
     .wrapper { display:flex; justify-content:center; margin-top:35px; }
@@ -17,35 +16,26 @@
     
     label { display:block; margin-bottom:10px; font-weight:bold; margin-top: 20px; font-size: 16px; }
     
-    /* --- INPUT & TEXTAREA STANDAR (Agar seragam) --- */
     input, textarea, select { 
         width:100%; 
-        padding: 12px 15px; /* Padding besar agar terlihat tebal */
+        padding: 12px 15px; 
         border:none; 
         border-radius:8px; 
         background:rgba(255,255,255,0.1); 
         color:white; 
         box-sizing: border-box; 
-        font-size: 15px; /* Ukuran font standar */
+        font-size: 15px; 
     }
-    /* Style untuk dropdown bawaan browser (jika select2 gagal loading) */
     select option { background: #0f2a45; color: white; padding: 10px; }
     
-    /* Tombol */
     .button { display:inline-block; padding:12px 24px; background:#3f72af; color:white; border-radius:8px; text-decoration:none; font-weight:bold; margin-right:10px; border: none; cursor: pointer; margin-top: 25px; font-size: 15px;}
     .button:hover { background:#1d4e8c; }
 
-    /* Info Box */
     .info-box { background: rgba(63, 114, 175, 0.2); padding: 15px; border-radius: 8px; font-size: 14px; color: #a3caff; margin-bottom: 20px;line-height: 1.5; }
 
-    /* ========================================= */
-    /* PERBAIKAN TOTAL CSS SELECT2 (DARK MODE & UKURAN) */
-    /* ========================================= */
-
-    /* 1. Kotak Pilihan Utama (Tampilan Luar) */
     .select2-container .select2-selection--single {
-        height: auto !important; /* Biarkan tinggi menyesuaikan padding */
-        padding: 8px 5px !important; /* Padding agar tebal mirip input lain */
+        height: auto !important; 
+        padding: 8px 5px !important; 
         background-color: rgba(255,255,255,0.1) !important; 
         border: none !important;
         border-radius: 8px !important;
@@ -53,15 +43,13 @@
         align-items: center;
     }
 
-    /* Teks di dalam kotak utama */
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: white !important;
         padding-left: 10px;
-        font-size: 15px !important; /* Ukuran font disamakan */
+        font-size: 15px !important; 
         line-height: normal;
     }
     
-    /* Panah di kanan */
     .select2-container--default .select2-selection--single .select2-selection__arrow {
         height: 100%;
         top: 0;
@@ -69,45 +57,40 @@
     }
     .select2-container--default .select2-selection--single .select2-selection__arrow b {
         border-color: white transparent transparent transparent;
-        border-width: 6px 5px 0 5px; /* Panah sedikit lebih besar */
+        border-width: 6px 5px 0 5px; 
     }
 
-
-    /* 2. Dropdown List (Daftar Pilihan saat dibuka) */
     .select2-dropdown {
-        background-color: #0f2a45 !important; /* Background Biru Gelap */
-        border: 2px solid #3f72af !important; /* Border lebih tegas */
+        background-color: #0f2a45 !important; 
+        border: 2px solid #3f72af !important; 
         border-radius: 8px !important;
         color: white !important;
         z-index: 9999;
-        margin-top: 5px; /* Jarak sedikit dari input */
+        margin-top: 5px; 
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    /* 3. Teks Pilihan di dalam List (ITEM MATANG) */
     .select2-results__option {
         background-color: #0f2a45; 
         color: #e6e6e6;
-        padding: 12px 15px !important; /* PENTING: Padding besar agar item terlihat besar */
-        font-size: 15px !important;    /* PENTING: Ukuran font lebih besar */
-        border-bottom: 1px solid rgba(255,255,255,0.05); /* Garis pemisah tipis */
+        padding: 12px 15px !important; 
+        font-size: 15px !important;    
+        border-bottom: 1px solid rgba(255,255,255,0.05); 
     }
 
-    /* 4. Saat Pilihan Disorot (HOVER) */
     .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-        background-color: #3f72af !important; /* Biru terang saat hover */
+        background-color: #3f72af !important; 
         color: white !important;
         font-weight: bold;
     }
 
-    /* 5. Input Pencarian di dalam Dropdown */
     .select2-search--dropdown { padding: 10px; }
     .select2-search__field {
-        background-color: #071522 !important; /* Sangat gelap */
+        background-color: #071522 !important; 
         color: white !important;
         border: 1px solid #3f72af !important;
         border-radius: 6px !important;
-        padding: 10px 12px !important; /* Padding input pencarian lebih besar */
+        padding: 10px 12px !important; 
         font-size: 15px !important;
     }
 </style>

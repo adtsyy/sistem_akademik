@@ -10,10 +10,8 @@ class RaporForm(forms.ModelForm):
 class SPPForm(forms.ModelForm):
     class Meta:
         model = SPP
-        # Hapus 'status' dari sini, tambah 'tagihan'
         fields = ['siswa', 'bulan', 'tagihan', 'jumlah'] 
         
-    # Opsional: Tambahkan widget agar form terlihat lebih rapi
     widgets = {
         'tagihan': forms.NumberInput(attrs={'placeholder': 'Biaya SPP seharusnya'}),
         'jumlah': forms.NumberInput(attrs={'placeholder': 'Uang yang dibayarkan'}),
@@ -22,7 +20,6 @@ class SPPForm(forms.ModelForm):
 class GajiForm(forms.ModelForm):
     class Meta:
         model = Gaji
-        # Gaji pokok dihapus dari sini karena otomatis
         fields = ['pegawai', 'bulan', 'tunjangan_jabatan', 'keterangan_tunjangan', 'status_transfer']
 
     widgets = {
@@ -34,19 +31,19 @@ class RaporSearchForm(forms.Form):
     id_siswa = forms.CharField(
         max_length=20,
         required=False,
-        label='ID Siswa'     # Input pencarian berdasarkan ID siswa
+        label='ID Siswa'    
     )
 
 class SPPSearchForm(forms.Form):
     id_siswa = forms.CharField(
         max_length=20,
         required=False,
-        label='ID Siswa'     # Input pencarian SPP berdasarkan ID siswa
+        label='ID Siswa'    
     )
 
 class GajiSearchForm(forms.Form):
     id_pegawai = forms.CharField(
         max_length=20,
         required=False,
-        label='ID Pegawai'   # Input pencarian gaji berdasarkan ID pegawai
+        label='ID Pegawai'   
     )
