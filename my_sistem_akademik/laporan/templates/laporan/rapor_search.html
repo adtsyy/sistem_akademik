@@ -2,22 +2,115 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Cari Siswa</title>
+    <title>Cari Siswa - Buat Rapor</title>
     <style>
-        body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0a1f33; color: #e6e6e6; }
-        .container { max-width: 600px; margin: 60px auto; text-align: center; }
-        .card { background: #112d4e; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* --- Tema Global --- */
+        body { 
+            margin: 0; 
+            font-family: "Segoe UI", sans-serif; 
+            background: linear-gradient(135deg, #071522, #0a1f33); 
+            color: #e6e6e6; 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container { width: 100%; max-width: 600px; padding: 20px; }
+
+        /* --- Card Style (Glassmorphism) --- */
+        .card { 
+            background: rgba(17, 45, 78, 0.85); 
+            padding: 40px; 
+            border-radius: 18px; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
         
-        input { padding: 15px; width: 70%; border-radius: 8px; border: none; background: #f1f1f1; font-size: 16px; }
-        button { padding: 15px 20px; border-radius: 8px; border: none; background: #3f72af; color: white; cursor: pointer; font-weight: bold; }
-        button:hover { background: #305f96; }
+        h2 { margin-top: 0; margin-bottom: 10px; color: #fff; font-size: 24px; }
+        p { color: #b8d4e8; margin-bottom: 30px; font-size: 14px; }
+
+        /* --- Search Form --- */
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; }
+        
+        input { 
+            flex-grow: 1; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.05); 
+            color: white; 
+            font-size: 15px; 
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: #3f72af; background: rgba(255,255,255,0.1); }
+        
+        button { 
+            padding: 12px 25px; 
+            border-radius: 8px; 
+            border: none; 
+            background: #3f72af; 
+            color: white; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        button:hover { background: #1d4e8c; box-shadow: 0 4px 12px rgba(63, 114, 175, 0.4); }
+
+        /* --- Result List --- */
+        .result-label { text-align: left; margin-bottom: 15px; font-weight: bold; color: #a3caff; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
 
         .result-item { 
-            background: rgba(255,255,255,0.05); padding: 15px; margin-top: 15px; border-radius: 8px;
-            display: flex; justify-content: space-between; align-items: center; text-align: left;
+            background: rgba(255,255,255,0.03); 
+            padding: 15px; 
+            margin-top: 10px; 
+            border-radius: 10px;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
         }
-        .btn-gen { background: #28a745; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
-        .btn-gen:hover { background: #218838; }
+        .result-item:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+
+        .siswa-name { font-size: 16px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+        .siswa-meta { color: #94a3b8; font-size: 13px; }
+        .siswa-meta span { background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #e2e8f0; margin-right: 5px; }
+
+        /* --- Button Generate --- */
+        .btn-gen { 
+            background: rgba(40, 167, 69, 0.2); 
+            color: #4ade80; 
+            border: 1px solid rgba(40, 167, 69, 0.4);
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: bold;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-gen:hover { background: #28a745; color: white; }
+
+        /* --- Back Link --- */
+        .back-link { 
+            color: #6fb7ff; 
+            text-decoration: none; 
+            display: inline-block; 
+            margin-top: 25px; 
+            font-weight: 600; 
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .back-link:hover { color: #a3caff; transform: translateX(-3px); }
+        
+        .no-result { color: #ff4d4d; background: rgba(255, 77, 77, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 77, 77, 0.2); margin-top: 20px;}
     </style>
 </head>
 <body>
@@ -27,27 +120,34 @@
         <h2>🔍 Buat Rapor Otomatis</h2>
         <p>Cari siswa untuk menghitung nilai & absensi secara otomatis.</p>
         
-        <form method="get" style="margin-bottom: 30px;">
-            <input type="text" name="q" placeholder="Masukkan Nama atau NIS..." value="{{ search_query }}">
+        <form method="get" class="search-box">
+            <input type="text" name="q" placeholder="Masukkan Nama atau NIS..." value="{{ search_query }}" autofocus>
             <button type="submit">Cari</button>
         </form>
 
         {% if siswa_list %}
-            <div style="text-align: left; margin-bottom: 10px; font-weight: bold;">Hasil Pencarian:</div>
+            <div class="result-label">Hasil Pencarian</div>
             {% for s in siswa_list %}
             <div class="result-item">
                 <div>
-                    <div style="font-size: 18px; font-weight: bold;">{{ s.nama }}</div>
-                    <div style="color: #aaa; font-size: 14px;">NIS: {{ s.nis }} | Kelas: {{ s.kelas }}</div>
+                    <div class="siswa-name">{{ s.nama }}</div>
+                    <div class="siswa-meta">
+                        <span>NIS: {{ s.nis }}</span> 
+                        <span>{{ s.kelas }}</span>
+                    </div>
                 </div>
-                <a href="{% url 'rapor_generate' s.pk %}" class="btn-gen" onclick="return confirm('Proses rapor untuk {{ s.nama }}?')">⚙️ PROSES</a>
+                <a href="{% url 'rapor_generate' s.pk %}" class="btn-gen" onclick="return confirm('Proses rapor untuk {{ s.nama }}?')">
+                    ⚙️ PROSES
+                </a>
+            </div>
             {% endfor %}
         {% elif search_query %}
-            <p style="color: #ff6b6b;">Siswa tidak ditemukan.</p>
+            <div class="no-result">
+                ❌ Siswa tidak ditemukan. Coba kata kunci lain.
+            </div>
         {% endif %}
         
-        <br>
-        <a href="{% url 'rapor_list' %}" style="color: #6fb7ff; text-decoration: none;">&larr; Kembali ke Daftar</a>
+        <a href="{% url 'rapor_list' %}" class="back-link">⟵ Kembali ke Daftar Rapor</a>
     </div>
 </div>
 
