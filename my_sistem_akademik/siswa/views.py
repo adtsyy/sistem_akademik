@@ -25,7 +25,7 @@ def siswa_dashboard(request):
     # -------------------------------------------------------
     # DATA SPP
     # -------------------------------------------------------
-    spp_data = siswa.spp_siswa.all().order_by('-tahun', '-bulan')
+    spp_data = siswa.spp_set.all().order_by('bulan')
 
     spp_summary = {
         "total_tunggakan": 0,
@@ -35,12 +35,14 @@ def siswa_dashboard(request):
     }
 
     for spp in spp_data:
-        if spp.status == "belum":
-            spp_summary["total_tunggakan"] += float(spp.nominal)
-            spp_summary["bulan_belum_bayar"].append(f"{spp.bulan}/{spp.tahun}")
+        if spp.status != "Lunas":
+            kurang = spp.tagihan - spp.jumlah
+            spp_summary["total_tunggakan"] += kurang
+            spp_summary["bulan_belum_bayar"].append(spp.bulan)
             spp_summary["spp_belum"] += 1
         else:
             spp_summary["spp_lunas"] += 1
+
 
     # -------------------------------------------------------
     # JADWAL SISWA (diambil dari properti siswa.jadwal)
