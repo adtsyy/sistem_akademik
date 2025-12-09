@@ -2,105 +2,217 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Detail Rapor {{ rapor.siswa.nama }}</title>
+    <title>Detail Rapor - {{ rapor.siswa.nama }}</title>
     <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #071522, #0a1f33);
-            color: #e6e6e6;
+        body { 
+            margin: 0; 
+            font-family: "Segoe UI", sans-serif; 
+            background: linear-gradient(135deg, #071522, #0a1f33); 
+            color: #e6e6e6; 
         }
+        header { 
+            background: #0f2a45; 
+            padding: 25px 0; 
+            text-align: center; 
+            font-size: 28px; 
+            font-weight: 600; 
+            color: #fff; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
+        }
+        .wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
 
-        header {
-            background: #0f2a45;
+        a.back { display: inline-block; margin-bottom: 15px; color: #6fb7ff; text-decoration: none; font-weight: bold; }
+
+        /* Card */
+        .card {
+            background: rgba(17,45,78,0.5);
             padding: 25px;
-            text-align: center;
-            font-size: 28px;
-            font-weight: 600;
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-
-        .wrapper {
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        a.back {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: #6fb7ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a.back:hover {
-            color: #a6d4ff;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(17,45,78,0.9);
             border-radius: 12px;
-            overflow: hidden;
+            margin-bottom: 25px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.45);
         }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: center;
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        th {
-            background: rgba(31,65,105,0.9);
-            font-weight: bold;
+        /* Info Grid */
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+        }
+        .info-item label { 
+            display: block; 
+            color: #94a3b8; 
+            font-size: 13px; 
+            margin-bottom: 5px; 
+        }
+        .info-item span { 
+            display: block; 
+            font-size: 16px; 
+            font-weight: 600; 
+            color: #fff; 
         }
 
-        tr:nth-child(even) {
+        /* Tabel */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: rgba(17,45,78,0.9); 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.45); 
+        }
+        th, td { padding: 12px 15px; text-align: left; vertical-align: middle; }
+        th { background: rgba(31,65,105,0.9); color: #a3caff; font-size: 14px; text-transform: uppercase; }
+        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+        .nilai-angka { font-family: 'Consolas', monospace; font-weight: bold; color: #e2e8f0; }
+
+        /* Badge Predikat */
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+        .status-A { background: #28a745; color: white; }
+        .status-B { background: #0d6efd; color: white; }
+        .status-C { background: #ffc107; color: #333; }
+        .status-D { background: #dc3545; color: white; }
+
+        /* Summary Box */
+        .summary-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
         }
+        .summary-item { text-align: center; }
+        .summary-label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+        .summary-value { font-size: 24px; font-weight: bold; color: #fff; }
 
-        p {
-            margin-top: 18px;
-            text-align: center;
-            font-weight: bold;
+        /* Absensi Grid */
+        .absensi-grid { display: flex; gap: 15px; }
+        .absensi-box { 
+            flex: 1; 
+            background: rgba(255,255,255,0.05); 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-align: center; 
+            border: 1px solid rgba(255,255,255,0.05);
         }
+        .absensi-label { font-size: 13px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; }
+        .absensi-val { font-size: 20px; font-weight: bold; }
+        .val-sakit { color: #ffc107; }
+        .val-izin { color: #0d6efd; }
+        .val-alpa { color: #dc3545; }
+
+        /* Tombol */
+        .btn-print {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #3f72af;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-print:hover { background: #1d4e8c; }
     </style>
 </head>
 <body>
 
-<header>Detail Rapor {{ rapor.siswa.nama }}</header>
+<header>Detail Rapor - {{ rapor.siswa.nama }}</header>
 
 <div class="wrapper">
-    
-    <!-- Tombol kembali -->
     <a href="{% url 'rapor_list' %}" class="back">⟵ Kembali ke Daftar Rapor</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Mata Pelajaran</th>
-                <th>Nilai</th>
-            </tr>
-        </thead>
+    <div class="card">
+        <h2>Informasi Siswa</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Nama Lengkap</label>
+                <span>{{ rapor.siswa.nama }}</span>
+            </div>
+            <div class="info-item">
+                <label>Nomor Induk (NIS)</label>
+                <span>{{ rapor.siswa.nis }}</span>
+            </div>
+            <div class="info-item">
+                <label>Kelas</label>
+                <span>{{ rapor.kelas }}</span>
+            </div>
+        </div>
+    </div>
 
-        <tbody>
-            {% for mapel, nilai in rapor.nilai_mapel.items %}
-            <tr>
-                <td>{{ mapel }}</td>
-                <td>{{ nilai }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="2">Belum ada nilai</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="card">
+        <h2>Capaian Kompetensi</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="70%">Mata Pelajaran</th>
+                    <th width="30%">Nilai Akhir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mapel, nilai in rapor.nilai_mapel.items %}
+                    {% if mapel != 'Absensi' %}
+                    <tr>
+                        <td>{{ mapel }}</td>
+                        <td class="nilai-angka">{{ nilai }}</td>
+                    </tr>
+                    {% endif %}
+                {% empty %}
+                <tr>
+                    <td colspan="2" style="text-align:center; padding:20px; color:#888;">Belum ada nilai tersimpan.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <p>Rata-rata: {{ rapor.rata_rata }} | Predikat: {{ rapor.predikat }}</p>
+        <div class="summary-box">
+            <div class="summary-item">
+                <span class="summary-label">Rata-rata Nilai</span>
+                <span class="summary-value">{{ rapor.rata_rata }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Predikat Umum</span>
+                <span class="status-badge status-{{ rapor.predikat }}">{{ rapor.predikat }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Keterangan</span>
+                <span class="summary-value" style="font-size:16px;">{{ rapor.keterangan }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Ketidakhadiran</h2>
+        <div class="absensi-grid">
+            <div class="absensi-box">
+                <div class="absensi-label">Sakit</div>
+                <div class="absensi-val val-sakit">{{ rapor.nilai_mapel.Absensi.Sakit|default:"0" }}</div>
+            </div>
+            <div class="absensi-box">
+                <div class="absensi-label">Izin</div>
+                <div class="absensi-val val-izin">{{ rapor.nilai_mapel.Absensi.Izin|default:"0" }}</div>
+            </div>
+            <div class="absensi-box">
+                <div class="absensi-label">Tanpa Keterangan</div>
+                <div class="absensi-val val-alpa">{{ rapor.nilai_mapel.Absensi.Alpa|default:"0" }}</div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
