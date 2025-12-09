@@ -226,200 +226,172 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            header h1 {
-                font-size: 24px;
-            }
-
-            .user-section {
-                justify-content: center;
-                width: 100%;
-            }
-
-            .user-info {
-                text-align: center;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .info-item {
-                flex-direction: column;
-                gap: 5px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>👨‍🎓 Dashboard Siswa</h1>
-        <div class="user-section">
-            <div class="user-info">
-                <div>Selamat datang,</div>
-                <strong>{{ user.username }}</strong>
-            </div>
-            <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
-        </div>
-    </header>
 
-    <!-- Main Content Cards -->
-    <div class="container">
-        <div class="card">
-            <div class="card-icon">📚</div>
-            <h3>Jadwal Kelas</h3>
-            <p>Lihat jadwal pelajaran</p>
+<header>
+    <h1>👨‍🎓 Dashboard Siswa</h1>
+    <div class="user-section">
+        <div class="user-info">
+            <div>Selamat datang,</div>
+            <strong>{{ user.username }}</strong>
         </div>
+        <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+    </div>
+</header>
 
-        <div class="card">
-            <div class="card-icon">📝</div>
-            <h3>Nilai</h3>
-            <p>Lihat hasil nilai</p>
-        </div>
+<!-- MENU CARD -->
+<div class="container">
+    <a href="{% url 'jadwal_list' %}" class="card">
+        <div class="card-icon">📚</div>
+        <h3>Jadwal Kelas</h3>
+        <p>Lihat jadwal pelajaran</p>
+    </a>
 
-        <div class="card">
-            <div class="card-icon">📋</div>
-            <h3>Absensi</h3>
-            <p>Lihat absensi kehadiran</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">👨‍🏫</div>
-            <h3>Guru</h3>
-            <p>Daftar guru pengajar</p>
-        </div>
+    <div class="card">
+        <div class="card-icon">📝</div>
+        <h3>Nilai</h3>
+        <p>Lihat hasil nilai</p>
     </div>
 
-    <!-- Info Section -->
-    <div class="info-section">
-        <!-- Profil Siswa -->
-        <div class="info-card">
-            <h3>👤 Profil Siswa</h3>
-            {% if siswa %}
-            <div class="info-item">
-                <span class="info-label">Nama Lengkap:</span>
-                <span class="info-value">{{ siswa.nama }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">NIS:</span>
-                <span class="info-value">{{ siswa.nis }}</span>
-            </div>
-           
-            </div>
-            <div class="info-item">
-                <span class="info-label">Kelas:</span>
-                <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
-            </div>
-            {% if siswa.jurusan %}
-            <div class="info-item">
-                <span class="info-label">Jurusan:</span>
-                <span class="info-value">{{ siswa.jurusan }}</span>
-            </div>
-            {% endif %}
-            <div class="info-item">
-                <span class="info-label">Tempat, Tanggal Lahir:</span>
-                <span class="info-value">
-                    {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
-                        {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
-                    {% else %}
-                        Belum diatur
-                    {% endif %}
-                </span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Alamat:</span>
-                <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Nomor Telepon:</span>
-                <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Nama Orang Tua / Wali:</span>
-                <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
-            </div>
-            {% else %}
-            <div class="info-item">
-                <span class="info-value">Data siswa tidak ditemukan</span>
-            </div>
-            {% endif %}
+    <div class="card">
+        <div class="card-icon">📋</div>
+        <h3>Absensi</h3>
+        <p>Lihat absensi kehadiran</p>
+    </div>
+
+</div>
+
+<!-- PROFIL & SPP -->
+<div class="info-section">
+
+    <!-- PROFIL SISWA -->
+    <div class="info-card">
+        <h3>👤 Profil Siswa</h3>
+
+        {% if siswa %}
+        <div class="info-item">
+            <span class="info-label">Nama Lengkap:</span>
+            <span class="info-value">{{ siswa.nama }}</span>
         </div>
 
-        <!-- Data Pembayaran SPP -->
-        <div class="info-card" style="margin-top: 30px;">
-            <h3>💳 Data Pembayaran SPP</h3>
-            
-            <!-- Ringkasan SPP -->
-            {% if siswa and spp_summary %}
-            <div style="background: #1b3d63; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <div class="summary-row">
-                    <span class="summary-label">Total Tunggakan:</span>
-                    <span class="summary-value">Rp {{ spp_summary.total_tunggakan|floatformat:0 }}</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Status Lunas:</span>
-                    <span class="summary-value">{{ spp_summary.spp_lunas }} Bulan ✅</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Belum Bayar:</span>
-                    <span class="summary-value">{{ spp_summary.spp_belum }} Bulan ⏳</span>
-                </div>
-                {% if spp_summary.bulan_belum_bayar %}
-                <div class="summary-row">
-                    <span class="summary-label">Bulan Belum Bayar:</span>
-                    <span class="summary-value">{{ spp_summary.bulan_belum_bayar|join:", " }}</span>
-                </div>
+        <div class="info-item">
+            <span class="info-label">NIS:</span>
+            <span class="info-value">{{ siswa.nis }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Kelas:</span>
+            <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
+        </div>
+
+        {% if siswa.jurusan %}
+        <div class="info-item">
+            <span class="info-label">Jurusan:</span>
+            <span class="info-value">{{ siswa.jurusan }}</span>
+        </div>
+        {% endif %}
+
+        <div class="info-item">
+            <span class="info-label">Tempat, Tanggal Lahir:</span>
+            <span class="info-value">
+                {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
+                    {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
+                {% else %}
+                    Belum diatur
                 {% endif %}
+            </span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Alamat:</span>
+            <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Nomor Telepon:</span>
+            <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Nama Orang Tua / Wali:</span>
+            <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
+        </div>
+
+        {% else %}
+        <div class="info-item">
+            <span class="info-value">Data siswa tidak ditemukan</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- SPP -->
+    <div class="info-card" style="margin-top: 30px;">
+        <h3>💳 Data Pembayaran SPP</h3>
+
+        {% if siswa and spp_summary %}
+        <div style="background: #1b3d63; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <div class="summary-row">
+                <span class="summary-label">Total Tunggakan:</span>
+                <span class="summary-value">Rp {{ spp_summary.total_tunggakan|floatformat:0 }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Status Lunas:</span>
+                <span class="summary-value">{{ spp_summary.spp_lunas }} Bulan ✅</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Belum Bayar:</span>
+                <span class="summary-value">{{ spp_summary.spp_belum }} Bulan ⏳</span>
             </div>
 
-            <!-- Tabel SPP Detail -->
-            {% if spp_data %}
-            <table class="spp-table">
-                <thead>
-                    <tr>
-                        <th>Bulan/Tahun</th>
-                        <th>Nominal</th>
-                        <th>Status</th>
-                        <th>Tanggal Bayar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for spp in spp_data %}
-                    <tr>
-                        <td>{{ spp.bulan }}/{{ spp.tahun }}</td>
-                        <td>Rp {{ spp.nominal|floatformat:0 }}</td>
-                        <td>
-                            {% if spp.status == 'lunas' %}
-                                <span class="status-lunas">✅ Lunas</span>
-                            {% else %}
-                                <span class="status-belum">⏳ Belum Bayar</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ spp.tanggal_bayar|default:"Belum bayar" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <div class="info-item">
-                <span class="info-value">Belum ada data SPP</span>
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="info-item">
-                <span class="info-value">Data pembayaran tidak tersedia</span>
+            {% if spp_summary.bulan_belum_bayar %}
+            <div class="summary-row">
+                <span class="summary-label">Bulan Belum Bayar:</span>
+                <span class="summary-value">{{ spp_summary.bulan_belum_bayar|join:", " }}</span>
             </div>
             {% endif %}
         </div>
+
+        {% if spp_data %}
+        <table class="spp-table">
+            <thead>
+                <tr>
+                    <th>Bulan/Tahun</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                    <th>Tanggal Bayar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for spp in spp_data %}
+                <tr>
+                    <td>{{ spp.bulan }}/{{ spp.tahun }}</td>
+                    <td>Rp {{ spp.nominal|floatformat:0 }}</td>
+                    <td>
+                        {% if spp.status == 'lunas' %}
+                            <span class="status-lunas">✅ Lunas</span>
+                        {% else %}
+                            <span class="status-belum">⏳ Belum Bayar</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ spp.tanggal_bayar|default:"Belum bayar" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="info-item">
+            <span class="info-value">Belum ada data SPP</span>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="info-item">
+            <span class="info-value">Data pembayaran tidak tersedia</span>
+        </div>
+        {% endif %}
     </div>
+</div>
+
 </body>
 </html>
