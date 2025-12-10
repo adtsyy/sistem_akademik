@@ -3,308 +3,268 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jadwal Guru - Sistem Akademik</title>
+    <title>Dashboard Guru</title>
     <style>
-      * {
+      /* --- RESET & BASIC SETUP --- */
+      body {
+        background: linear-gradient(to bottom right, #071522, #0a1f33);
+        color: #f1f1f1;
+        font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica,
+          Arial, sans-serif;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", "Open Sans", sans-serif;
-        background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
-        color: #f1faee;
-        line-height: 1.6;
         min-height: 100vh;
       }
 
+      /* --- HEADER --- */
       .header {
-        background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
-        padding: 25px;
+        padding: 24px 32px;
         text-align: center;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        border-bottom: 3px solid #3a86ff;
+        background: #112d4e;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.45);
+        position: sticky;
+        top: 0;
+        z-index: 10;
       }
 
       .header h1 {
-        font-size: 28px;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        font-size: 1.9rem;
+        font-weight: 600;
+        margin: 0;
+        color: #ffffff;
+        letter-spacing: 0.5px;
       }
 
+      /* --- CONTAINER --- */
       .container {
         max-width: 1200px;
-        margin: 30px auto;
-        padding: 0 20px;
+        margin: 0 auto;
+        padding: 24px 32px 32px;
       }
 
+      /* --- TOMBOL KEMBALI --- */
       .back-btn {
         display: inline-block;
-        margin-bottom: 20px;
-        padding: 10px 20px;
-        background: #3a86ff;
-        color: white;
+        margin-bottom: 24px;
+        color: #d7dce4;
         text-decoration: none;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 10px 16px;
+        background: rgba(17, 45, 78, 0.8);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.25s ease;
       }
 
       .back-btn:hover {
-        background: #2563eb;
-        transform: translateX(-5px);
+        color: #ffffff;
+        background: #1b3d63;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+      }
+
+      /* --- TOMBOL SWITCH VIEW (Kanan Atas) --- */
+      .view-mode {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 22px;
+      }
+
+      .view-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #d7dce4;
+        background-color: #112d4e;
+        transition: all 0.25s ease;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+      }
+
+      .view-btn.active {
+        background-color: #3f72af;
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 10px 24px rgba(63, 114, 175, 0.35);
+      }
+
+      .view-btn:hover:not(.active) {
+        background-color: #1b3d63;
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      /* --- CARD GRID LAYOUT --- */
+      .jadwal-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .jadwal-card {
+        background: rgba(17, 45, 78, 0.92);
+        border-radius: 14px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.25s ease, box-shadow 0.25s ease,
+          background 0.25s ease;
+      }
+
+      .jadwal-card:hover {
+        transform: translateY(-6px);
+        background: #1b3d63;
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
+      }
+
+      .card-icon {
+        font-size: 2.4rem;
+        margin-bottom: 12px;
+      }
+
+      .mapel-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: uppercase;
+        width: 100%;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .card-info {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        row-gap: 12px;
+        width: 100%;
+        font-size: 0.95rem;
+      }
+
+      /* Label (Hari, Jam, dll) */
+      .info-label {
+        color: #c1cad6;
+        font-weight: 400;
+      }
+
+      .info-value {
+        color: #f1f1f1;
+        font-weight: 500;
       }
 
       .jadwal-wrapper {
-        background: #1b263b;
-        border: 2px solid #415a77;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        background: rgba(17, 45, 78, 0.92);
+        border-radius: 14px;
+        padding: 20px;
+        overflow-x: auto;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
       }
 
       .jadwal-table {
         width: 100%;
+        border-collapse: collapse;
       }
 
-      thead {
-        background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%);
-        border-bottom: 2px solid #3a86ff;
-      }
-
-      thead th {
-        padding: 18px;
+      .jadwal-table th {
         text-align: left;
-        font-weight: 600;
-        color: #e8f4f8;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        padding: 14px;
+        color: #d7dce4;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-weight: 700;
+        background: #1b3d63;
       }
 
-      tbody tr {
-        border-bottom: 1px solid #415a77;
-        transition: all 0.3s ease;
+      .jadwal-table td {
+        padding: 14px;
+        color: #f1f1f1;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.01);
+      }
+      
+      .jadwal-table tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.03);
       }
 
-      tbody tr:hover {
-        background: #1e3a5f;
+      .jadwal-table tr:last-child td {
+        border-bottom: none;
       }
 
-      tbody td {
-        padding: 16px 18px;
-        color: #f1faee;
-        font-size: 14px;
-      }
-
-      .hari-badge {
-        display: inline-block;
-        background: #3a86ff;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 12px;
-      }
-
-      .mapel-name {
-        font-weight: 600;
-        color: #e8f4f8;
-      }
-
-      .time-badge {
-        background: #1a2a3a;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-family: "Courier New", monospace;
-        font-weight: 600;
-      }
-
+      .hidden { display: none; }
+      #tableView { display: none; }
+      
       .no-data {
         text-align: center;
-        padding: 60px 20px;
-        color: #7a9ab8;
-        font-size: 16px;
+        padding: 50px;
+        color: #c1cad6;
       }
 
-      .jadwal-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-        margin-top: 0;
-      }
-
-      .jadwal-card {
-        background: linear-gradient(135deg, #1b263b 0%, #1e3a5f 100%);
-        border: 2px solid #415a77;
-        border-radius: 12px;
-        padding: 20px;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .jadwal-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(58, 134, 255, 0.1);
-        transition: left 0.4s ease;
-        z-index: 0;
-      }
-
-      .jadwal-card:hover {
-        transform: translateY(-5px);
-        border-color: #3a86ff;
-        box-shadow: 0 10px 30px rgba(58, 134, 255, 0.3);
-      }
-
-      .jadwal-card:hover::before {
-        left: 100%;
-      }
-
-      .jadwal-card-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .jadwal-card .mapel-name {
-        font-size: 18px;
-        margin-bottom: 15px;
-        color: #3a86ff;
-      }
-
-      .card-info {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        font-size: 13px;
-      }
-
-      .card-info-item {
-        display: flex;
-        gap: 10px;
-      }
-
-      .card-info-item strong {
-        color: #b8d4e8;
-        min-width: 60px;
-      }
-
-      .card-info-item span {
-        color: #f1faee;
-      }
-
-      .view-mode {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        justify-content: center;
-      }
-
-      .view-btn {
-        padding: 10px 20px;
-        background: #1b263b;
-        border: 2px solid #415a77;
-        color: #f1faee;
-        cursor: pointer;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
-
-      .view-btn.active {
-        background: #3a86ff;
-        border-color: #3a86ff;
-        color: white;
-      }
-
-      .view-btn:hover {
-        border-color: #3a86ff;
-        color: #3a86ff;
-      }
-
-      #tableView {
-        display: none;
-      }
-
-      #cardView.hidden {
-        display: none;
-      }
-
-      @media (max-width: 768px) {
-        .jadwal-cards {
-          grid-template-columns: 1fr;
-        }
-
-        thead th,
-        tbody td {
-          padding: 12px;
-          font-size: 12px;
-        }
-
-        .header h1 {
-          font-size: 24px;
-        }
+      @media (max-width: 640px) {
+        .header h1 { font-size: 1.5rem; }
+        .container { padding: 20px; }
+        .jadwal-cards { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
+    
     <div class="header">
-      <h1>📅 Jadwal Pelajaran</h1>
+      <h1>Dashboard Guru</h1>
     </div>
 
     <div class="container">
-      <a href="{% url 'guru_dashboard' %}" class="back-btn"
-        >← Kembali ke Dashboard</a
-      >
+      <a href="{% url 'guru_dashboard' %}" class="back-btn">
+        ← Kembali ke Menu Utama
+      </a>
 
       {% if jadwal_list %}
+      
       <div class="view-mode">
         <button class="view-btn active" onclick="switchView('card')">
-          📇 Tampilan Kartu
+          <span>📇</span> Tampilan Kartu
         </button>
         <button class="view-btn" onclick="switchView('table')">
-          📋 Tampilan Tabel
+          <span>📋</span> Tampilan Tabel
         </button>
       </div>
 
-      <!-- Card View -->
       <div id="cardView" class="jadwal-cards">
         {% for jadwal in jadwal_list %}
         <div class="jadwal-card">
-          <div class="jadwal-card-content">
-            <div class="mapel-name">{{ jadwal.mata_pelajaran }}</div>
-            <div class="card-info">
-              <div class="card-info-item">
-                <strong>📅 Hari:</strong>
-                <span>{{ jadwal.hari }}</span>
-              </div>
-              <div class="card-info-item">
-                <strong>⏰ Jam:</strong>
-                <span
-                  >{{ jadwal.jam_mulai|time:"H:i" }} - {{jadwal.jam_selesai|time:"H:i" }}</span
-                >
-              </div>
-              <div class="card-info-item">
-                <strong>🏫 Kelas:</strong>
-                <span>{{ jadwal.kelas }}</span>
-              </div>
-              <div class="card-info-item">
-                <strong>👨‍🏫 Guru:</strong>
-                <span>{{ jadwal.pegawai.nama }}</span>
-              </div>
+          <div class="card-icon">🗓️</div> 
+          
+          <div class="mapel-name">{{ jadwal.mata_pelajaran }}</div>
+          
+          <div class="card-info">
+            
+            <div class="info-label">Hari:</div>
+            <div class="info-value">{{ jadwal.hari }}</div>
+
+            <div class="info-label">Jam:</div>
+            <div class="info-value">
+              {{ jadwal.jam_mulai|time:"H:i" }} - {{ jadwal.jam_selesai|time:"H:i" }}
             </div>
+
+            <div class="info-label">Kelas:</div>
+            <div class="info-value">{{ jadwal.kelas }}</div>
+
+            <div class="info-label">Guru:</div>
+            <div class="info-value">{{ jadwal.pegawai.nama }}</div>
+            
           </div>
         </div>
         {% endfor %}
       </div>
 
-      <!-- Table View -->
       <div id="tableView" class="jadwal-wrapper">
         <table class="jadwal-table">
           <thead>
@@ -313,8 +273,7 @@
               <th>Mata Pelajaran</th>
               <th>Kelas</th>
               <th>Hari</th>
-              <th>Jam Mulai</th>
-              <th>Jam Selesai</th>
+              <th>Waktu</th>
               <th>Guru</th>
             </tr>
           </thead>
@@ -322,37 +281,25 @@
             {% for jadwal in jadwal_list %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td>
-                <span class="mapel-name">{{ jadwal.mata_pelajaran }}</span>
-              </td>
+              <td style="font-weight: bold; color: #fff;">{{ jadwal.mata_pelajaran }}</td>
               <td>{{ jadwal.kelas }}</td>
-              <td><span class="hari-badge">{{ jadwal.hari }}</span></td>
-              <td>
-                <span class="time-badge"
-                  >{{ jadwal.jam_mulai|time:"H:i" }}</span
-                >
-              </td>
-              <td>
-                <span class="time-badge"
-                  >{{ jadwal.jam_selesai|time:"H:i" }}</span
-                >
-              </td>
+              <td>{{ jadwal.hari }}</td>
+              <td>{{ jadwal.jam_mulai|time:"H:i" }} - {{ jadwal.jam_selesai|time:"H:i" }}</td>
               <td>{{ jadwal.pegawai.nama }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
+
       {% else %}
       <div class="jadwal-wrapper">
         <div class="no-data">
-          <p>Tidak ada jadwal yang ditemukan untuk Anda.</p>
-          <p style="margin-top: 10px; color: #5a7a98">
-            Hubungi admin untuk menambahkan jadwal Anda.
-          </p>
+          <p>Tidak ada jadwal yang ditemukan.</p>
         </div>
       </div>
       {% endif %}
+
     </div>
 
     <script>
@@ -361,14 +308,17 @@
         const tableView = document.getElementById("tableView");
         const buttons = document.querySelectorAll(".view-btn");
 
+        // Reset tombol active
         buttons.forEach((btn) => btn.classList.remove("active"));
 
         if (view === "card") {
           cardView.classList.remove("hidden");
+          cardView.style.display = "grid"; // Kembalikan ke grid
           tableView.style.display = "none";
           buttons[0].classList.add("active");
         } else {
           cardView.classList.add("hidden");
+          cardView.style.display = "none";
           tableView.style.display = "block";
           buttons[1].classList.add("active");
         }

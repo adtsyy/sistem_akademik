@@ -7,40 +7,45 @@
     <style>
       body {
         font-family: "Segoe UI", "Open Sans", sans-serif;
-        background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
-        color: #f1faee;
+        background: linear-gradient(to bottom right, #071522, #0a1f33);
+        color: #f1f1f1;
       }
       .container {
         max-width: 900px;
-        margin: 30px auto;
-        padding: 0 20px;
+        margin: 32px auto;
+        padding: 0 24px;
       }
       .header {
-        background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
-        padding: 25px;
+        background: #112d4e;
+        padding: 24px;
         text-align: center;
-        border-bottom: 3px solid #3a86ff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.45);
+        position: sticky;
+        top: 0;
+        z-index: 5;
       }
       .form-section {
-        background: #1b263b;
-        border: 2px solid #415a77;
-        border-radius: 12px;
+        background: rgba(17,45,78,0.92);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
         padding: 25px;
         margin-bottom: 30px;
+        box-shadow: 0 10px 26px rgba(0,0,0,0.45);
       }
       .form-group {
         margin-bottom: 18px;
       }
       label {
         font-weight: 600;
-        color: #b8d4e8;
+        color: #d7dce4;
       }
       input[type="text"],
       input[type="date"] {
         padding: 10px 12px;
-        background: #0f1f2e;
-        border: 1px solid #415a77;
-        border-radius: 6px;
+        background: #0c1c2d;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
         color: #f1faee;
         font-size: 14px;
         width: 100%;
@@ -53,53 +58,58 @@
       }
       .btn-search {
         padding: 10px 20px;
-        background: #3a86ff;
+        background: #3f72af;
         border: none;
-        border-radius: 6px;
+        border-radius: 10px;
         color: white;
         cursor: pointer;
         font-weight: 600;
+        box-shadow:0 8px 20px rgba(63,114,175,0.35);
+        transition: all 0.25s ease;
       }
       .btn-search:hover {
-        background: #2563eb;
+        background: #1d4e8c;
       }
       
       /* --- CSS BARU UNTUK TOMBOL KEMBALI --- */
       .btn-back {
         display: inline-block;
-        padding: 10px 20px;
-        background-color: #64748b; /* Warna Abu-abu */
+        padding: 10px 18px;
+        background-color: #112d4e;
         color: white;
         text-decoration: none;
-        border-radius: 6px;
+        border-radius: 10px;
         font-weight: 600;
         font-size: 14px;
-        margin-bottom: 20px; /* Jarak ke bawah */
-        border: 1px solid #475569;
-        transition: background 0.3s;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255,255,255,0.08);
+        transition: all 0.25s ease;
+        box-shadow:0 6px 16px rgba(0,0,0,0.35);
       }
       .btn-back:hover {
-        background-color: #475569;
+        background-color: #1b3d63;
+        transform: translateY(-2px);
       }
       /* ------------------------------------- */
 
       .nilai-table {
-        background: #1b263b;
-        border: 2px solid #415a77;
-        border-radius: 12px;
+        background: rgba(17,45,78,0.92);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
         overflow: hidden;
+        box-shadow:0 10px 26px rgba(0,0,0,0.45);
       }
       table {
         width: 100%;
         border-collapse: collapse;
       }
       thead {
-        background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%);
+        background: #1b3d63;
       }
       thead th {
-        padding: 15px;
+        padding: 14px;
         text-align: left;
-        font-weight: 600;
+        font-weight: 700;
         color: #e8f4f8;
         font-size: 13px;
       }
@@ -108,12 +118,13 @@
         color: #f1faee;
         font-size: 14px;
         vertical-align: top;
+        border-bottom:1px solid rgba(255,255,255,0.06);
       }
       .nilai-input {
         padding: 8px;
-        background: #0f1f2e;
-        border: 1px solid #415a77;
-        border-radius: 6px;
+        background: #0c1c2d;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
         color: #f1faee;
         width: 80px;
         text-align: center;
@@ -142,12 +153,14 @@
         padding: 10px 24px;
         background: #4ade80;
         border: none;
-        border-radius: 6px;
+        border-radius: 10px;
         color: white;
         cursor: pointer;
         font-weight: 600;
         font-size: 14px;
         margin-top: 18px;
+        box-shadow:0 8px 18px rgba(74,222,128,0.35);
+        transition: all 0.25s ease;
       }
       .btn-save:hover {
         background: #22c55e;
@@ -155,7 +168,7 @@
       .no-data {
         text-align: center;
         padding: 40px;
-        color: #7a9ab8;
+        color: #c1cad6;
       }
     </style>
   </head>
