@@ -45,26 +45,16 @@
             padding: 0 20px;
         }
 
-        .back-btn {
+        a.back {
             display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
+            margin-bottom: 15px;
+            color: #6fb7ff;
             text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            border:1px solid rgba(255,255,255,0.08);
-            box-shadow:0 8px 20px rgba(0,0,0,0.35);
+            font-weight: bold;
         }
-
-        .back-btn:hover {
-            background: #1b3d63;
-            transform: translateY(-2px);
-            color: white;
-            text-decoration: none;
-        }
+        a.back:hover {
+            color: #a6d4ff;
+        }       
 
         .filter-section {
             background: var(--card-bg);
@@ -405,7 +395,7 @@
     </div>
 
     <div class="container">
-        <a href="{% url 'guru_dashboard' %}" class="back-btn">← Kembali ke Dashboard</a>
+        <a href="{% url 'guru_dashboard' %}" class="back">← Kembali ke Dashboard</a>
 
         <!-- small hidden form to expose csrf token for AJAX calls -->
         <form id="csrfForm" style="display:none;">{% csrf_token %}</form>

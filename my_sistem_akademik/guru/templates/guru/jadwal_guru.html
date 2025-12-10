@@ -43,25 +43,16 @@
       }
 
       /* --- TOMBOL KEMBALI --- */
-      .back-btn {
-        display: inline-block;
-        margin-bottom: 24px;
-        color: #d7dce4;
-        text-decoration: none;
-        font-size: 0.95rem;
-        padding: 10px 16px;
-        background: rgba(17, 45, 78, 0.8);
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.25s ease;
-      }
-
-      .back-btn:hover {
-        color: #ffffff;
-        background: #1b3d63;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-      }
+      a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a.back:hover {
+            color: #a6d4ff;
+        }
 
       /* --- TOMBOL SWITCH VIEW (Kanan Atas) --- */
       .view-mode {
@@ -222,8 +213,8 @@
     </div>
 
     <div class="container">
-      <a href="{% url 'guru_dashboard' %}" class="back-btn">
-        ← Kembali ke Menu Utama
+      <a href="{% url 'guru_dashboard' %}" class="back">
+        ← Kembali ke Dashboard
       </a>
 
       {% if jadwal_list %}
