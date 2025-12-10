@@ -24,7 +24,7 @@ class Siswa(models.Model):
         blank=True
     )
 
-    def _str_(self):
+    def __str__(self):   # FIX: _str_ → __str__
         return f"{self.nama} ({self.nis})"
 
     class Meta:
@@ -55,9 +55,44 @@ class SPP(models.Model):
     tanggal_bayar = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):   # FIX: _str_ → __str__
         return f"SPP {self.siswa.nama} - {self.bulan}/{self.tahun}"
 
     class Meta:
         verbose_name_plural = "SPP"
         ordering = ['-tahun', '-bulan']
+
+
+# ============================================================
+# ✅ MODEL NILAI — Sudah diimplementasikan langsung di bawah sini
+# ============================================================
+class Nilai(models.Model):
+    JENIS_NILAI = [
+        ('UH', 'Ulangan Harian'),
+        ('UTS', 'UTS'),
+        ('UAS', 'UAS'),
+    ]
+
+    siswa = models.ForeignKey(
+        Siswa,
+        on_delete=models.CASCADE,
+        related_name='nilai_siswa'
+    )
+
+    # Mengambil mapel dari model Jadwal admin
+    mapel = models.ForeignKey(
+        AdminJadwal,
+        on_delete=models.CASCADE,
+        related_name='nilai_mapel'
+    )
+
+    nilai = models.IntegerField()
+    jenis = models.CharField(max_length=10, choices=JENIS_NILAI)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.siswa.nama} - {self.mapel.mapel} - {self.nilai}"
+
+    class Meta:
+        verbose_name_plural = "Nilai"
+        ordering = ['mapel__hari', 'mapel__jam_mulai']

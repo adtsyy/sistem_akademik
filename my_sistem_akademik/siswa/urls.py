@@ -13,8 +13,14 @@ urlpatterns = [
     path('siswa/<str:nis>/hapus/', views.siswa_hapus, name='siswa_hapus'),
 
     # =======================
-    #  URL Jadwal (DIGABUNG)
+    #  URL Jadwal
     # =======================
     path('jadwal/', views.jadwal_list, name='jadwal_list'),
-    
+
+    # =======================
+    #  URL Nilai (BARU)
+    # =======================
+    path('nilai/', views.nilai_siswa, name='nilai_siswa'),
+
+    path('absen/', views.absen_siswa, name='absen_siswa'),
 ]

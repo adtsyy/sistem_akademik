@@ -4,7 +4,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Jadwal Pelajaran</title>
+    <title>Absen Siswa</title>
 
     <style>
         body {
@@ -69,35 +69,34 @@
 
 <div class="container">
 
-    <h2>📚 Jadwal Pelajaran — {{ siswa.kelas }}</h2>
+    <h2>📅 Absen Siswa</h2>
     <a href="{% url 'siswa_dashboard' %}" class="back">⟵ Kembali ke Dashboard</a>
+
     <div class="card">
         <table>
             <tr>
-                <th>Hari</th>
-                <th>Mapel</th>
-                <th>Guru</th>
-                <th>Mulai</th>
-                <th>Selesai</th>
-                <th>Kelas</th>
+                <th>Tanggal</th>
+                <th>Mata Pelajaran</th>
+                <th>Status</th>
+                <th>Keterangan</th>
             </tr>
 
-            {% for j in jadwal_kelas %}
+            {% if absen_list %}
+                {% for a in absen_list %}
+                <tr>
+                    <td>{{ a.tanggal }}</td>
+                    <td>{{ a.jadwal.mata_pelajaran }}</td>
+                    <td>{{ a.status|title }}</td>
+                    <td>{{ a.keterangan|default:"-" }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
             <tr>
-                <td>{{ j.hari }}</td>
-                <td>{{ j.mata_pelajaran }}</td>
-                <td>{{ j.pegawai.nama }}</td>
-                <td>{{ j.jam_mulai }}</td>
-                <td>{{ j.jam_selesai }}</td>
-                <td>{{ j.kelas }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" style="text-align:center; padding:10px;">
-                    Tidak ada jadwal untuk kelas ini
+                <td colspan="4" style="text-align:center; padding:10px; color:#ff8c8c;">
+                    Belum ada data absen
                 </td>
             </tr>
-            {% endfor %}
+            {% endif %}
         </table>
     </div>
 

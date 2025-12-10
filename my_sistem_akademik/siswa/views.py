@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Siswa, SPP
+from .models import Siswa, SPP, Nilai
 from .forms import SiswaForm
 
 # Import Jadwal dari admin_app
 from admin_app.models import Jadwal as AdminJadwal
-
+from guru.models import Nilai as GuruNilai
+from guru.models import Absen
 
 # ==========================================================
 # 1. DASHBOARD KHUSUS SISWA
@@ -25,7 +26,7 @@ def siswa_dashboard(request):
     # -------------------------------------------------------
     # DATA SPP
     # -------------------------------------------------------
-    spp_data = siswa.spp_set.all().order_by('bulan')
+    spp_data = siswa.spp_siswa.all().order_by('bulan')  # FIX: related_name spp_siswa
 
     spp_summary = {
         "total_tunggakan": 0,
@@ -35,9 +36,7 @@ def siswa_dashboard(request):
     }
 
     for spp in spp_data:
-        if spp.status != "Lunas":
-            kurang = spp.tagihan - spp.jumlah
-            spp_summary["total_tunggakan"] += kurang
+        if spp.status != "lunas":
             spp_summary["bulan_belum_bayar"].append(spp.bulan)
             spp_summary["spp_belum"] += 1
         else:
@@ -45,12 +44,12 @@ def siswa_dashboard(request):
 
 
     # -------------------------------------------------------
-    # JADWAL SISWA (diambil dari properti siswa.jadwal)
+    # JADWAL SISWA
     # -------------------------------------------------------
     jadwal_kelas = siswa.jadwal
 
     # -------------------------------------------------------
-    # KIRIM KE TEMPLATE
+    # KIRIM DATA KE TEMPLATE
     # -------------------------------------------------------
     context = {
         "siswa": siswa,
@@ -133,19 +132,52 @@ def siswa_hapus(request, nis):
 
 
 # ==========================================================
-# 7. LIST JADWAL (untuk admin/guru)
+# 7. JADWAL SISWA
 # ==========================================================
 def jadwal_list(request):
-    # Ambil data siswa dari user login
     siswa = Siswa.objects.get(user=request.user)
-
-    # Ambil kelas siswa
     kelas_siswa = siswa.kelas
 
-    # Filter jadwal berdasarkan kelas siswa
     jadwal_kelas = AdminJadwal.objects.filter(kelas=kelas_siswa).order_by('hari', 'jam_mulai')
 
     return render(request, 'siswa_app/jadwal_list.html', {
         'siswa': siswa,
         'jadwal_kelas': jadwal_kelas,
+    })
+
+
+# ==========================================================
+# 8. NILAI SISWA (VIEW BARU IMPLEMENTASI)
+# ==========================================================
+@login_required(login_url='/login/')
+def nilai_siswa(request):
+
+    siswa = getattr(request.user, "siswa", None)
+    if not siswa:
+        return render(request, "siswa_app/nilai.html", {
+            "error": "Akun ini tidak terhubung sebagai siswa."
+        })
+
+    # Ambil semua nilai siswa (berdasarkan model Nilai)
+    nilai_list = siswa.nilai_siswa.select_related('mapel').all()
+
+    return render(request, "siswa_app/nilai.html", {
+        "siswa": siswa,
+        "nilai_list": nilai_list,
+    })
+
+def nilai_siswa(request):
+    siswa = request.user.siswa  # otomatis ambil data siswa dari user login
+    nilai_list = GuruNilai.objects.filter(siswa=siswa).select_related('jadwal')
+
+    return render(request, 'siswa_app/nilai.html', {
+        'nilai_list': nilai_list
+    })
+
+def absen_siswa(request):
+    siswa = request.user.siswa
+    absen_list = Absen.objects.filter(siswa=siswa).select_related('jadwal')
+
+    return render(request, 'siswa_app/absen_siswa.html', {
+        'absen_list': absen_list
     })
