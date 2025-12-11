@@ -12,30 +12,28 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
             font-family: "Segoe UI", sans-serif;
             background: linear-gradient(to bottom right, #071522, #0a1f33);
             color: #f1f1f1;
+            min-height: 100vh;
         }
 
         header {
             padding: 25px;
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
             background: #112d4e;
             color: white;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         header h1 {
             flex: 1;
             margin: 0;
             font-size: 28px;
+            font-weight: bold;
         }
 
         .user-section {
@@ -78,13 +76,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 30px;
-            justify-items: center;
             padding: 0 20px;
         }
 
         .card {
             width: 100%;
-            max-width: 260px;
             padding: 25px;
             border-radius: 16px;
             background: #112d4e;
@@ -94,6 +90,7 @@
             text-decoration: none;
             color: #ffffff;
             cursor: pointer;
+            display: block;
         }
 
         .card:hover {
@@ -122,7 +119,7 @@
         .info-section {
             max-width: 1000px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 20px 40px 20px;
         }
 
         .info-card {
@@ -130,6 +127,7 @@
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
         }
 
         .info-card h3 {
@@ -158,6 +156,14 @@
 
         .info-value {
             color: #d7dce4;
+            text-align: right;
+        }
+
+        .summary-box {
+            background: #1b3d63;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         .summary-row {
@@ -181,10 +187,15 @@
             font-weight: 600;
         }
 
+        .table-responsive {
+            overflow-x: auto;
+        }
+
         .spp-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            min-width: 500px; /* Agar tabel tidak hancur di HP */
         }
 
         .spp-table thead {
@@ -216,6 +227,7 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            display: inline-block;
         }
 
         .status-belum {
@@ -225,142 +237,116 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            display: inline-block;
         }
-
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            header h1 {
-                font-size: 24px;
-            }
-
-            .user-section {
-                justify-content: center;
-                width: 100%;
-            }
-
-            .user-info {
-                text-align: center;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .info-item {
-                flex-direction: column;
-                gap: 5px;
-            }
+        
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #8899a6;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <h1>👨‍🎓 Dashboard Siswa</h1>
-        <div class="user-section">
-            <div class="user-info">
-                <div>Selamat datang,</div>
-                <strong>{{ user.username }}</strong>
-            </div>
-            <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
-        </div>
-    </header>
 
-    <!-- Main Content Cards -->
-    <div class="container">
-        <div class="card">
-            <div class="card-icon">📚</div>
-            <h3>Jadwal Kelas</h3>
-            <p>Lihat jadwal pelajaran</p>
+<header>
+    <h1>👨‍🎓 Dashboard Siswa</h1>
+    <div class="user-section">
+        <div class="user-info">
+            <div>Selamat datang,</div>
+            <strong>{{ user.username }}</strong>
+        </div>
+        <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+    <a href="{% url 'jadwal_list' %}" class="card">
+        <div class="card-icon">📚</div>
+        <h3>Jadwal Kelas</h3>
+        <p>Lihat jadwal pelajaran</p>
+    </a>
+
+    <a href="{% url 'nilai_siswa' %}" class="card">
+        <div class="card-icon">📝</div>
+        <h3>Nilai</h3>
+        <p>Lihat hasil nilai</p>
+    </a>
+
+    <a href="{% url 'absen_siswa' %}" class="card">
+        <div class="card-icon">📋</div>
+        <h3>Absensi</h3>
+        <p>Lihat absensi kehadiran</p>
+    </a>
+</div>
+
+<div class="info-section">
+
+    <div class="info-card">
+        <h3>👤 Profil Siswa</h3>
+
+        {% if siswa %}
+        <div class="info-item">
+            <span class="info-label">Nama Lengkap:</span>
+            <span class="info-value">{{ siswa.nama }}</span>
         </div>
 
-        <div class="card">
-            <div class="card-icon">📝</div>
-            <h3>Nilai</h3>
-            <p>Lihat hasil nilai</p>
+        <div class="info-item">
+            <span class="info-label">NIS:</span>
+            <span class="info-value">{{ siswa.nis }}</span>
         </div>
 
-        <div class="card">
-            <div class="card-icon">📋</div>
-            <h3>Absensi</h3>
-            <p>Lihat absensi kehadiran</p>
+        <div class="info-item">
+            <span class="info-label">Kelas:</span>
+            <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
         </div>
 
-        <div class="card">
-            <div class="card-icon">👨‍🏫</div>
-            <h3>Guru</h3>
-            <p>Daftar guru pengajar</p>
+        {% if siswa.jurusan %}
+        <div class="info-item">
+            <span class="info-label">Jurusan:</span>
+            <span class="info-value">{{ siswa.jurusan }}</span>
         </div>
+        {% endif %}
+
+        <div class="info-item">
+            <span class="info-label">Tempat, Tanggal Lahir:</span>
+            <span class="info-value">
+                {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
+                    {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
+                {% else %}
+                    Belum diatur
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Alamat:</span>
+            <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Nomor Telepon:</span>
+            <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">Nama Orang Tua / Wali:</span>
+            <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
+        </div>
+
+        {% else %}
+        <div class="empty-message">
+            Data siswa tidak ditemukan dalam sistem.
+        </div>
+        {% endif %}
     </div>
 
-    <!-- Info Section -->
-    <div class="info-section">
-        <!-- Profil Siswa -->
-        <div class="info-card">
-            <h3>👤 Profil Siswa</h3>
-            {% if siswa %}
-            <div class="info-item">
-                <span class="info-label">Nama Lengkap:</span>
-                <span class="info-value">{{ siswa.nama }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">NIS:</span>
-                <span class="info-value">{{ siswa.nis }}</span>
-            </div>
-           
-            </div>
-            <div class="info-item">
-                <span class="info-label">Kelas:</span>
-                <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
-            </div>
-            {% if siswa.jurusan %}
-            <div class="info-item">
-                <span class="info-label">Jurusan:</span>
-                <span class="info-value">{{ siswa.jurusan }}</span>
-            </div>
-            {% endif %}
-            <div class="info-item">
-                <span class="info-label">Tempat, Tanggal Lahir:</span>
-                <span class="info-value">
-                    {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
-                        {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
-                    {% else %}
-                        Belum diatur
-                    {% endif %}
-                </span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Alamat:</span>
-                <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Nomor Telepon:</span>
-                <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Nama Orang Tua / Wali:</span>
-                <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
-            </div>
-            {% else %}
-            <div class="info-item">
-                <span class="info-value">Data siswa tidak ditemukan</span>
-            </div>
-            {% endif %}
-        </div>
+    <div class="info-card">
+        <h3>💳 Data Pembayaran SPP</h3>
 
-        <!-- Data Pembayaran SPP -->
-        <div class="info-card" style="margin-top: 30px;">
-            <h3>💳 Data Pembayaran SPP</h3>
-            
-            <!-- Ringkasan SPP -->
-            {% if siswa and spp_summary %}
-            <div style="background: #1b3d63; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+        {% if siswa and spp_summary %}
+            <div class="summary-box">
                 <div class="summary-row">
                     <span class="summary-label">Total Tunggakan:</span>
                     <span class="summary-value">Rp {{ spp_summary.total_tunggakan|floatformat:0 }}</span>
@@ -373,53 +359,59 @@
                     <span class="summary-label">Belum Bayar:</span>
                     <span class="summary-value">{{ spp_summary.spp_belum }} Bulan ⏳</span>
                 </div>
+
                 {% if spp_summary.bulan_belum_bayar %}
                 <div class="summary-row">
                     <span class="summary-label">Bulan Belum Bayar:</span>
-                    <span class="summary-value">{{ spp_summary.bulan_belum_bayar|join:", " }}</span>
+                    <span class="summary-value" style="text-align: right; max-width: 60%;">
+                        {{ spp_summary.bulan_belum_bayar|join:", " }}
+                    </span>
                 </div>
                 {% endif %}
             </div>
 
-            <!-- Tabel SPP Detail -->
             {% if spp_data %}
-            <table class="spp-table">
-                <thead>
-                    <tr>
-                        <th>Bulan/Tahun</th>
-                        <th>Nominal</th>
-                        <th>Status</th>
-                        <th>Tanggal Bayar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for spp in spp_data %}
-                    <tr>
-                        <td>{{ spp.bulan }}/{{ spp.tahun }}</td>
-                        <td>Rp {{ spp.nominal|floatformat:0 }}</td>
-                        <td>
-                            {% if spp.status == 'lunas' %}
-                                <span class="status-lunas">✅ Lunas</span>
-                            {% else %}
-                                <span class="status-belum">⏳ Belum Bayar</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ spp.tanggal_bayar|default:"Belum bayar" }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="spp-table">
+                    <thead>
+                        <tr>
+                            <th>Bulan</th>
+                            <th>Tagihan</th>
+                            <th>Dibayar</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for spp in spp_data %}
+                        <tr>
+                            <td>{{ spp.bulan }}</td>
+                            <td>Rp {{ spp.tagihan|floatformat:0 }}</td>
+                            <td>Rp {{ spp.jumlah|floatformat:0 }}</td>
+                            <td>
+                                {% if spp.status == 'Lunas' %}
+                                    <span class="status-lunas">Lunas</span>
+                                {% else %}
+                                    <span class="status-belum">{{ spp.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
-            <div class="info-item">
-                <span class="info-value">Belum ada data SPP</span>
+            <div class="empty-message">
+                Belum ada riwayat pembayaran SPP.
             </div>
             {% endif %}
-            {% else %}
-            <div class="info-item">
-                <span class="info-value">Data pembayaran tidak tersedia</span>
+
+        {% else %}
+            <div class="empty-message">
+                Informasi tagihan SPP tidak tersedia.
             </div>
-            {% endif %}
-        </div>
+        {% endif %}
     </div>
+</div>
+
 </body>
 </html>
