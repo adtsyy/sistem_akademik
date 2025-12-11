@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Siswa - Sistem Akademik</title>
+
     <style>
         * {
             margin: 0;
@@ -30,9 +31,7 @@
         }
 
         header h1 {
-            flex: 1;
-            margin: 0;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
         }
 
@@ -60,9 +59,8 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
         }
 
         .btn-logout:hover {
@@ -71,7 +69,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 40px auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -80,17 +78,14 @@
         }
 
         .card {
-            width: 100%;
             padding: 25px;
             border-radius: 16px;
             background: #112d4e;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             transition: 0.3s ease;
-            text-decoration: none;
             color: #ffffff;
-            cursor: pointer;
-            display: block;
+            text-decoration: none;
         }
 
         .card:hover {
@@ -99,25 +94,19 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
         .card h3 {
-            font-size: 22px;
-            margin-bottom: 8px;
+            font-size: 20px;
+            margin-bottom: 6px;
             color: #a8d5ff;
         }
 
-        .card p {
-            font-size: 14px;
-            color: #d7dce4;
-        }
-
-        .card-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            display: block;
-        }
-
         .info-section {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px 40px 20px;
         }
@@ -132,7 +121,7 @@
 
         .info-card h3 {
             color: #a8d5ff;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             font-size: 22px;
             border-bottom: 2px solid #1b3d63;
             padding-bottom: 10px;
@@ -141,7 +130,7 @@
         .info-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #1b3d63;
         }
 
@@ -150,8 +139,8 @@
         }
 
         .info-label {
-            color: #a8d5ff;
             font-weight: 600;
+            color: #a8d5ff;
         }
 
         .info-value {
@@ -166,27 +155,14 @@
             margin-bottom: 20px;
         }
 
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #0d1f33;
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            color: #8899a6;
+            font-style: italic;
         }
 
-        .summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .summary-label {
-            color: #a8d5ff;
-            font-weight: 600;
-        }
-
-        .summary-value {
-            color: #ffd700;
-            font-weight: 600;
-        }
-
+        /* Tabel SPP */
         .table-responsive {
             overflow-x: auto;
         }
@@ -195,25 +171,22 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
-            min-width: 500px; /* Agar tabel tidak hancur di HP */
-        }
-
-        .spp-table thead {
-            background: #1b3d63;
+            min-width: 500px;
         }
 
         .spp-table th {
+            background: #1b3d63;
             padding: 12px;
-            text-align: left;
             color: #a8d5ff;
-            font-weight: 600;
-            border-bottom: 2px solid #0d1f33;
+            text-align: left;
+            font-size: 14px;
         }
 
         .spp-table td {
             padding: 12px;
-            color: #d7dce4;
             border-bottom: 1px solid #1b3d63;
+            color: #d7dce4;
+            font-size: 14px;
         }
 
         .spp-table tbody tr:hover {
@@ -226,8 +199,7 @@
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
+            font-weight: bold;
         }
 
         .status-belum {
@@ -236,15 +208,7 @@
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        .empty-message {
-            text-align: center;
-            padding: 20px;
-            color: #8899a6;
-            font-style: italic;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -252,6 +216,7 @@
 
 <header>
     <h1>👨‍🎓 Dashboard Siswa</h1>
+
     <div class="user-section">
         <div class="user-info">
             <div>Selamat datang,</div>
@@ -261,6 +226,8 @@
     </div>
 </header>
 
+
+<!-- MENU KARTU -->
 <div class="container">
     <a href="{% url 'jadwal_list' %}" class="card">
         <div class="card-icon">📚</div>
@@ -271,106 +238,84 @@
     <a href="{% url 'nilai_siswa' %}" class="card">
         <div class="card-icon">📝</div>
         <h3>Nilai</h3>
-        <p>Lihat hasil nilai</p>
+        <p>Lihat nilai lengkap</p>
     </a>
 
     <a href="{% url 'absen_siswa' %}" class="card">
         <div class="card-icon">📋</div>
         <h3>Absensi</h3>
-        <p>Lihat absensi kehadiran</p>
+        <p>Riwayat kehadiran</p>
     </a>
 </div>
 
+
+<!-- INFORMASI PROFIL & SPP -->
 <div class="info-section">
 
+    <!-- PROFIL SISWA -->
     <div class="info-card">
         <h3>👤 Profil Siswa</h3>
 
         {% if siswa %}
-        <div class="info-item">
-            <span class="info-label">Nama Lengkap:</span>
-            <span class="info-value">{{ siswa.nama }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">Nama:</span>
+                <span class="info-value">{{ siswa.nama }}</span>
+            </div>
 
-        <div class="info-item">
-            <span class="info-label">NIS:</span>
-            <span class="info-value">{{ siswa.nis }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">NIS:</span>
+                <span class="info-value">{{ siswa.nis }}</span>
+            </div>
 
-        <div class="info-item">
-            <span class="info-label">Kelas:</span>
-            <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">Kelas:</span>
+                <span class="info-value">{{ siswa.kelas|default:"Belum diatur" }}</span>
+            </div>
 
-        {% if siswa.jurusan %}
-        <div class="info-item">
-            <span class="info-label">Jurusan:</span>
-            <span class="info-value">{{ siswa.jurusan }}</span>
-        </div>
-        {% endif %}
+            {% if siswa.jurusan %}
+            <div class="info-item">
+                <span class="info-label">Jurusan:</span>
+                <span class="info-value">{{ siswa.jurusan }}</span>
+            </div>
+            {% endif %}
 
-        <div class="info-item">
-            <span class="info-label">Tempat, Tanggal Lahir:</span>
-            <span class="info-value">
-                {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
-                    {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
-                {% else %}
-                    Belum diatur
-                {% endif %}
-            </span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">TTL:</span>
+                <span class="info-value">
+                    {% if siswa.tempat_lahir and siswa.tanggal_lahir %}
+                        {{ siswa.tempat_lahir }}, {{ siswa.tanggal_lahir|date:"d M Y" }}
+                    {% else %}
+                        Belum diatur
+                    {% endif %}
+                </span>
+            </div>
 
-        <div class="info-item">
-            <span class="info-label">Alamat:</span>
-            <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">Alamat:</span>
+                <span class="info-value">{{ siswa.alamat|default:"Belum diatur" }}</span>
+            </div>
 
-        <div class="info-item">
-            <span class="info-label">Nomor Telepon:</span>
-            <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">Telepon:</span>
+                <span class="info-value">{{ siswa.telepon|default:"Belum diatur" }}</span>
+            </div>
 
-        <div class="info-item">
-            <span class="info-label">Nama Orang Tua / Wali:</span>
-            <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
-        </div>
+            <div class="info-item">
+                <span class="info-label">Orang Tua / Wali:</span>
+                <span class="info-value">{{ siswa.nama_orang_tua|default:"Belum diatur" }}</span>
+            </div>
 
         {% else %}
-        <div class="empty-message">
-            Data siswa tidak ditemukan dalam sistem.
-        </div>
+            <div class="empty-message">Data siswa tidak ditemukan.</div>
         {% endif %}
     </div>
 
+
+    <!-- DATA SPP -->
     <div class="info-card">
         <h3>💳 Data Pembayaran SPP</h3>
 
-        {% if siswa and spp_summary %}
-            <div class="summary-box">
-                <div class="summary-row">
-                    <span class="summary-label">Total Tunggakan:</span>
-                    <span class="summary-value">Rp {{ spp_summary.total_tunggakan|floatformat:0 }}</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Status Lunas:</span>
-                    <span class="summary-value">{{ spp_summary.spp_lunas }} Bulan ✅</span>
-                </div>
-                <div class="summary-row">
-                    <span class="summary-label">Belum Bayar:</span>
-                    <span class="summary-value">{{ spp_summary.spp_belum }} Bulan ⏳</span>
-                </div>
-
-                {% if spp_summary.bulan_belum_bayar %}
-                <div class="summary-row">
-                    <span class="summary-label">Bulan Belum Bayar:</span>
-                    <span class="summary-value" style="text-align: right; max-width: 60%;">
-                        {{ spp_summary.bulan_belum_bayar|join:", " }}
-                    </span>
-                </div>
-                {% endif %}
-            </div>
-
-            {% if spp_data %}
+        {% if spp_data %}
             <div class="table-responsive">
                 <table class="spp-table">
                     <thead>
@@ -384,11 +329,11 @@
                     <tbody>
                         {% for spp in spp_data %}
                         <tr>
-                            <td>{{ spp.bulan }}</td>
+                            <td>{{ spp.get_bulan_display }}</td>
                             <td>Rp {{ spp.tagihan|floatformat:0 }}</td>
                             <td>Rp {{ spp.jumlah|floatformat:0 }}</td>
                             <td>
-                                {% if spp.status == 'Lunas' %}
+                                {% if spp.status == "Lunas" %}
                                     <span class="status-lunas">Lunas</span>
                                 {% else %}
                                     <span class="status-belum">{{ spp.status }}</span>
@@ -399,18 +344,12 @@
                     </tbody>
                 </table>
             </div>
-            {% else %}
-            <div class="empty-message">
-                Belum ada riwayat pembayaran SPP.
-            </div>
-            {% endif %}
 
         {% else %}
-            <div class="empty-message">
-                Informasi tagihan SPP tidak tersedia.
-            </div>
+            <div class="empty-message">Belum ada data pembayaran SPP.</div>
         {% endif %}
     </div>
+
 </div>
 
 </body>
