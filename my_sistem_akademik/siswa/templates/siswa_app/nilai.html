@@ -4,7 +4,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Jadwal Pelajaran</title>
+    <title>Nilai Siswa</title>
 
     <style>
         body {
@@ -69,35 +69,34 @@
 
 <div class="container">
 
-    <h2>📚 Jadwal Pelajaran — {{ siswa.kelas }}</h2>
+    <h2>📘 Nilai Siswa</h2>
     <a href="{% url 'siswa_dashboard' %}" class="back">⟵ Kembali ke Dashboard</a>
+
     <div class="card">
         <table>
             <tr>
-                <th>Hari</th>
-                <th>Mapel</th>
-                <th>Guru</th>
-                <th>Mulai</th>
-                <th>Selesai</th>
-                <th>Kelas</th>
+                <th>Mata Pelajaran</th>
+                <th>Jenis Nilai</th>
+                <th>Nilai</th>
+                <th>Tanggal</th>
             </tr>
 
-            {% for j in jadwal_kelas %}
+            {% if nilai_list %}
+                {% for n in nilai_list %}
+                <tr>
+                    <td>{{ n.jadwal.mata_pelajaran }}</td>
+                    <td>{{ n.keterangan|default:"-" }}</td>
+                    <td>{{ n.nilai }}</td>
+                    <td>{{ n.tanggal }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
             <tr>
-                <td>{{ j.hari }}</td>
-                <td>{{ j.mata_pelajaran }}</td>
-                <td>{{ j.pegawai.nama }}</td>
-                <td>{{ j.jam_mulai }}</td>
-                <td>{{ j.jam_selesai }}</td>
-                <td>{{ j.kelas }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" style="text-align:center; padding:10px;">
-                    Tidak ada jadwal untuk kelas ini
+                <td colspan="4" style="text-align:center; padding:10px; color:#ff8c8c;">
+                    Belum ada nilai
                 </td>
             </tr>
-            {% endfor %}
+            {% endif %}
         </table>
     </div>
 
