@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.db.models import Avg, Sum, Count
 from .models import Rapor
 from guru.models import Nilai, Absen 
+import calendar
 
 def home(request):
     return render(request, 'laporan/home.html')
@@ -146,7 +147,7 @@ class RaporDetailView(DetailView):
 
 # List SPP
 def spp_list(request):
-    # Ambil semua data 
+    # Ambil semua data
     spp = SPP.objects.select_related('siswa').all()
     keyword = request.GET.get('q')
 
@@ -155,6 +156,10 @@ def spp_list(request):
             Q(siswa__nama__icontains=keyword) |  # Cari berdasarkan Nama
             Q(siswa__nis__icontains=keyword)     # ATAU Cari berdasarkan NIS
         )
+
+    # Tambahkan bulan_nama ke setiap objek SPP dalam queryset
+    for record in spp:
+        record.bulan_nama = calendar.month_name[record.bulan]  # Menambahkan nama bulan
 
     return render(request, 'laporan/spp_list.html', {'spp': spp, 'keyword': keyword})
 
