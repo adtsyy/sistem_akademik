@@ -66,7 +66,7 @@ def siswa_dashboard(request):
 # ==========================================================
 # 2. LIST SISWA
 # ==========================================================
-@login_required(login_url='/login/')
+
 def siswa_list(request):
     data = Siswa.objects.all()
     return render(request, "siswa_app/list.html", {"siswa": data})
@@ -75,7 +75,6 @@ def siswa_list(request):
 # ==========================================================
 # 3. TAMBAH SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_tambah(request):
     form = SiswaForm(request.POST or None)
     
@@ -92,7 +91,6 @@ def siswa_tambah(request):
 # ==========================================================
 # 4. EDIT SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_edit(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
     form = SiswaForm(request.POST or None, instance=siswa)
@@ -111,7 +109,6 @@ def siswa_edit(request, nis):
 # ==========================================================
 # 5. DETAIL SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_detail(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
     return render(request, "siswa_app/detail.html", {"siswa": siswa})
@@ -120,7 +117,6 @@ def siswa_detail(request, nis):
 # ==========================================================
 # 6. HAPUS SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_hapus(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
 

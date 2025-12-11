@@ -116,14 +116,17 @@
             display: inline-block;
         }
 
-        .btn-simpan {
-            background: #27ae60;
+        .button {
+            padding: 10px 20px;
+            background: #3f72af;
             color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
         }
 
-        .btn-simpan:hover {
-            background: #229954;
-            transform: translateY(-2px);
+        .button:hover {
+            background: #1d4e8c;
         }
 
         .btn-batal {
@@ -202,8 +205,8 @@
                 {% endfor %}
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-simpan">💾 Simpan</button>
-                    <a href="{% url 'siswa_list' %}" class="btn btn-batal">← Batal</a>
+                    <button type="submit" class="button">💾 Simpan</button>
+                    <a href="{% url 'siswa_list' %}" class="button">← Batal</a>
                 </div>
             </form>
         </div>

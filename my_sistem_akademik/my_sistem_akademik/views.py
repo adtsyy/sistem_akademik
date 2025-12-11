@@ -9,14 +9,19 @@ from django.contrib.auth.decorators import login_required
 def redirect_to_login(request):
     """Redirect user ke login jika belum authenticated, atau ke dashboard jika sudah"""
     if request.user.is_authenticated:
-        # Jika user sudah login, redirect ke dashboard sesuai role
-        username = request.user.username.lower()
-        if 'guru' in username:
-            return redirect('guru_dashboard')
-        elif 'admin' in username:
-            return redirect('index')
-        elif 'siswa' in username:
+        user = request.user
+        # Cek apakah user adalah seorang pegawai (guru/admin)
+        if hasattr(user, 'pegawai'):
+            if user.pegawai.jabatan == 'admin':
+                return redirect('index')
+            elif user.pegawai.jabatan == 'guru':
+                return redirect('guru_dashboard')
+        
+        # Cek apakah user adalah seorang siswa
+        elif hasattr(user, 'siswa'):
             return redirect('siswa_dashboard')
+        
+        # Jika tidak punya role, default ke halaman guru atau login
         else:
             return redirect('login')
     return redirect('login')
@@ -44,17 +49,8 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
                 messages.success(request, f"Login berhasil! Selamat datang, {username}.")
-
-                # Redirect berdasarkan username
-                username_lower = username.lower()
-                if 'guru' in username_lower:
-                    return redirect('guru_dashboard')
-                elif 'siswa' in username_lower:
-                    return redirect('siswa_dashboard')
-                elif 'admin' in username_lower:
-                    return redirect('index')
-                else:
-                    return redirect('guru_dashboard')  # Default redirect
+                # Gunakan fungsi redirect yang sudah diperbaiki
+                return redirect_to_login(request)
             else:
                 messages.error(request, "Akun Anda tidak aktif. Hubungi administrator.")
         else:
