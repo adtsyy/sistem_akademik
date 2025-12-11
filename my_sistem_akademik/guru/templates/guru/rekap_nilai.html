@@ -7,28 +7,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f4c75;
-            --secondary: #3a86ff;
-            --dark-bg: #0d1b2a;
-            --card-bg: #1b263b;
-            --border-color: #415a77;
-            --text-light: #f1faee;
-            --text-muted: #b8d4e8;
+            --primary: #112d4e;
+            --secondary: #3f72af;
+            --dark-bg: #071522;
+            --card-bg: rgba(17, 45, 78, 0.92);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-light: #f1f1f1;
+            --text-muted: #d7dce4;
         }
 
         body {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a2f47 100%);
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0a1f33 100%);
             color: var(--text-light);
             font-family: 'Segoe UI', 'Open Sans', sans-serif;
             min-height: 100vh;
         }
 
         .header {
-            background: linear-gradient(135deg, #1b263b 0%, var(--primary) 100%);
+            background: var(--primary);
             padding: 25px;
             text-align: center;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-            border-bottom: 3px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.45);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             margin-bottom: 30px;
         }
 
@@ -45,32 +45,24 @@
             padding: 0 20px;
         }
 
-        .back-btn {
+        a.back {
             display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background: var(--secondary);
-            color: white;
+            margin-bottom: 15px;
+            color: #6fb7ff;
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            font-weight: bold;
         }
-
-        .back-btn:hover {
-            background: #2563eb;
-            transform: translateX(-5px);
-            color: white;
-            text-decoration: none;
-        }
+        a.back:hover {
+            color: #a6d4ff;
+        }       
 
         .filter-section {
             background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         .filter-section h2 {
@@ -125,17 +117,18 @@
             padding: 10px 24px;
             background: var(--secondary);
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             color: white;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             align-self: flex-end;
+            box-shadow:0 8px 20px rgba(63,114,175,0.35);
         }
 
         .btn-tampilkan:hover {
-            background: #2563eb;
-            box-shadow: 0 4px 12px rgba(58, 134, 255, 0.4);
+            background: #1d4e8c;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
         }
 
         .statistik-cards {
@@ -146,19 +139,19 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #1b263b 0%, #1e3a5f 100%);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
+            background: linear-gradient(135deg, #112d4e 0%, #1b3d63 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: var(--secondary);
-            box-shadow: 0 10px 30px rgba(58, 134, 255, 0.3);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
         }
 
         .stat-label {
@@ -178,11 +171,11 @@
 
         .search-section {
             background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         .search-box {
@@ -210,23 +203,24 @@
             padding: 10px 20px;
             background: var(--secondary);
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             color: white;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow:0 8px 20px rgba(63,114,175,0.35);
         }
 
         .btn-search:hover {
-            background: #2563eb;
+            background: #1d4e8c;
         }
 
         .tabel-wrapper {
             background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
         }
 
         .tabel-wrapper table {
@@ -236,8 +230,8 @@
         }
 
         .tabel-wrapper thead {
-            background: linear-gradient(135deg, var(--primary) 0%, #1b263b 100%);
-            border-bottom: 2px solid var(--secondary);
+            background: #1b3d63;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
         .tabel-wrapper thead th {
@@ -287,18 +281,19 @@
 
         .btn-edit {
             padding: 6px 12px;
-            background: #3b82f6;
+            background: #3f72af;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             color: white;
             cursor: pointer;
             font-weight: 600;
             font-size: 12px;
             transition: all 0.3s ease;
+            box-shadow:0 6px 14px rgba(63,114,175,0.35);
         }
 
         .btn-edit:hover {
-            background: #2563eb;
+            background: #1d4e8c;
         }
 
         .no-data {
@@ -400,7 +395,7 @@
     </div>
 
     <div class="container">
-        <a href="{% url 'guru_dashboard' %}" class="back-btn">← Kembali ke Dashboard</a>
+        <a href="{% url 'guru_dashboard' %}" class="back">← Kembali ke Dashboard</a>
 
         <!-- small hidden form to expose csrf token for AJAX calls -->
         <form id="csrfForm" style="display:none;">{% csrf_token %}</form>

@@ -7,44 +7,52 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: "Segoe UI", "Open Sans", sans-serif;
-            background: linear-gradient(135deg, #0d1b2a 0%, #1a2f47 100%);
-            color: #f1faee;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to bottom right, #071522, #0a1f33);
+            color: #f1f1f1;
             line-height: 1.6;
             min-height: 100vh;
         }
         .header {
-            background: linear-gradient(135deg, #1b263b 0%, #0f4c75 100%);
-            padding: 25px;
+            background: #112d4e;
+            padding: 24px;
             text-align: center;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            border-bottom: 3px solid #3a86ff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.45);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 5;
         }
-        .header h1 { font-size: 28px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .back-btn {
-            display: inline-block; margin-bottom: 20px; padding: 10px 20px;
-            background: #3a86ff; color: white; text-decoration: none;
-            border-radius: 8px; transition: all 0.3s ease; font-weight: 600;
+        .header h1 { font-size: 28px; font-weight: 700; color:#fff; text-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+        .container { max-width: 1200px; margin: 32px auto; padding: 0 24px; }
+        a.back {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #6fb7ff;
+            text-decoration: none;
+            font-weight: bold;
         }
-        .back-btn:hover { background: #2563eb; transform: translateX(-5px); }
-        .jadwal-wrapper { background: #1b263b; border: 2px solid #415a77; border-radius: 12px;
-            padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        a.back:hover {
+            color: #a6d4ff;
+        }
+        .jadwal-wrapper { background: rgba(17,45,78,0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+            padding: 20px; box-shadow: 0 10px 26px rgba(0,0,0,0.45); }
         table { width: 100%; border-collapse: collapse; }
-        thead { background: linear-gradient(135deg, #0f4c75 0%, #1b263b 100%); border-bottom: 2px solid #3a86ff; }
-        th, td { padding: 15px; text-align: left; color: #f1faee; font-size: 14px; }
-        th { font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px; }
-        tbody tr { border-bottom: 1px solid #415a77; transition: all 0.3s ease; }
-        tbody tr:hover { background: #1e3a5f; }
-        .hari-badge { padding: 6px 10px; border-radius: 6px; background: rgba(59,130,246,.15); color: #93c5fd; font-weight: 700; }
-        .time-badge { padding: 6px 10px; border-radius: 6px; background: rgba(17,94,89,.15); color: #5eead4; font-weight: 700; }
+        thead { background: #1b3d63; }
+        th, td { padding: 14px; text-align: left; color: #f1f1f1; font-size: 14px; }
+        th { font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; font-size: 13px; border-bottom:1px solid rgba(255,255,255,0.08); }
+        tbody tr { border-bottom: 1px solid rgba(255,255,255,0.06); transition: all 0.2s ease; }
+        tbody tr:nth-child(even){ background: rgba(255,255,255,0.02);}
+        tbody tr:hover { background: rgba(255,255,255,0.05); }
+        .hari-badge { padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.08); color: #d7dce4; font-weight: 700; }
+        .time-badge { padding: 6px 10px; border-radius: 8px; background: rgba(63,114,175,0.2); color: #c7ddff; font-weight: 700; }
         .btn-action {
-            padding: 10px 16px; background: #3a86ff; border: none; border-radius: 8px;
+            padding: 10px 16px; background: #3f72af; border: none; border-radius: 10px;
             color: white; cursor: pointer; font-weight: 700; text-decoration: none;
-            display: inline-block; transition: all 0.2s ease;
+            display: inline-block; transition: all 0.2s ease; box-shadow:0 8px 20px rgba(63,114,175,0.35);
         }
-        .btn-action:hover { background: #2563eb; box-shadow: 0 4px 12px rgba(58,134,255,.4); transform: translateY(-2px); }
-        .no-data { text-align: center; padding: 40px; color: #7a9ab8; }
+        .btn-action:hover { background: #1d4e8c; box-shadow: 0 10px 24px rgba(0,0,0,.35); transform: translateY(-2px); }
+        .no-data { text-align: center; padding: 40px; color: #c1cad6; }
     </style>
 </head>
 <body>
@@ -53,7 +61,7 @@
     </div>
 
     <div class="container">
-        <a href="{% url 'guru_dashboard' %}" class="back-btn">← Kembali ke Dashboard</a>
+        <a href="{% url 'guru_dashboard' %}" class="back">← Kembali ke Dashboard</a>
 
         <div class="jadwal-wrapper">
             <h2 style="margin-bottom: 20px">Daftar Jadwal Mengajar</h2>
