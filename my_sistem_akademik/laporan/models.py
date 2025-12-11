@@ -31,14 +31,14 @@ class Rapor(models.Model):
 
 class SPP(models.Model):
     BULAN_PILIHAN = [
-        ('Januari', 'Januari'), ('Februari', 'Februari'), ('Maret', 'Maret'),
-        ('April', 'April'), ('Mei', 'Mei'), ('Juni', 'Juni'),
-        ('Juli', 'Juli'), ('Agustus', 'Agustus'), ('September', 'September'),
-        ('Oktober', 'Oktober'), ('November', 'November'), ('Desember', 'Desember'),
+        (1, 'Januari'), (2, 'Februari'), (3, 'Maret'),
+        (4, 'April'), (5, 'Mei'), (6, 'Juni'),
+        (7, 'Juli'), (8, 'Agustus'), (9, 'September'),
+        (10, 'Oktober'), (11, 'November'), (12, 'Desember'),
     ]
 
-    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE)
-    bulan = models.CharField(max_length=20, choices=BULAN_PILIHAN)
+    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE, related_name='spp_siswa')
+    bulan = models.IntegerField(choices=BULAN_PILIHAN)
     
     # 1. Tambah kolom Tagihan 
     tagihan = models.IntegerField(default=500000, verbose_name="Biaya SPP") 

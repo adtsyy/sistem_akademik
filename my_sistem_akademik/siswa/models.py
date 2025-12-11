@@ -41,28 +41,6 @@ class Siswa(models.Model):
         return AdminJadwal.objects.filter(kelas=self.kelas).order_by('hari', 'jam_mulai')
 
 
-class SPP(models.Model):
-    STATUS_CHOICES = [
-        ('lunas', 'Lunas'),
-        ('belum', 'Belum Bayar'),
-    ]
-
-    siswa = models.ForeignKey(Siswa, on_delete=models.CASCADE, related_name='spp_siswa')
-    bulan = models.IntegerField()  # 1-12
-    tahun = models.IntegerField()
-    nominal = models.DecimalField(max_digits=10, decimal_places=0)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='belum')
-    tanggal_bayar = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):   # FIX: _str_ → __str__
-        return f"SPP {self.siswa.nama} - {self.bulan}/{self.tahun}"
-
-    class Meta:
-        verbose_name_plural = "SPP"
-        ordering = ['-tahun', '-bulan']
-
-
 # ============================================================
 # ✅ MODEL NILAI — Sudah diimplementasikan langsung di bawah sini
 # ============================================================

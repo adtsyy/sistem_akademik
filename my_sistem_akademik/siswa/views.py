@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Siswa, SPP, Nilai
+from .models import Siswa, Nilai
 from .forms import SiswaForm
 
-# Import Jadwal dari admin_app
+from laporan.models import SPP
 from admin_app.models import Jadwal as AdminJadwal
 from guru.models import Nilai as GuruNilai
 from guru.models import Absen
@@ -26,7 +26,7 @@ def siswa_dashboard(request):
     # -------------------------------------------------------
     # DATA SPP
     # -------------------------------------------------------
-    spp_data = siswa.spp_siswa.all().order_by('bulan')  # FIX: related_name spp_siswa
+    spp_data = siswa.spp_siswa.all().order_by('bulan')
 
     spp_summary = {
         "total_tunggakan": 0,
@@ -36,8 +36,8 @@ def siswa_dashboard(request):
     }
 
     for spp in spp_data:
-        if spp.status != "lunas":
-            spp_summary["bulan_belum_bayar"].append(spp.bulan)
+        if spp.status != "Lunas":
+            spp_summary["bulan_belum_bayar"].append(spp.get_bulan_display())
             spp_summary["spp_belum"] += 1
         else:
             spp_summary["spp_lunas"] += 1
@@ -66,7 +66,7 @@ def siswa_dashboard(request):
 # ==========================================================
 # 2. LIST SISWA
 # ==========================================================
-@login_required(login_url='/login/')
+
 def siswa_list(request):
     data = Siswa.objects.all()
     return render(request, "siswa_app/list.html", {"siswa": data})
@@ -75,7 +75,6 @@ def siswa_list(request):
 # ==========================================================
 # 3. TAMBAH SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_tambah(request):
     form = SiswaForm(request.POST or None)
     
@@ -92,7 +91,6 @@ def siswa_tambah(request):
 # ==========================================================
 # 4. EDIT SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_edit(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
     form = SiswaForm(request.POST or None, instance=siswa)
@@ -111,7 +109,6 @@ def siswa_edit(request, nis):
 # ==========================================================
 # 5. DETAIL SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_detail(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
     return render(request, "siswa_app/detail.html", {"siswa": siswa})
@@ -120,7 +117,6 @@ def siswa_detail(request, nis):
 # ==========================================================
 # 6. HAPUS SISWA
 # ==========================================================
-@login_required(login_url='/login/')
 def siswa_hapus(request, nis):
     siswa = get_object_or_404(Siswa, nis=nis)
 
